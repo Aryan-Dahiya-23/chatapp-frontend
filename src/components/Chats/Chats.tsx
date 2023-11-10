@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import ChatBubble from "./ChatBubbe";
@@ -7,31 +7,16 @@ import {
     HiPaperAirplane,
     HiPhoto
 } from "react-icons/hi2";
-import MobileNavigation from "../Navigation/MobileNavigation";
 
 const Chats = () => {
 
-    // const [textareaRows, setTextareaRows] = useState<number>(1);
-    // const [content, setContent] = useState<string>("");
-
-
-    // const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-
-    //     if (event.target.value.length < content.length) {
-    //         setTextareaRows((prevRows) => prevRows - 1);
-    //         console.log("true");
-    //     }
-
-    //     const textarea = event.target;
-    //     const currentRows = Math.floor(textarea.scrollHeight / parseFloat(getComputedStyle(textarea).lineHeight));
-    //     console.log("current rows: " + currentRows);
-    //     setTextareaRows(Math.min(3, Math.max(1, currentRows)));
-
-    //     setContent(event.target.value);
-    // };
-
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
+    const [bottomParentHeight, setBottomParentHeight] = useState(0);
+    const [formattedHeight, setFormattedHeight] = useState<string>("");
+
+
+    const isMobileScreen = () => window.innerWidth <= 647;
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = event.target;
@@ -51,9 +36,27 @@ const Chats = () => {
         }
     };
 
+    useEffect(() => {
+        const handleResize = () => {
+            const bottomParentDiv = document.getElementById('bottomParentDiv');
+            if (bottomParentDiv) {
+                setBottomParentHeight(bottomParentDiv.clientHeight);
+            }
+
+            setFormattedHeight(bottomParentDiv?.clientHeight.toString() + "px");
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [text]);
+
 
     return (
-        <div className="flex flex-col h-[100vh] md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
+        <div className="flex flex-col h-screen md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
 
             <div className="flex flex-row justify-between items-center min-h-[10%] lg:min-h-[12%] px-2 md:px-5 border-b-2 border-gray-200">
 
@@ -68,7 +71,7 @@ const Chats = () => {
                         imgSrc="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     />
                     <div className="flex flex-col">
-                        <p className="font-semibold">Aryan Dahiya</p>
+                        <p className="font-semibold">Aryan Dahiya {formattedHeight}</p>
                         <p className="text-gray-500 text-sm">Active</p>
                     </div>
                 </div>
@@ -81,7 +84,10 @@ const Chats = () => {
             </div>
 
 
-            <div className="flex flex-col px-4 overflow-y-auto custom-scrollbar">
+            {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
+            <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar`}
+                style={{ marginBottom: formattedHeight }}
+                >
                 <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
@@ -95,7 +101,8 @@ const Chats = () => {
             </div>
 
             <div
-                className={`flex flex-row justify-between bottom-0 w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+                id="bottomParentDiv"
+                className={`flex flex-row justify-between ${isMobileScreen() && "bottom-0 fixed z-[9999]"} w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
                 <textarea
