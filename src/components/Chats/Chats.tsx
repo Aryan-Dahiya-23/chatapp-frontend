@@ -12,7 +12,7 @@ const Chats = () => {
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
-   
+
     const isMobileScreen = () => window.innerWidth <= 647;
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,9 +33,13 @@ const Chats = () => {
         }
     };
 
+    useEffect(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, []);
+
 
     return (
-        <div className="flex flex-col h-screen mb-10 md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
+        <div className="flex flex-col h-screen md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
 
             <div className="flex flex-row justify-between items-center min-h-[10%] lg:min-h-[12%] px-2 md:px-5 border-b-2 border-gray-200">
 
@@ -65,7 +69,7 @@ const Chats = () => {
 
             {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
             <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar`}
-                >
+            >
                 <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
