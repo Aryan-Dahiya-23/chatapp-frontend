@@ -26,13 +26,13 @@ const HomePage = () => {
         }
     }, [theme]);
 
-    const handleTheme = (e: { target: { checked: any; }; }) => {
-        if (e.target.checked || localStorage.getItem("theme") === "light") {
-            setTheme("dark");
-        } else {
-            setTheme("light");
-        }
-    };
+    // const handleTheme = (e: { target: { checked: any; }; }) => {
+    //     if (e.target.checked || localStorage.getItem("theme") === "light") {
+    //         setTheme("dark");
+    //     } else {
+    //         setTheme("light");
+    //     }
+    // };
 
     return (
 
