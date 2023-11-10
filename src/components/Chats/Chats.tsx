@@ -12,10 +12,7 @@ const Chats = () => {
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
-    const [bottomParentHeight, setBottomParentHeight] = useState(0);
-    const [formattedHeight, setFormattedHeight] = useState<string>("");
-
-
+   
     const isMobileScreen = () => window.innerWidth <= 647;
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -36,24 +33,6 @@ const Chats = () => {
         }
     };
 
-    useEffect(() => {
-        const handleResize = () => {
-            const bottomParentDiv = document.getElementById('bottomParentDiv');
-            if (bottomParentDiv) {
-                setBottomParentHeight(bottomParentDiv.clientHeight);
-            }
-
-            setFormattedHeight(bottomParentDiv?.clientHeight.toString() + "px");
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [text]);
-
 
     return (
         <div className="flex flex-col h-screen md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
@@ -71,7 +50,7 @@ const Chats = () => {
                         imgSrc="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     />
                     <div className="flex flex-col">
-                        <p className="font-semibold">Aryan Dahiya {formattedHeight}</p>
+                        <p className="font-semibold">Aryan Dahiya</p>
                         <p className="text-gray-500 text-sm">Active</p>
                     </div>
                 </div>
@@ -86,7 +65,6 @@ const Chats = () => {
 
             {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
             <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar`}
-                style={{ marginBottom: formattedHeight }}
                 >
                 <ChatBubble />
                 <ChatBubble />
@@ -101,8 +79,7 @@ const Chats = () => {
             </div>
 
             <div
-                id="bottomParentDiv"
-                className={`flex flex-row justify-between ${isMobileScreen() && "bottom-0 fixed z-[9999]"} w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+                className={`flex flex-row justify-between w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
                 <textarea
