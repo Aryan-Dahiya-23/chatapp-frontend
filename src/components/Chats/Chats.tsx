@@ -80,7 +80,10 @@ const Chats = () => {
             </div>
 
 
-            <div className="px-4 overflow-y-auto custom-scrollbar">
+            <div className="flex flex-col px-4 overflow-y-auto custom-scrollbar">
+                <ChatBubble />
+                <ChatBubble />
+                <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
@@ -91,7 +94,7 @@ const Chats = () => {
             </div>
 
             <div
-             className={`flex flex-row justify-between w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+                className={`flex flex-row justify-between bottom-0 fixed z-[9999] w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
                 <textarea
