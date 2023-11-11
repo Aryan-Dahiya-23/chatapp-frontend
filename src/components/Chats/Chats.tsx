@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import ChatBubble from "./ChatBubbe";
@@ -10,9 +11,10 @@ import {
 
 const Chats = () => {
 
+    const navigate = useNavigate();
+
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
-    const [bottomParentHeight, setBottomParentHeight] = useState(0);
 
     const isMobileScreen = () => window.innerWidth <= 647;
 
@@ -35,24 +37,12 @@ const Chats = () => {
     };
 
     useEffect(() => {
-        const handleResize = () => {
-            const bottomParentDiv = document.getElementById('bottomParentDiv');
-            if (bottomParentDiv) {
-                setBottomParentHeight(bottomParentDiv.clientHeight);
-            }
-        };
-
-        handleResize(); // Initial calculation
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [text]);
-
-    useEffect(() => {
         window.scrollTo(0, document.body.scrollHeight);
     }, []);
+
+    const handleClick = () => {
+        navigate("/");
+    }
 
 
     return (
@@ -60,7 +50,7 @@ const Chats = () => {
 
             <div className="flex flex-row justify-between items-center min-h-[10%] lg:min-h-[12%] px-2 md:px-5 border-b-2 border-gray-200">
 
-                <div className="text-sky-500 mr-2 md:hidden">
+                <div className="text-sky-500 mr-2 md:hidden" onClick={handleClick}>
                     <IoIosArrowBack className="h-8 w-8" />
                 </div>
 
@@ -71,7 +61,7 @@ const Chats = () => {
                         imgSrc="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     />
                     <div className="flex flex-col">
-                        <p className="font-semibold">Aryan Dahiya {bottomParentHeight}</p>
+                        <p className="font-semibold">Aryan Dahiya</p>
                         <p className="text-gray-500 text-sm">Active</p>
                     </div>
                 </div>

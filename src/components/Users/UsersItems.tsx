@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useNavigate } from "react-router-dom";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 
@@ -6,8 +7,14 @@ const UsersItems = () => {
 
     const message: string = "Hey! How are you doing?";
 
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/chats");
+    }
+
     return (
-        <div className="flex flex-row w-full px-3 lg:px-2 py-2 rounded-xl space-x-2 hover:bg-gray-100 cursor-pointer">
+        <div className="flex flex-row w-full px-3 lg:px-2 py-2 rounded-xl space-x-2 hover:bg-gray-100 cursor-pointer" onClick={handleClick}>
 
             <div className="flex h-16">
                 <OnlineAvatar
