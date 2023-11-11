@@ -39,7 +39,7 @@ const Chats = () => {
 
 
     return (
-        <div className="flex flex-col h-screen md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
+        <div className="flex flex-col h-screen  md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
 
             <div className="flex flex-row justify-between items-center min-h-[10%] lg:min-h-[12%] px-2 md:px-5 border-b-2 border-gray-200">
 
@@ -68,7 +68,7 @@ const Chats = () => {
 
 
             {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
-            <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar`}
+            <div className={`flex flex-col px-4 ${isMobileScreen() && "mb-24"} overflow-y-auto custom-scrollbar`}
             >
                 <ChatBubble />
                 <ChatBubble />
@@ -83,7 +83,7 @@ const Chats = () => {
             </div>
 
             <div
-                className={`flex flex-row justify-between w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+                className={`flex flex-row justify-between w-full ${isMobileScreen() && "fixed bottom-0"} space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
                 <textarea
