@@ -12,6 +12,7 @@ const Chats = () => {
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
+    const [bottomParentHeight, setBottomParentHeight] = useState(0);
 
     const isMobileScreen = () => window.innerWidth <= 647;
 
@@ -34,6 +35,22 @@ const Chats = () => {
     };
 
     useEffect(() => {
+        const handleResize = () => {
+            const bottomParentDiv = document.getElementById('bottomParentDiv');
+            if (bottomParentDiv) {
+                setBottomParentHeight(bottomParentDiv.clientHeight);
+            }
+        };
+
+        handleResize(); // Initial calculation
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [text]);
+
+    useEffect(() => {
         window.scrollTo(0, document.body.scrollHeight);
     }, []);
 
@@ -54,7 +71,7 @@ const Chats = () => {
                         imgSrc="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                     />
                     <div className="flex flex-col">
-                        <p className="font-semibold">Aryan Dahiya</p>
+                        <p className="font-semibold">Aryan Dahiya {bottomParentHeight}</p>
                         <p className="text-gray-500 text-sm">Active</p>
                     </div>
                 </div>
@@ -68,7 +85,7 @@ const Chats = () => {
 
 
             {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
-            <div className={`flex flex-col px-4 ${isMobileScreen() && "mb-24"} overflow-y-auto custom-scrollbar`}
+            <div className={`flex flex-col px-4 ${isMobileScreen() && "mb-[88px]"} overflow-y-auto custom-scrollbar border-b-red-500 border`}
             >
                 <ChatBubble />
                 <ChatBubble />
@@ -83,6 +100,7 @@ const Chats = () => {
             </div>
 
             <div
+                id="bottomParentDiv"
                 className={`flex flex-row justify-between w-full ${isMobileScreen() && "fixed bottom-0"} space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
