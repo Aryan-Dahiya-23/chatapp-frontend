@@ -9,30 +9,7 @@ import Chats from "../components/Chats/Chats";
 
 const HomePage = () => {
 
-    const savedTheme = localStorage.getItem("theme");
-    const initialTheme = savedTheme !== null ? savedTheme : "light";
-    const [theme, setTheme] = useState<string>(initialTheme);
-
     const isMobileScreen = () => window.innerWidth <= 647;
-
-    useEffect(() => {
-        localStorage.setItem("theme", theme);
-        const localTheme = localStorage.getItem("theme");
-
-        if (localTheme !== null) {
-            document.querySelector("html")?.setAttribute("data-theme", localTheme);
-        } else {
-            document.querySelector("html")?.setAttribute("data-theme", "light");
-        }
-    }, [theme]);
-
-    // const handleTheme = (e: { target: { checked: any; }; }) => {
-    //     if (e.target.checked || localStorage.getItem("theme") === "light") {
-    //         setTheme("dark");
-    //     } else {
-    //         setTheme("light");
-    //     }
-    // };
 
     return (
 

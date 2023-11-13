@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useContext, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
@@ -8,13 +8,18 @@ import {
     HiPaperAirplane,
     HiPhoto
 } from "react-icons/hi2";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Chats = () => {
 
     const navigate = useNavigate();
 
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
+
+    const { userEmail, setUserEmail } = useContext(AuthContext);
 
     const isMobileScreen = () => window.innerWidth <= 647;
 
@@ -37,13 +42,14 @@ const Chats = () => {
     };
 
     useEffect(() => {
-        window.scrollTo(0, document.body.scrollHeight);
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
     }, []);
 
     const handleClick = () => {
         navigate("/");
     }
-
 
     return (
         <div className="flex flex-col h-[100dvh] md:w-[58%] lg:w-[73%] md:border-l-2 md:border-gray-200">
@@ -66,17 +72,14 @@ const Chats = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-row space-x-1 md:p-1 cursor-pointer ml-auto">
+                <div className="flex flex-row space-x-1 md:p-1 cursor-pointer ml-auto hover:opacity-75">
                     <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
                     <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
                     <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
                 </div>
             </div>
 
-
-            {/* <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar mb-[${bottomParentHeight}px] `}> */}
-            <div className={`flex flex-col px-4 overflow-y-auto custom-scrollbar`}
-            >
+            <div className="`flex flex-col px-4 overflow-y-auto custom-scrollbar"  ref={chatContainerRef}>
                 <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
@@ -90,8 +93,8 @@ const Chats = () => {
             </div>
 
             <div
-                id="bottomParentDiv"
                 className={`flex flex-row justify-between w-full space-x-4 p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
                 <textarea

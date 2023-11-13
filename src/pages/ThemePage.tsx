@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useEffect } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const ThemePage = () => {
 
-    const savedTheme = localStorage.getItem("theme");
-    const initialTheme = savedTheme !== null ? savedTheme : "light";
-    const [theme, setTheme] = useState<string>(initialTheme);
+    const { theme, setTheme } = useContext(ThemeContext);
 
     useEffect(() => {
         localStorage.setItem("theme", theme);
