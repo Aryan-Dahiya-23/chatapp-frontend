@@ -7,7 +7,7 @@ import RingAvatar from "../Avatar/RingAvatar";
 
 const DesktopNavigation = () => {
     return (
-        <div className="md:flex md:flex-col hidden justify-between items-center border-r-2 border-gray-200 md:w-[7%] lg:w-[5%] py-4">
+        <div className="md:flex md:flex-col hidden justify-between items-center border-r-2 border-gray-200 md:w-[8%] lg:w-[5%] py-4">
 
             <div className="space-y-3 cursor-pointer">
                 <div className="hover:bg-gray-200 rounded-md p-2.5">

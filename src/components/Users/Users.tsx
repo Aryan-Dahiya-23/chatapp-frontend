@@ -16,7 +16,7 @@ const Users = () => {
     };
 
     return (
-        <div className="flex flex-col mb-16 md:mb-0 w-full md:w-[35%] lg:w-[22%] lg:pl-2 md:h-[100vh]">
+        <div className="flex flex-col mb-16 md:mb-0 w-full md:w-[40%] lg:w-[25%] lg:pl-2 md:h-[100vh]">
 
             <div className="flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3">
                 <div className=" text-3xl font-bold">
@@ -52,7 +52,7 @@ const Users = () => {
 
             </div>
 
-            <div className="flex flex-col space-y-1 overflow-y-auto py-2 custom-scrollbar">
+            <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 <UsersItems />
                 <UsersItems />
                 <UsersItems />
