@@ -1,8 +1,7 @@
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { MdPeopleAlt } from "react-icons/md"
 import { IoLogOutOutline } from "react-icons/io5"
-// import RingAvatar from "../Avatar/RingAvatar";
-import OnlineAvatar from "../Avatar/OnlineAvatar";
+import RingAvatar from "../Avatar/RingAvatar";
 
 const MobileNavigation = () => {
     return (
@@ -21,7 +20,7 @@ const MobileNavigation = () => {
             </div>
 
             <div className="flex p-2 h-full items-center ">
-                <OnlineAvatar
+                <RingAvatar
                     height="8"
                     width="8"
                     imgSrc="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"

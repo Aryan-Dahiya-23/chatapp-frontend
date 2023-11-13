@@ -79,7 +79,7 @@ const Chats = () => {
                 </div>
             </div>
 
-            <div className="`flex flex-col px-2 lg:px-4 overflow-y-auto custom-scrollbar"  ref={chatContainerRef}>
+            <div className="`flex flex-col px-1 lg:px-4 overflow-y-auto custom-scrollbar"  ref={chatContainerRef}>
                 <ChatBubble />
                 <ChatBubble />
                 <ChatBubble />
