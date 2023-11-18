@@ -126,7 +126,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
                 className="textarea textarea-bordered textarea-sm w-full resize-none leading-normal custom-scrollbar"
                 // onChange={handleTextareaChange}
                 onKeyDown={handleKeyDown}
-                value={text}
+                // value={text}
             ></textarea>
 
             <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
