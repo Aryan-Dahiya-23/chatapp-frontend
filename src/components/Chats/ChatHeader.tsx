@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import { queryClient } from "../../api/auth";
-import { useEffect, useState } from "react";
+import { AuthContext } from "../../contexts/AuthContext"
 
 interface ChatHeaderProps {
     name: string;
@@ -13,21 +15,22 @@ interface ChatHeaderProps {
 const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, id }) => {
 
     const navigate = useNavigate();
+    const { user, setUser } = useContext(AuthContext);
     const [userName, setUserName] = useState<string>("");
     const [picture, setPicture] = useState<string>("");
 
-    const data: object | undefined = queryClient.getQueryData(['user']);
+    // const data: object | undefined = queryClient.getQueryData(['user']);
 
     useEffect(() => {
-        if(data && data.messages){
-            data.messages.map((message) => {
+        if(user && user.messages){
+            user.messages.map((message) => {
                 if(message.conversationId === id){
                     setUserName(message.userId.fullName);
                     setPicture(message.userId.picture)
                 }
             })
         }
-    }, [data, id]);
+    }, [user, id]);
 
     const handleClick = () => {
         navigate("/");
