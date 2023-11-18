@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         // return () => {
         //     socket.disconnect();
         // };
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         socket.on('chat message', (userId) => {
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { data, isSuccess, isError, error } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000000,
+        staleTime: 10000,
     });
 
     useEffect(() => {

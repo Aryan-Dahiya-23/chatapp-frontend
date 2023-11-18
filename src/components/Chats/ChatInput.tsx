@@ -20,9 +20,9 @@ type ChatInputProps = {
     id: string | undefined;
 };
 
-const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
+const socket: Socket = io(import.meta.env.VITE_URL);
 
-    const socket: Socket = io(import.meta.env.VITE_URL);
+const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
     const user: any = queryClient.getQueryData(['user']);
 

@@ -15,7 +15,7 @@ const Chats = () => {
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000000,
+        staleTime: 10000,
     });
 
     const userId = user?._id;
@@ -23,7 +23,7 @@ const Chats = () => {
     const { data, isSuccess, isLoading } = useQuery({
         queryKey: ['chats', id],
         queryFn: () => fetchMessages(userId, id),
-        staleTime: 1000000,
+        staleTime: 10000,
         enabled: !!userId
     });
 
