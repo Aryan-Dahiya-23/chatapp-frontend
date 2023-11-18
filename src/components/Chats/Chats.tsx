@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ChatBubble from "./ChatBubbe";
 import { useQuery } from "@tanstack/react-query";
@@ -6,11 +6,15 @@ import { verify } from "../../api/auth";
 import { fetchMessages } from "../../api/chat";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const Chats = () => {
 
     const { id } = useParams();
+    const { chatHeight } = useContext(ThemeContext);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+
+    const isMobileScreen = () => window.innerWidth <= 647;
 
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
@@ -24,7 +28,7 @@ const Chats = () => {
         queryKey: ['chats', id],
         queryFn: () => fetchMessages(userId, id),
         staleTime: 1000000,
-        enabled:!!userId 
+        enabled: !!userId
     });
 
     useEffect(() => {
@@ -34,7 +38,7 @@ const Chats = () => {
     }, [data]);
 
     return (
-        <div className="flex flex-col h-[100svh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200">
+        <div className={`flex flex-col h-[100dvh]  ${isMobileScreen() && chatHeight && "h-auto"} md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`}>
 
             {isDone && (
                 <>

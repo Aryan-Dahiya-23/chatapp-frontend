@@ -1,15 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // AuthContext.tsx
 import { createContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface ThemeContextProps {
     theme: string;
     setTheme: Dispatch<SetStateAction<string>>;
+    chatHeight: boolean;
+    setChatHeight: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
     theme: "",
-    setTheme: () => { }
+    setTheme: () => { },
+    chatHeight: false,
+    setChatHeight: () => { }
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -20,18 +23,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const savedTheme = localStorage.getItem("theme");
         return savedTheme !== null ? savedTheme : "light";
     });
+    const [ chatHeight, setChatHeight ] = useState<boolean>(false);
 
     useEffect(() => {
-        // localStorage.setItem("theme", theme);
-        // const localTheme = localStorage.getItem("theme");
-
-        // if (localTheme !== null) {
-        //     document.querySelector("html")?.setAttribute("data-theme", localTheme);
-        // } else {
-        //     document.querySelector("html")?.setAttribute("data-theme", "light");
-        // }
-
-
         try {
             localStorage.setItem("theme", theme);
             const localTheme = localStorage.getItem("theme");
@@ -49,7 +43,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     return (
         <ThemeContext.Provider
-            value={{ theme, setTheme }}
+            value={{ theme, setTheme, chatHeight, setChatHeight }}
         >
             {children}
         </ThemeContext.Provider>

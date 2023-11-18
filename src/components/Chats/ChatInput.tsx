@@ -6,6 +6,7 @@ import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import { queryClient } from "../../api/auth";
 import { createMessage } from "../../api/chat";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 type ChatInputProps = {
     data: {
@@ -29,6 +30,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
     const { receiverId, setReceiverId } = useContext(AuthContext);
+    const { setChatHeight } = useContext(ThemeContext);
 
     useEffect(() => {
         if (user && data) {
@@ -127,6 +129,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
                 onChange={handleTextareaChange}
                 onKeyDown={handleKeyDown}
                 value={text}
+                onFocus={() => setChatHeight(true)}
+                onBlur={() => setChatHeight(false)}
             ></textarea>
 
             <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
