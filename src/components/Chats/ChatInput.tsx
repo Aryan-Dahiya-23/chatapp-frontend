@@ -117,7 +117,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
     return (
         <div
-            className={`flex flex-row justify-between max-h-[15%] w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+            className={`flex flex-row justify-between max-h-[15%] w-11/12 m-auto space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
             <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
