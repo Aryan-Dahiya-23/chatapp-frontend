@@ -37,26 +37,26 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
         }
     }, [user, data]);
 
-    const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        const textarea = event.target;
-        setText(textarea.value);
+    // const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    //     const textarea = event.target;
+    //     setText(textarea.value);
 
-        if (text.length === 0) {
-            textarea.style.height = "0px";
-        } else {
-            textarea.style.height = 'auto';
-            textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
-        }
+    //     if (text.length === 0) {
+    //         textarea.style.height = "0px";
+    //     } else {
+    //         textarea.style.height = 'auto';
+    //         textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+    //     }
 
-        textarea.style.height = 'auto';
-        textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+    //     textarea.style.height = 'auto';
+    //     textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
 
-        if (parseFloat(textarea.style.height.slice(0, -2)) > 50) {
-            setTextareaHeight(true);
-        } else {
-            setTextareaHeight(false);
-        }
-    };
+    //     if (parseFloat(textarea.style.height.slice(0, -2)) > 50) {
+    //         setTextareaHeight(true);
+    //     } else {
+    //         setTextareaHeight(false);
+    //     }
+    // };
 
     const { mutate } = useMutation({
         mutationFn: async () => {
@@ -124,7 +124,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
             <textarea
                 placeholder="Write a message"
                 className="textarea textarea-bordered textarea-sm w-full resize-none leading-normal custom-scrollbar"
-                onChange={handleTextareaChange}
+                // onChange={handleTextareaChange}
                 onKeyDown={handleKeyDown}
                 value={text}
             ></textarea>
