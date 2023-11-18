@@ -129,9 +129,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
                 value={text}
             ></textarea> */}
 
-            <input type="text"
+            <input
+                type="text"
                 placeholder="Write a message"
-                className="input input-bordered input-md w-11/12"
+                className="input input-bordered input-md"
             />
 
             <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
