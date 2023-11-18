@@ -44,8 +44,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
         if (text.length === 0) {
             textarea.style.height = "0px";
         } else {
-            textarea.style.height = 'auto';
-            textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+            // textarea.style.height = 'auto';
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 75)}px`;
         }
 
         textarea.style.height = 'auto';
@@ -117,19 +117,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
     return (
         <div
-            className={`flex flex-row justify-between max-h-[15%] w-11/12 m-auto space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
+            className={`flex flex-row justify-between w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
             <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
-            <textarea
+            {/* <textarea
                 placeholder="Write a message"
-                className="textarea textarea-bordered textarea-sm w-11/12 resize-none leading-normal custom-scrollbar"
+                className="textarea textarea-bordered textarea-sm w-full resize-none leading-normal custom-scrollbar"
                 onChange={handleTextareaChange}
                 onKeyDown={handleKeyDown}
                 value={text}
-            ></textarea>
+            ></textarea> */}
 
-            {/* <input type="text" placeholder="Type here" className="input input-bordered input-md w-full" /> */}
+            <input type="text"
+                placeholder="Write a message"
+                className="input input-bordered input-md w-11/12"
+            />
 
             <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
         </div>
