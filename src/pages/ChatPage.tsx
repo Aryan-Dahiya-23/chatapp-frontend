@@ -10,12 +10,12 @@ const ChatPage = () => {
 
     return (
         <>
-            <div className="hidden">
-                <Header message="Hii" />
-            </div>
 
             {isMobileScreen() ? (
                 <>
+                    <div className="hidden">
+                        <Header message="Hii" />
+                    </div>
                     <Chats />
                 </>
             ) : (
