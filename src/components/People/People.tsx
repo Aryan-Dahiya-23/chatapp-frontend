@@ -9,7 +9,7 @@ const People = () => {
     const { data: user, } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000000,
+        staleTime: 100000000,
     });
 
     const userId = user?._id;
@@ -17,7 +17,7 @@ const People = () => {
     const { data } = useQuery({
         queryKey: ['people'],
         queryFn: () => fetchPeople(user._id),
-        staleTime: 10000000,
+        staleTime: 10000,
         enabled: !!userId,
     });
 

@@ -25,7 +25,6 @@ const Users = () => {
                     }) => (
                         <UsersItems
                             key={user.userId._id}
-                            userId={user.userId._id}
                             username={user.userId.fullName}
                             conversationId={user.conversationId}
                             avatarSrc={user.userId.picture}

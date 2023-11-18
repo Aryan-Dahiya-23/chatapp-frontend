@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, ChangeEvent, useContext } from "react";
+import { useState, ChangeEvent, useContext, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
@@ -9,11 +9,15 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 type ChatInputProps = {
     data: {
-        participants: [],
-        messages: []
+        participants: {
+            _id: string;
+            fullName: string;
+            picture: string;
+        }[];
+        messages: any[];
     };
-    id: string | undefined
-}
+    id: string | undefined;
+};
 
 const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
@@ -24,7 +28,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
-    const { receiverId } = useContext(AuthContext);
+    const { receiverId, setReceiverId } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (user && data) {
+            const filteredParticipants = data.participants.filter(participant => participant._id !== user._id);
+            setReceiverId(filteredParticipants[0]._id);
+        }
+    }, [user, data]);
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = event.target;
@@ -85,8 +96,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
     });
 
     const handleMessageSend = () => {
-        if(text === '') return
-        
+        if (text === '') return
+
         setText('');
         const newMessage = {
             senderId: user._id,

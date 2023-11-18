@@ -12,7 +12,6 @@ interface UsersItemsProps {
     conversationId: string;
     lastMessage: string;
     lastMessageTime: string;
-    userId: string;
 }
 
 const UsersItems: React.FC<UsersItemsProps> = ({
@@ -21,15 +20,13 @@ const UsersItems: React.FC<UsersItemsProps> = ({
     conversationId,
     lastMessage,
     lastMessageTime,
-    userId,
 }) => {
     const navigate = useNavigate();
 
     const { user } = useContext(AuthContext);
-    const {  setReceiverId } = useContext(AuthContext);
 
     const navigateToChat = () => {
-        setReceiverId(userId);
+        // setReceiverId(userId);
         navigate(`/chats/${conversationId}`);
     };
 
