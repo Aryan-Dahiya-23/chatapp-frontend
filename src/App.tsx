@@ -1,25 +1,29 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GlobalProvider } from "./contexts/GlobalContext";
-// import { AuthProvider } from "./contexts/AuthContext";
+import { queryClient } from "./api/auth";
 import HomePage from "./pages/HomePage";
+import PeoplePage from "./pages/PeoplePage";
 import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
-import ThemePage from "./pages/ThemePage";
-
 
 const App = () => {
 
+
   return (
-    <GlobalProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/chats" element={<ChatPage />} />
-          <Route path="/theme" element={<ThemePage />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-      </BrowserRouter>
-    </GlobalProvider>
+
+    <QueryClientProvider client={queryClient}>
+      <GlobalProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/chats/:id" element={<ChatPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </BrowserRouter>
+      </GlobalProvider>
+    </QueryClientProvider>
   );
 
 }

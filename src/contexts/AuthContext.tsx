@@ -11,6 +11,8 @@ interface AuthContextProps {
     setUserEmail: Dispatch<SetStateAction<string>>;
     userId: number | null;
     setUserId: Dispatch<SetStateAction<number | null>>;
+    receiverId: string
+    setReceiverId: Dispatch<SetStateAction<string>>;
 }
 
 const defaultAuthContext: AuthContextProps = {
@@ -22,6 +24,8 @@ const defaultAuthContext: AuthContextProps = {
     setUserEmail: () => { },
     userId: null,
     setUserId: () => { },
+    receiverId: "",
+    setReceiverId: () => { },
 };
 
 export const AuthContext = createContext < AuthContextProps > (defaultAuthContext);
@@ -31,10 +35,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState < any > (undefined);
     const [userEmail, setUserEmail] = useState < string > ("");
     const [userId, setUserId] = useState < number | null > (null);
+    const [receiverId, setReceiverId] = useState<string>("");
 
     return (
         <AuthContext.Provider
-            value={{ loggedIn, setLoggedIn, user, setUser, userEmail, setUserEmail, userId, setUserId }}
+            value={{ loggedIn, setLoggedIn, user, setUser, userEmail, setUserEmail, userId, setUserId, receiverId, setReceiverId }}
         >
             {children}
         </AuthContext.Provider>
