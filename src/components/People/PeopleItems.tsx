@@ -37,14 +37,16 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
         },
     });
 
+
     const navigateToChat = () => {
 
-        for (let i = 0; i < user.messages.length; i++) {
-            if (user.messages[i].userId._id === userId) {
-                navigate(`/chats/${user.messages[i].conversationId}`);
+        for (let i = 0; i < user.conversations.length; i++) {
+            if (user.conversations[i].conversation.participants.length === 1 && user.conversations[i].conversation.participants[0]._id === userId) {
+                navigate(`/chats/${user.conversations[i].conversation._id}`);
                 return;
             }
         }
+
         mutate();
     };
 

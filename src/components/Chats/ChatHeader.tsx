@@ -21,16 +21,16 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, id }) => {
 
     // const data: object | undefined = queryClient.getQueryData(['user']);
 
-    useEffect(() => {
-        if(user && user.messages){
-            user.messages.map((message) => {
-                if(message.conversationId === id){
-                    setUserName(message.userId.fullName);
-                    setPicture(message.userId.picture)
-                }
-            })
-        }
-    }, [user, id]);
+    // useEffect(() => {
+    //     if(user && user.messages){
+    //         user.messages.map((message) => {
+    //             if(message.conversationId === id){
+    //                 setUserName(message.userId.fullName);
+    //                 setPicture(message.userId.picture)
+    //             }
+    //         })
+    //     }
+    // }, [user, id]);
 
     const handleClick = () => {
         navigate("/");
@@ -47,11 +47,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, id }) => {
                 <OnlineAvatar
                     height="12"
                     width="12"
-                    imgSrc={picture}
+                    imgSrc={avatarSrc}
                 />
                 <div className="flex flex-col">
                     <p className="font-semibold">
-                        {userName}
+                        {name}
                     </p>
                     <p className="text-gray-500 text-sm">Active</p>
                 </div>

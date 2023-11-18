@@ -49,6 +49,10 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         staleTime: 10000,
     });
 
+    // if(isSuccess){
+    //     console.log(data.conversations[0].conversation.lastMessage.createdAt);
+    // }
+
     useEffect(() => {
         if (isError && error !== null) {
             navigate("/login");

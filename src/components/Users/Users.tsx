@@ -16,7 +16,7 @@ const Users = () => {
 
             <Header message="Messages" />
 
-            <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
+            {/* <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 {user &&
                     user.messages.map((user: {
                         _id: string; conversationId: string;
@@ -30,6 +30,26 @@ const Users = () => {
                             avatarSrc={user.userId.picture}
                             lastMessage={user.lastMessage.lastMessage.content}
                             lastMessageTime={new Date(user.lastMessage.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                        />
+                    ))}
+
+            </div> */}
+
+            <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
+                {user &&
+                    user.conversations.map((conversation) => (
+                        <UsersItems
+                            key={conversation.conversation.participants[0]._id}
+                            username={conversation.conversation.participants[0].fullName}
+                            conversationId={conversation.conversation._id}
+                            avatarSrc={conversation.conversation.participants[0].picture}
+                            lastMessage={conversation.conversation.lastMessage
+                                ?
+                                conversation.conversation.lastMessage.content
+                                :
+                                "Started a conversation"}
+                            lastMessageTime={conversation.conversation.lastMessage &&
+                                new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
                         />
                     ))}
 

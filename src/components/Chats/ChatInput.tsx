@@ -17,12 +17,12 @@ type ChatInputProps = {
         }[];
         messages: any[];
     };
-    id: string | undefined;
+    conversationId: string | undefined;
 };
 
 const socket: Socket = io(import.meta.env.VITE_URL);
 
-const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     const user: any = queryClient.getQueryData(['user']);
 
@@ -34,8 +34,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
     useEffect(() => {
         if (user && data) {
-            const filteredParticipants = data.participants.filter(participant => participant._id !== user._id);
-            setReceiverId(filteredParticipants[0]._id);
+            setReceiverId(data.participants[0]._id);
         }
     }, [user, data]);
 
@@ -60,13 +59,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
         }
     };
 
+    // console.log()
+
     const { mutate } = useMutation({
         mutationFn: async () => {
-            const response = await createMessage(id, message);
+            const response = await createMessage(conversationId, message);
             return response;
         },
         onMutate: () => {
-            queryClient.cancelQueries({ queryKey: ['chats', id] });
+            queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
 
             const newMessage = {
                 ...message,
@@ -82,17 +83,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
                 messages: [...data.messages, newMessage],
             };
 
-            queryClient.setQueryData(['chats', id], newData);
+            queryClient.setQueryData(['chats', conversationId], newData);
 
             return { previousData: data };
         },
         onSuccess: () => {
             socket.emit('chat message', receiverId);
             queryClient.invalidateQueries({ queryKey: ['user'] });
-            queryClient.invalidateQueries({ queryKey: ['chats', id] });
+            queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
         },
         onError: (error, variables, context) => {
-            queryClient.setQueryData(['chats', id], context?.previousData);
+            queryClient.setQueryData(['chats', conversationId], context?.previousData);
             console.error('Error creating chat:', error);
         },
     });
@@ -104,7 +105,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
         const newMessage = {
             senderId: user._id,
             content: text,
-            read: false,
+            readBy: [],
         }
         setMessage(newMessage);
         mutate();

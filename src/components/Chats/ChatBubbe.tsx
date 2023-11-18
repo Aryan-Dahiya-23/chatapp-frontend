@@ -14,7 +14,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
     avatarSrc,
 }) => {
 
-    const formattedTime= new Date(createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+    const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
     // const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour12: false });
 
     return (
