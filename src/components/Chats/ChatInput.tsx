@@ -119,23 +119,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
         <div
             className={`flex flex-row justify-between w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
-            <div>
-                <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
-            </div>
+            <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
 
-            <div className="w-full">
-                <textarea
-                    placeholder="Write a message"
-                    className="textarea textarea-bordered textarea-sm w-full resize-none leading-normal custom-scrollbar"
-                    onChange={handleTextareaChange}
-                    onKeyDown={handleKeyDown}
-                    value={text}
-                ></textarea>
-            </div>
+            <textarea
+                placeholder="Write a message"
+                className="textarea textarea-bordered text-base textarea-sm w-full resize-none leading-normal custom-scrollbar"
+                onChange={handleTextareaChange}
+                onKeyDown={handleKeyDown}
+                value={text}
+            ></textarea>
 
-            <div>
-                <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
-            </div>
+            <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
         </div>
     );
 }
