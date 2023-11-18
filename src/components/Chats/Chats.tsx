@@ -34,7 +34,7 @@ const Chats = () => {
     }, [data]);
 
     return (
-        <div className="flex flex-col h-[100dvh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200">
+        <div className="flex flex-col h-[100svh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200">
 
             {isDone && (
                 <>
