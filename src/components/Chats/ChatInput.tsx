@@ -123,7 +123,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, id }) => {
 
             <textarea
                 placeholder="Write a message"
-                className="textarea textarea-bordered textarea-sm w-8/12 resize-none leading-normal custom-scrollbar"
+                className="textarea textarea-bordered textarea-sm w-5/12 resize-none leading-normal custom-scrollbar"
                 onChange={handleTextareaChange}
                 onKeyDown={handleKeyDown}
                 value={text}
