@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ChatBubble from "./ChatBubbe";
 import { useQuery } from "@tanstack/react-query";
@@ -6,15 +6,11 @@ import { verify } from "../../api/auth";
 import { fetchMessages } from "../../api/chat";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
-import { ThemeContext } from "../../contexts/ThemeContext";
 
 const Chats = () => {
 
     const { id } = useParams();
-    const { chatHeight } = useContext(ThemeContext);
-    const chatContainerRef = useRef<HTMLDivElement>(null);
-
-    const isMobileScreen = () => window.innerWidth <= 647;
+    const chatContainerRef = useRef<HTMLDivElement>(null);   
 
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
@@ -38,7 +34,7 @@ const Chats = () => {
     }, [data]);
 
     return (
-        <div className={`flex flex-col h-[100dvh]  ${isMobileScreen() && chatHeight && "h-auto"} md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`}>
+        <div className={`flex flex-col h-[100dvh]  md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`}>
 
             {isDone && (
                 <>
@@ -54,7 +50,7 @@ const Chats = () => {
                         </div>)
                     }
 
-                    <div className="`flex flex-col px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
+                    <div className="`flex flex-col h-auto px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
 
                         {isSuccess && data.messages.map((message) => {
                             return (
