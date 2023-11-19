@@ -59,8 +59,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         }
     };
 
-    // console.log()
-
     const { mutate } = useMutation({
         mutationFn: async () => {
             const response = await createMessage(conversationId, message);

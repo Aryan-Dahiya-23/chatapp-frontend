@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import ChatBubble from "./ChatBubbe";
 import { useQuery } from "@tanstack/react-query";
@@ -10,9 +10,11 @@ import ChatInput from "./ChatInput";
 const Chats = () => {
 
     const { id } = useParams();
+    const [headerName, setHeaderName] = useState<string>("");
+    const [headerAvatarSrc, setheaderAvatarSrc] = useState<string>("");
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
-    const { data: user } = useQuery({
+    const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
         staleTime: 10000,
@@ -28,6 +30,19 @@ const Chats = () => {
     });
 
     useEffect(() => {
+
+        if (user) {
+            user.conversations.map((conversation) => {
+                if (conversation.conversation._id === id) {
+                    setHeaderName(conversation.conversation.participants[0].fullName);
+                    setheaderAvatarSrc(conversation.conversation.participants[0].picture);
+                }
+            })
+        }
+
+    }, [user, conversation]);
+
+    useEffect(() => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
@@ -36,12 +51,27 @@ const Chats = () => {
     return (
         <div className={`flex flex-col h-[100dvh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`}>
 
-            {isSuccess && (
+            {isDone && (
                 <>
-                    <ChatHeader
+                    {/* <ChatHeader
                         name={conversation.participants[0].fullName}
                         avatarSrc={conversation.participants[0].picture}
-                        id={id}
+                    /> */}
+
+                    {/* {user.conversations.map((conversation) => {
+                        if (conversation.conversation._id === id) {
+                            return (
+                                <ChatHeader
+                                    name={conversation.conversation.participants[0].fullName}
+                                    avatarSrc={conversation.conversation.participants[0].picture}
+                                    id="123"
+                                />)
+                        }
+                    })} */}
+
+                    <ChatHeader
+                        name={headerName}
+                        avatarSrc={headerAvatarSrc}
                     />
 
                     {isLoading && (
@@ -86,6 +116,7 @@ const Chats = () => {
                         data={conversation}
                         conversationId={id}
                     />
+
                 </>
             )}
 

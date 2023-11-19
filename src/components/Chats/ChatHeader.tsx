@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useContext, useEffect, useState } from "react";
+// import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
-import { queryClient } from "../../api/auth";
-import { AuthContext } from "../../contexts/AuthContext"
+// import { AuthContext } from "../../contexts/AuthContext"
 
 interface ChatHeaderProps {
     name: string;
     avatarSrc: string
-    id: string | undefined
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, id }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc }) => {
 
     const navigate = useNavigate();
-    const { user, setUser } = useContext(AuthContext);
-    const [userName, setUserName] = useState<string>("");
-    const [picture, setPicture] = useState<string>("");
+    // const { user, setUser } = useContext(AuthContext);
+    // const [userName, setUserName] = useState<string>("");
+    // const [picture, setPicture] = useState<string>("");
 
     // const data: object | undefined = queryClient.getQueryData(['user']);
 
