@@ -83,6 +83,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
             queryClient.setQueryData(['chats', conversationId], newData);
 
+            socket.emit('chat message', receiverId, newMessage, conversationId);
+
             return { previousData: data };
         },
         onSuccess: () => {

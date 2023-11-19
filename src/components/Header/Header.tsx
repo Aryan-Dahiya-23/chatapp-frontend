@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
@@ -21,6 +22,22 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { theme, setTheme } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
 
+    const { data, isSuccess, isError, error } = useQuery({
+        queryKey: ['user'],
+        queryFn: () => verify(),
+        staleTime: 10000,
+    });
+
+    useEffect(() => {
+        if (isError && error !== null) {
+            navigate("/login");
+        }
+    }, [isError, error]);
+
+    useEffect(() => {
+        if (isSuccess && data) setUser(data);
+    }, [data, isSuccess]);
+
     useEffect(() => {
         socket.on("connect", () => {
             console.log("Connected to the Socket.IO server");
@@ -32,9 +49,23 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     }, [user]);
 
     useEffect(() => {
-        socket.on('chat message', (userId) => {
+        socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
             if (userId === user._id) {
-                queryClient.invalidateQueries();
+
+                if (newMessage && conversationId) {
+                    const conversation: any = queryClient.getQueryData(['chats', conversationId]);
+
+                    queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+
+                    const newConversation = {
+                        ...conversation,
+                        messages: [...conversation.messages, newMessage],
+                    };
+
+                    queryClient.setQueryData(['chats', conversationId], newConversation);
+                } else {
+                    queryClient.invalidateQueries();
+                }
             }
         });
 
@@ -42,26 +73,6 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             socket.off('chat message');
         };
     }, [user]);
-
-    const { data, isSuccess, isError, error } = useQuery({
-        queryKey: ['user'],
-        queryFn: () => verify(),
-        staleTime: 10000,
-    });
-
-    // if(isSuccess){
-    //     console.log(data.conversations[0].conversation.lastMessage.createdAt);
-    // }
-
-    useEffect(() => {
-        if (isError && error !== null) {
-            navigate("/login");
-        }
-    }, [isError, error]);
-
-    useEffect(() => {
-        if (isSuccess && data) setUser(data);
-    }, [data, isSuccess]);
 
     const handleTheme = (e: { target: { checked: unknown; }; }) => {
         if (e.target.checked || localStorage.getItem("theme") === "light") {
