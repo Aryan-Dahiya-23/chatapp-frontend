@@ -52,7 +52,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         textarea.style.height = 'auto';
         textarea.style.height = `${Math.min(textarea.scrollHeight, 75)}px`;
 
-        if (parseFloat(textarea.style.height.slice(0, -2)) > 50) {
+        if (parseFloat(textarea.style.height.slice(0, -2)) > 60) {
             setTextareaHeight(true);
         } else {
             setTextareaHeight(false);
