@@ -1,15 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { io, Socket } from "socket.io-client";
 import { AuthContext } from "../../contexts/AuthContext";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ChatBubble from "./ChatBubbe";
 import { verify } from "../../api/auth";
 import { getConversation, readMessage } from "../../api/conversation";
-
-const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Chats = () => {
 
@@ -48,7 +45,7 @@ const Chats = () => {
         if (isSuccess) {
             mutate();
         }
-    }, [isSuccess, conversation]);
+    }, [conversation]);
 
     useEffect(() => {
 
