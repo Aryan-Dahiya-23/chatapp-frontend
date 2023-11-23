@@ -45,9 +45,8 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             console.log("Connected to the Socket.IO server");
         });
 
-        // Client-side code
         socket.on('connected users', (connectedUserIds) => {
-            console.log('Connected Users:', connectedUserIds);
+            // console.log('Connected Users:', connectedUserIds);
             setConnectedUsers(connectedUserIds);
         });
 

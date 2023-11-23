@@ -1,11 +1,9 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-// import OfflineAvatar from "../Avatar/OfflineAvatar";
-import OnlineAvatar from "../Avatar/OnlineAvatar";
+import OfflineAvatar from "../Avatar/OfflineAvatar";
 import { AuthContext } from "../../contexts/AuthContext";
 import { queryClient } from "../../api/auth";
-// import { createChat } from "../../api/user";
 import { createConversation } from "../../api/conversation";
 
 interface PeopleItemsProps {
@@ -56,7 +54,7 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
             onClick={() => navigateToChat()}
         >
             <div className="flex items-center h-16">
-                <OnlineAvatar height="12" width="12" imgSrc={avatarSrc} />
+                <OfflineAvatar height="12" width="12" imgSrc={avatarSrc} />
             </div>
 
             <div className="flex flex-col justify-center w-5/6 h-16 border-b-2 border-gray-200">

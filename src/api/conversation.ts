@@ -14,11 +14,11 @@ export const getConversation = async (userId: string, conversationId: string | u
     }
 }
 
-export const createConversation = async (senderId: string, receiverId:string) => {
-    try{
+export const createConversation = async (senderId: string, receiverId: string) => {
+    try {
         const response = await axios.post(`${url}/conversation/create-conversation`, { senderId, receiverId });
         return response;
-    }catch(error){
+    } catch (error) {
         console.log(error)
     }
 }
@@ -27,6 +27,17 @@ export const createMessage = async (conversationId: string | undefined, message:
     try {
         const response = await axios.post(`${url}/conversation/create-message/${conversationId}`, {
             message
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const readMessage = async (userId: string, conversationId: string | undefined) => {
+    try {
+        const response = await axios.post(`${url}/conversation/read-conversation/${conversationId}`, {
+            userId
         });
         return response.data;
     } catch (error) {

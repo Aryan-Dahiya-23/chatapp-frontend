@@ -1,16 +1,20 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { io, Socket } from "socket.io-client";
 import { AuthContext } from "../../contexts/AuthContext";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ChatBubble from "./ChatBubbe";
 import { verify } from "../../api/auth";
-import { getConversation } from "../../api/conversation";
+import { getConversation, readMessage } from "../../api/conversation";
+
+const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Chats = () => {
 
     const { id } = useParams();
+    const [receiverId, setReceiverId] = useState<string>("");
     const [receiverName, setreceiverName] = useState<string>("");
     const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string>("");
     const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
@@ -33,11 +37,26 @@ const Chats = () => {
         enabled: !!userId
     });
 
+    const { mutate } = useMutation({
+        mutationFn: () => readMessage(userId, id),
+        onSuccess: () => {
+            socket.emit('chat message', receiverId);
+        }
+    });
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log(conversation);
+            mutate();
+        }
+    }, [isSuccess, conversation]);
+
     useEffect(() => {
 
         if (user) {
             user.conversations.map((conversation) => {
                 if (conversation.conversation._id === id) {
+                    setReceiverId(conversation.conversation.participants[0]._id);
                     setreceiverName(conversation.conversation.participants[0].fullName);
                     setReceiverAvatarSrc(conversation.conversation.participants[0].picture);
                     if (connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)) {
@@ -92,6 +111,7 @@ const Chats = () => {
                                     footerName={receiverName}
                                     isLastMessage={isLastMessage}
                                     online={receiverOnline}
+                                    messageSeen={message.seenBy && message.seenBy.length > 0 && message.seenBy.includes(receiverId)}
                                 />
                             );
                         })}

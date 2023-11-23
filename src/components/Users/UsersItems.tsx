@@ -14,6 +14,7 @@ interface UsersItemsProps {
     lastMessage: string;
     lastMessageTime: string;
     online: boolean;
+    messageSeen: boolean;
 }
 
 const UsersItems: React.FC<UsersItemsProps> = ({
@@ -58,16 +59,14 @@ const UsersItems: React.FC<UsersItemsProps> = ({
 
             <div className="flex flex-col w-5/6 h-16 border-b-2 border-gray-200">
                 <div className="flex flex-row w-full justify-between">
-                    <p
-                        className="lg:text-lg font-semibold lg:font-bold  max-w-[80%] md:max-w-[70%] h-full whitespace-nowrap text-ellipsis overflow-hidden"
-                    >
+                    <p className="lg:text-lg font-semibold lg:font-bold  max-w-[80%] md:max-w-[70%] h-full whitespace-nowrap text-ellipsis overflow-hidden">
                         {username}
                     </p>
                     <p className="text-sm text-gray-400">{lastMessageTime}</p>
                 </div>
 
                 <div className="w-full">
-                    <p className="text-gray-500 w-[100%] whitespace-nowrap text-ellipsis overflow-hidden">
+                    <p className={`text-gray-500 w-[100%] whitespace-nowrap text-ellipsis overflow-hidden`}>
                         {lastMessage}
                     </p>
                 </div>

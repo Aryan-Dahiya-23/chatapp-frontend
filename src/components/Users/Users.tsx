@@ -27,11 +27,6 @@ const Users = () => {
             <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 {user &&
                     user.conversations.map((conversation) => {
-
-                        // if(connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)){
-
-                        // }
-
                         return (
                             <UsersItems
                                 key={conversation.conversation.participants[0]._id}
@@ -45,7 +40,8 @@ const Users = () => {
                                     "Started a conversation"}
                                 lastMessageTime={conversation.conversation.lastMessage &&
                                     new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                                online={connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)}
+                                    messageSeen={true}
+                                    online={connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)}
                             />
                         )
                     })

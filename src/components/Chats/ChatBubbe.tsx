@@ -4,9 +4,10 @@ interface ChatBubbleProps {
     message: string;
     createdAt: string;
     avatarSrc: string;
-    footerName: string,
-    isLastMessage: boolean,
-    online: boolean,
+    footerName: string;
+    isLastMessage: boolean;
+    online: boolean;
+    messageSeen: boolean;
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({
@@ -18,6 +19,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
     footerName,
     isLastMessage,
     online,
+    messageSeen,
 }) => {
 
     const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
@@ -40,7 +42,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <time className="text-xs opacity-80 ml-1">{formattedTime}</time>
                     </div>
                     <div className="chat-bubble text-white bg-sky-500 font-semibold">{message}</div>
-                    {isLastMessage &&
+                    {isLastMessage && messageSeen &&
                         <div className="chat-footer opacity-90">
                             {"Seen by " + footerName.split(" ")[0]}
                         </div>
