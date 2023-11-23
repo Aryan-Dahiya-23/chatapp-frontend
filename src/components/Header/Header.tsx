@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
+    const { setConnectedUsers } = useContext(AuthContext);
 
     const { data, isSuccess, isError, error } = useQuery({
         queryKey: ['user'],
@@ -39,16 +40,22 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     }, [data, isSuccess]);
 
     useEffect(() => {
+
         socket.on("connect", () => {
             console.log("Connected to the Socket.IO server");
         });
 
-        // return () => {
-        //     socket.disconnect();
-        // };
-    }, [user]);
+        // Client-side code
+        socket.on('connected users', (connectedUserIds) => {
+            console.log('Connected Users:', connectedUserIds);
+            setConnectedUsers(connectedUserIds);
+        });
 
-    useEffect(() => {
+        if (user && user._id) {
+            const userId: string = user._id;
+            socket.emit('user connected', userId);
+        }
+
         socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
             if (userId === user._id) {
 
@@ -72,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         return () => {
             socket.off('chat message');
         };
-    }, [user]);
+    }, [user, isSuccess]);
 
     const handleTheme = (e: { target: { checked: unknown; }; }) => {
         if (e.target.checked || localStorage.getItem("theme") === "light") {

@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import ChatBubble from "./ChatBubbe";
 import { useQuery } from "@tanstack/react-query";
-import { verify } from "../../api/auth";
-import { getConversation } from "../../api/conversation";
+import { AuthContext } from "../../contexts/AuthContext";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
+import ChatBubble from "./ChatBubbe";
+import { verify } from "../../api/auth";
+import { getConversation } from "../../api/conversation";
 
 const Chats = () => {
 
     const { id } = useParams();
-    const [headerName, setHeaderName] = useState<string>("");
-    const [headerAvatarSrc, setheaderAvatarSrc] = useState<string>("");
+    const [receiverName, setreceiverName] = useState<string>("");
+    const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string>("");
+    const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
+    // const []
+    const { connectedUsers } = useContext(AuthContext)
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const { data: user, isSuccess: isDone } = useQuery({
@@ -34,13 +38,18 @@ const Chats = () => {
         if (user) {
             user.conversations.map((conversation) => {
                 if (conversation.conversation._id === id) {
-                    setHeaderName(conversation.conversation.participants[0].fullName);
-                    setheaderAvatarSrc(conversation.conversation.participants[0].picture);
+                    setreceiverName(conversation.conversation.participants[0].fullName);
+                    setReceiverAvatarSrc(conversation.conversation.participants[0].picture);
+                    if (connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)) {
+                        setReceiverOnline(true);
+                    } else {
+                        setReceiverOnline(false);
+                    }
                 }
             })
         }
 
-    }, [user, conversation]);
+    }, [user, conversation, connectedUsers]);
 
     useEffect(() => {
         if (chatContainerRef.current) {
@@ -49,13 +58,15 @@ const Chats = () => {
     }, [conversation]);
 
     return (
-        <div className={`flex flex-col h-[100dvh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`}>
+
+        <div className={`flex flex-col h-[100dvh] md:w-[52%] lg:w-[70%] md:border-l-2 md:border-gray-200`} >
 
             {isDone && (
                 <>
                     <ChatHeader
-                        name={headerName}
-                        avatarSrc={headerAvatarSrc}
+                        name={receiverName}
+                        avatarSrc={receiverAvatarSrc}
+                        online={receiverOnline}
                     />
 
                     {isLoading && (
@@ -66,7 +77,10 @@ const Chats = () => {
 
                     <div className="`flex flex-col px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
 
-                        {isSuccess && conversation.messages.map((message) => {
+                        {isSuccess && conversation.messages.map((message, index: number) => {
+
+                            const isLastMessage = index === conversation.messages.length - 1;
+
                             return (
                                 <ChatBubble
                                     key={message?._id}
@@ -75,6 +89,9 @@ const Chats = () => {
                                     message={message.content}
                                     createdAt={message.createdAt ? message.createdAt : Date.now()}
                                     avatarSrc={message.senderId.picture}
+                                    footerName={receiverName}
+                                    isLastMessage={isLastMessage}
+                                    online={receiverOnline}
                                 />
                             );
                         })}
@@ -88,8 +105,8 @@ const Chats = () => {
                 </>
             )}
 
-        </div>
-    );
+        </div >
+    )
 }
 
 export default Chats;

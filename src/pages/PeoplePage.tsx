@@ -1,6 +1,7 @@
 import DesktopNavigation from "../components/Navigation/DesktopNavigation";
 import MobileNavigation from "../components/Navigation/MobileNavigation";
 import People from "../components/People/People";
+import EmptyModal from "../components/UI/EmptyModal";
 
 const PeoplePage = () => {
 
@@ -9,6 +10,7 @@ const PeoplePage = () => {
             <DesktopNavigation />
             <MobileNavigation />    
             <People />
+            <EmptyModal />
         </div>
 
     )

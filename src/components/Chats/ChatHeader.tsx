@@ -2,32 +2,18 @@
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
+import OfflineAvatar from "../Avatar/OfflineAvatar";
 // import { AuthContext } from "../../contexts/AuthContext"
 
 interface ChatHeaderProps {
     name: string;
     avatarSrc: string
+    online: boolean
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online }) => {
 
     const navigate = useNavigate();
-    // const { user, setUser } = useContext(AuthContext);
-    // const [userName, setUserName] = useState<string>("");
-    // const [picture, setPicture] = useState<string>("");
-
-    // const data: object | undefined = queryClient.getQueryData(['user']);
-
-    // useEffect(() => {
-    //     if(user && user.messages){
-    //         user.messages.map((message) => {
-    //             if(message.conversationId === id){
-    //                 setUserName(message.userId.fullName);
-    //                 setPicture(message.userId.picture)
-    //             }
-    //         })
-    //     }
-    // }, [user, id]);
 
     const handleClick = () => {
         navigate("/");
@@ -41,16 +27,26 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc }) => {
             </div>
 
             <div className="flex flex-row justify-center space-x-2.5 cursor-pointer">
-                <OnlineAvatar
-                    height="12"
-                    width="12"
-                    imgSrc={avatarSrc}
-                />
+
+                {online ?
+                    <OnlineAvatar
+                        height="12"
+                        width="12"
+                        imgSrc={avatarSrc}
+                    />
+                    :
+                    <OfflineAvatar
+                        height="12"
+                        width="12"
+                        imgSrc={avatarSrc}
+                    />
+                }
+
                 <div className="flex flex-col">
                     <p className="font-semibold">
                         {name}
                     </p>
-                    <p className="text-gray-500 text-sm">Active</p>
+                    <p className="text-gray-500 text-sm">{online ? "Online" : "Offline"}</p>
                 </div>
             </div>
 

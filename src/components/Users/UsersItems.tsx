@@ -5,6 +5,7 @@ import OnlineAvatar from "../Avatar/OnlineAvatar";
 import { AuthContext } from "../../contexts/AuthContext";
 import { queryClient } from "../../api/auth";
 import { getConversation } from "../../api/conversation";
+import OfflineAvatar from "../Avatar/OfflineAvatar";
 
 interface UsersItemsProps {
     username: string;
@@ -12,6 +13,7 @@ interface UsersItemsProps {
     conversationId: string;
     lastMessage: string;
     lastMessageTime: string;
+    online: boolean;
 }
 
 const UsersItems: React.FC<UsersItemsProps> = ({
@@ -20,6 +22,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
     conversationId,
     lastMessage,
     lastMessageTime,
+    online,
 }) => {
     const navigate = useNavigate();
 
@@ -46,7 +49,11 @@ const UsersItems: React.FC<UsersItemsProps> = ({
             onFocus={prefetch}
         >
             <div className="flex h-12 w-12">
-                <OnlineAvatar height="12" width="12" imgSrc={avatarSrc} />
+                {online ?
+                    <OnlineAvatar height="12" width="12" imgSrc={avatarSrc} />
+                    :
+                    <OfflineAvatar height="12" width="12" imgSrc={avatarSrc} />
+                }
             </div>
 
             <div className="flex flex-col w-5/6 h-16 border-b-2 border-gray-200">
