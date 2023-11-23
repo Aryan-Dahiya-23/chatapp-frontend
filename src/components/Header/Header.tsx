@@ -6,7 +6,7 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { verify } from "../../api/auth";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { queryClient } from "../../api/auth";
 
 interface HeaderProps {
@@ -18,6 +18,8 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 const Header: React.FC<HeaderProps> = ({ message }) => {
 
     const navigate = useNavigate();
+
+    const { id } = useParams();
 
     const { theme, setTheme } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
@@ -46,7 +48,6 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         });
 
         socket.on('connected users', (connectedUserIds) => {
-            // console.log('Connected Users:', connectedUserIds);
             setConnectedUsers(connectedUserIds);
         });
 
@@ -75,7 +76,14 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             }
         });
 
+        socket.on('seen message', (conversationId) => {
+            if (id && id === conversationId) {
+                queryClient.invalidateQueries({ queryKey: ['chats', id] });
+            }
+        })
+
         return () => {
+            socket.off('seen message');
             socket.off('chat message');
         };
     }, [user, isSuccess]);

@@ -1,12 +1,15 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { io, Socket } from "socket.io-client";
 import { AuthContext } from "../../contexts/AuthContext";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ChatBubble from "./ChatBubbe";
 import { verify } from "../../api/auth";
 import { getConversation, readMessage } from "../../api/conversation";
+
+const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Chats = () => {
 
@@ -15,7 +18,6 @@ const Chats = () => {
     const [receiverName, setreceiverName] = useState<string>("");
     const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string>("");
     const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
-    // const []
     const { connectedUsers } = useContext(AuthContext)
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -36,14 +38,19 @@ const Chats = () => {
 
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
-        // onSuccess: () => {
-        //     socket.emit('chat message', receiverId);
-        // }
+        onSuccess: () => {
+            socket.emit('seen message', id);
+        }
     });
 
     useEffect(() => {
-        if (isSuccess) {
-            mutate();
+        if (isSuccess && conversation.lastMessage) {
+            const lastMessage = conversation.lastMessage;
+
+            if (lastMessage.senderId !== userId && lastMessage.seenBy.length < 1) {
+                console.log(lastMessage);
+                mutate();
+            }
         }
     }, [conversation]);
 
