@@ -39,14 +39,13 @@ const Chats = () => {
 
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
-        onSuccess: () => {
-            socket.emit('chat message', receiverId);
-        }
+        // onSuccess: () => {
+        //     socket.emit('chat message', receiverId);
+        // }
     });
 
     useEffect(() => {
         if (isSuccess) {
-            console.log(conversation);
             mutate();
         }
     }, [isSuccess, conversation]);
