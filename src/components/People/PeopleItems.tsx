@@ -5,7 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import { AuthContext } from "../../contexts/AuthContext";
 import { queryClient } from "../../api/auth";
-import { createChat } from "../../api/user";
+// import { createChat } from "../../api/user";
+import { createConversation } from "../../api/conversation";
 
 interface PeopleItemsProps {
     username: string;
@@ -24,7 +25,7 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
 
     const { mutate } = useMutation({
         mutationFn: async () => {
-            const response = await createChat(user._id, userId);
+            const response = await createConversation(user._id, userId);
             return response;
         },
         onSuccess: async (data) => {
@@ -36,7 +37,6 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
             console.error("Error creating chat:", error);
         },
     });
-
 
     const navigateToChat = () => {
 

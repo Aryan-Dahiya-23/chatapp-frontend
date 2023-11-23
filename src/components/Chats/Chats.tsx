@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import ChatBubble from "./ChatBubbe";
 import { useQuery } from "@tanstack/react-query";
 import { verify } from "../../api/auth";
-import { fetchMessages } from "../../api/chat";
+import { getConversation } from "../../api/conversation";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 
@@ -24,7 +24,7 @@ const Chats = () => {
 
     const { data: conversation, isSuccess, isLoading } = useQuery({
         queryKey: ['chats', id],
-        queryFn: () => fetchMessages(userId, id),
+        queryFn: () => getConversation(userId, id),
         staleTime: 10000,
         enabled: !!userId
     });
@@ -53,22 +53,6 @@ const Chats = () => {
 
             {isDone && (
                 <>
-                    {/* <ChatHeader
-                        name={conversation.participants[0].fullName}
-                        avatarSrc={conversation.participants[0].picture}
-                    /> */}
-
-                    {/* {user.conversations.map((conversation) => {
-                        if (conversation.conversation._id === id) {
-                            return (
-                                <ChatHeader
-                                    name={conversation.conversation.participants[0].fullName}
-                                    avatarSrc={conversation.conversation.participants[0].picture}
-                                    id="123"
-                                />)
-                        }
-                    })} */}
-
                     <ChatHeader
                         name={headerName}
                         avatarSrc={headerAvatarSrc}
@@ -79,22 +63,6 @@ const Chats = () => {
                             <span className="loading loading-infinity loading-lg text-info"></span>
                         </div>)
                     }
-
-                    {/* <div className="`flex flex-col px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
-
-                        {isSuccess && data.messages.map((message) => {
-                            return (
-                                <ChatBubble
-                                    key={message?._id}
-                                    position={userId === message.senderId._id ? "right" : "left"}
-                                    sender={message.senderId.fullName}
-                                    message={message.content}
-                                    createdAt={message.createdAt ? message.createdAt : Date.now()}
-                                    avatarSrc={message.senderId.picture}
-                                />
-                            );
-                        })}
-                    </div> */}
 
                     <div className="`flex flex-col px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
 

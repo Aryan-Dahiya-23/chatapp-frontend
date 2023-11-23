@@ -20,12 +20,3 @@ export const fetchPeople = async (userId: string) => {
         console.log(error);
     }
 };
-
-export const createChat = async (senderId: string, receiverId:string) => {
-    try{
-        const response = await axios.post(`${url}/create-chat`, { senderId, receiverId });
-        return response;
-    }catch(error){
-        console.log(error)
-    }
-}

@@ -4,7 +4,7 @@ import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import { queryClient } from "../../api/auth";
-import { createMessage } from "../../api/chat";
+import { createMessage } from "../../api/conversation";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 
