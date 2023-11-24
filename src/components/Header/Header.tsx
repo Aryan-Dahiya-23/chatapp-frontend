@@ -83,6 +83,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         })
 
         return () => {
+            socket.off('connected users');
             socket.off('seen message');
             socket.off('chat message');
         };

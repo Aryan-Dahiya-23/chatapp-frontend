@@ -89,7 +89,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         },
         onSuccess: () => {
             socket.emit('chat message', receiverId);
-            queryClient.invalidateQueries({ queryKey: ['user'] });
+            queryClient.invalidateQueries({ queryKey: ['user'] });9
             queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
         },
         onError: (error, variables, context) => {

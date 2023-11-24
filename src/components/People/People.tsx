@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header"
 import PeopleItems from "./PeopleItems";
+import PeopleItemsLoading from "../UI/PeopleItemsLoading";
 import { verify } from "../../api/auth";
 import { fetchPeople } from "../../api/user";
 
@@ -14,7 +15,7 @@ const People = () => {
 
     const userId = user?._id;
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['people'],
         queryFn: () => fetchPeople(user._id),
         staleTime: 10000,
@@ -38,6 +39,8 @@ const People = () => {
                     ))}
 
             </div>
+
+            {isLoading && <PeopleItemsLoading />}
         </div>)
 }
 

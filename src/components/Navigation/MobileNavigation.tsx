@@ -63,7 +63,7 @@ const MobileNavigation = () => {
 
             <div className="flex p-2 h-full items-center ">
                 <RingAvatar
-                    imgSrc={user ? user.picture : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"}
+                    imgSrc={user && user.picture}
                 />
             </div>
         </div>
