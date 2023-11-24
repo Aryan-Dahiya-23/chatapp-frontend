@@ -52,6 +52,10 @@ const Chats = () => {
                 mutate();
             }
         }
+
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
     }, [conversation]);
 
     useEffect(() => {
@@ -73,11 +77,11 @@ const Chats = () => {
 
     }, [user, conversation, connectedUsers]);
 
-    useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-    }, [conversation]);
+    // useEffect(() => {
+    //     if (chatContainerRef.current) {
+    //         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    //     }
+    // }, [conversation]);
 
     return (
 

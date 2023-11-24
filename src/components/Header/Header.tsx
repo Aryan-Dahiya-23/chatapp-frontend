@@ -23,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
+    const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
 
     const { data, isSuccess, isError, error } = useQuery({
@@ -51,9 +52,10 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             setConnectedUsers(connectedUserIds);
         });
 
-        if (user && user._id) {
+        if (!userConnected && user && user._id) {
             const userId: string = user._id;
             socket.emit('user connected', userId);
+            setUserConnected(true);
         }
 
         socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
