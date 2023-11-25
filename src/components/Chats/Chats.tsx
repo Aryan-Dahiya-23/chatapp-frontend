@@ -53,6 +53,8 @@ const Chats = () => {
             }
         }
 
+        scrollTopToBottom();
+        
         setTimeout(() => {
             scrollTopToBottom();
         }, 100);
