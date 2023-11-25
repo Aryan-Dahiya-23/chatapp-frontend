@@ -1,6 +1,5 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, lazyload, responsive, placeholder, accessibility } from "@cloudinary/react";
-
+import { AdvancedImage, lazyload, responsive, placeholder } from "@cloudinary/react";
 
 interface ChatBubbleProps {
     position: string;
