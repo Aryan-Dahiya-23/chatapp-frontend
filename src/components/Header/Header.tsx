@@ -99,6 +99,12 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         }
     };
 
+    useEffect(() => {
+        if (isSuccess && data.conversations.length < 1) {
+            navigate('/people');
+        }
+    }, [isSuccess]);
+
     return (
         <div className="flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3">
             <div className=" text-3xl font-bold">
