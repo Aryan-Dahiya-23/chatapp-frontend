@@ -75,7 +75,7 @@ const CloudinaryScriptContext = createContext<CloudinaryScriptContextProps>({ lo
 
 const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfig }) => {
 
-    const { setMessageUrl} = useContext(AuthContext);
+    const { setMessageUrl } = useContext(AuthContext);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -102,25 +102,25 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
                 uwConfig,
                 (error: any, result: any) => {
                     if (!error && result && result.event === "success") {
-                        // alert(result.info.url);
                         setMessageUrl(result.info.url);
                     }
                 }
             );
 
-            document.getElementById("upload_widget")?.addEventListener(
-                "click",
-                function () {
-                    myWidget.open();
-                },
-                false
-            );
+            // document.getElementById("upload_widget")?.addEventListener(
+            //     "click",
+            //     function () {
+            //         myWidget.open();
+            //     },
+            //     false
+            // );
+            myWidget.open();
         }
     };
 
     return (
         <CloudinaryScriptContext.Provider value={{ loaded }}>
-            <button id="upload_widget" onClick={initializeCloudinaryWidget}>
+            <button onClick={initializeCloudinaryWidget}>
                 <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
             </button>
         </CloudinaryScriptContext.Provider>
@@ -129,3 +129,5 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
 
 export default CloudinaryUploadWidget;
 export { CloudinaryScriptContext };
+
+// id="upload_widget"
