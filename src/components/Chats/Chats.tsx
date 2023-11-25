@@ -53,11 +53,27 @@ const Chats = () => {
             }
         }
 
+        setTimeout(() => {
+            scrollTopToBottom();
+        }, 100);
+    }, [conversation]);
+
+    // const scrollTopToBottom = () => {
+    //     if (chatContainerRef.current) {
+    //         const chatContainer = chatContainerRef.current;
+    //         const lastChild = chatContainer.lastElementChild;
+    
+    //         if (lastChild) {
+    //             lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    //         }
+    //     }
+    // };
+
+    const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-       
-    }, [conversation]);
+    }
 
     useEffect(() => {
 

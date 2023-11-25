@@ -88,10 +88,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                             cldVid={myVideo}
                             cldPoster="auto"
                             sources={sources}
+                            plugins={[lazyload()]}
+                            preload="none"
                             controls
-                            preload="auto"
                         />
-
                     )
                     }
 
@@ -129,8 +129,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                             cldVid={myVideo}
                             cldPoster="auto"
                             sources={sources}
+                            plugins={[lazyload()]}
+                            preload="none"
                             controls
-                            preload="auto"
                         />
                     )
                     }
@@ -144,5 +145,3 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 export default ChatBubble;
 
 
-// plugins={[lazyload()]}
-// preload="none"
