@@ -2,7 +2,8 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
-import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
+import { HiPaperAirplane } from "react-icons/hi2";
+import CloudinaryUploadWidget from "../Widgets/CloudinaryUploadWidget";
 import { queryClient } from "../../api/auth";
 import { createMessage } from "../../api/conversation";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -30,7 +31,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
     const { receiverId, setReceiverId } = useContext(AuthContext);
+    const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
+
+    const [cloudName] = useState("dq3iqffnu");
+    const [uploadPreset] = useState("odksp3xk");
+    const [uwConfig] = useState({
+        cloudName,
+        uploadPreset
+    });
 
     useEffect(() => {
         if (user && data) {
@@ -89,8 +98,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         },
         onSuccess: () => {
             socket.emit('chat message', receiverId);
-            queryClient.invalidateQueries({ queryKey: ['user'] });9
+            queryClient.invalidateQueries({ queryKey: ['user'] }); 9
             queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
+            setMessage({});
         },
         onError: (error, variables, context) => {
             queryClient.setQueryData(['chats', conversationId], context?.previousData);
@@ -98,31 +108,48 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         },
     });
 
-    const handleMessageSend = () => {
-        if (text === '') return
+    const handleMessageSend = (content: string, type: string) => {
+
+        if (content === '') return
 
         setText('');
+        setMessageUrl('');
+
         const newMessage = {
             senderId: user._id,
-            content: text,
-            readBy: [],
+            content: content,
+            type: type,
+            seenBy: [],
         }
+
         setMessage(newMessage);
-        mutate();
     }
+
+    useEffect(() => {
+        if (message && Object.keys(message).length > 0)
+            mutate();
+    }, [message]);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            handleMessageSend();
+            handleMessageSend(text, 'text');
         }
     }
+
+    useEffect(() => {
+        if (messageUrl !== '') {
+            handleMessageSend(messageUrl, 'media');
+        }
+    }, [messageUrl]);
 
     return (
         <div
             className={`flex flex-row justify-between w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
-            <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
+            <CloudinaryUploadWidget uwConfig={uwConfig} />
+
+            {/* <HiPhoto id="upload_widget" className="cloudinary-button chat-icons text-sky-500 hover:text-sky-600" /> */}
 
             <textarea
                 placeholder="Write a message"
@@ -134,7 +161,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                 onBlur={() => setChatHeight(false)}
             ></textarea>
 
-            <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={handleMessageSend} />
+            <HiPaperAirplane className="chat-icons text-sky-500 hover:text-sky-600" onClick={() => handleMessageSend(text, 'text')} />
         </div>
     );
 }

@@ -118,6 +118,7 @@ const Chats = () => {
                                     footerName={receiverName}
                                     isLastMessage={isLastMessage}
                                     online={receiverOnline}
+                                    messageType={message.type}
                                     messageSeen={message.seenBy && message.seenBy.length > 0 && message.seenBy.includes(receiverId)}
                                 />
                             );

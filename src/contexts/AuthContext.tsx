@@ -17,6 +17,8 @@ interface AuthContextProps {
     setConnectedUsers: Dispatch<SetStateAction<string[]>>;
     userConnected: boolean;
     setUserConnected: Dispatch<SetStateAction<boolean>>;
+    messageUrl: string;
+    setMessageUrl: Dispatch<SetStateAction<string>>;
 }
 
 const defaultAuthContext: AuthContextProps = {
@@ -34,6 +36,8 @@ const defaultAuthContext: AuthContextProps = {
     setConnectedUsers: () => { },
     userConnected: false,
     setUserConnected: ( ) => { },
+    messageUrl: "",
+    setMessageUrl: ( ) => { },
 };
 
 export const AuthContext = createContext < AuthContextProps > (defaultAuthContext);
@@ -46,11 +50,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [receiverId, setReceiverId] = useState<string>("");
     const [ connectedUsers, setConnectedUsers ] = useState<string[]>([]);
     const [ userConnected, setUserConnected ] = useState<boolean>(false);
+    const [messageUrl, setMessageUrl] = useState<string>("");
 
     return (
         <AuthContext.Provider
             value={{ loggedIn, setLoggedIn, user, setUser, userEmail, setUserEmail, userId, setUserId, receiverId, setReceiverId, 
-                connectedUsers, setConnectedUsers, userConnected, setUserConnected }}
+                connectedUsers, setConnectedUsers, userConnected, setUserConnected, messageUrl, setMessageUrl }}
         >
             {children}
         </AuthContext.Provider>
