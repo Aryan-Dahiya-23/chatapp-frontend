@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
@@ -20,6 +20,7 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
     const navigate = useNavigate();
 
     const { user } = useContext(AuthContext);
+    const [clicked, setClicked] = useState(false);
 
     const { mutate } = useMutation({
         mutationFn: async () => {
@@ -46,7 +47,10 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
             }
         }
 
-        mutate();
+        if(!clicked){
+            mutate();
+            setClicked(true);
+        }
     };
 
     return (
