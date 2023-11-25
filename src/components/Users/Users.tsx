@@ -39,13 +39,6 @@ const Users = () => {
                                     :
                                     "Started a conversation"
                                 }
-                                // lastMessage={conversation.conversation.lastMessage
-                                //     ?
-                                //     conversation.conversation.lastMessage.content
-                                //     :
-                                //     "Started a conversation"
-                                // }
-
                                 lastMessageTime={conversation.conversation.lastMessage &&
                                     new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
                                 messageSeen={true}
