@@ -26,7 +26,7 @@ const Login = () => {
 
         <div className="flex justify-center items-center h-[100dvh] w-full bg-gray-300">
 
-            <div className="flex flex-col space-y-3 items-center h-full w-full pt-[30%] md:pt-[10%] lg:pt-5 rounded-xl md:h-3/5 md:w-3/5 lg:w-1/4 bg-white">
+            <div className="flex flex-col space-y-3 items-center h-full w-full pt-[25%] md:pt-[10%] lg:pt-5 rounded-xl md:h-3/5 md:w-3/5 lg:w-1/4 bg-white">
 
                 <div className="h-32 w-32 lg:h-1/5 lg:w-1/5">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv44m_vIAb_65RiKNjaJwMfgaM-xi9DGBjxu2nimh5jYGqgdrN-NceWFL7eA4CKJ9emUA&usqp=CAU" 
