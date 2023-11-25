@@ -53,10 +53,33 @@ const Chats = () => {
             }
         }
 
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
+        // if (chatContainerRef.current) {
+        //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        // }
+
+        scrollTopToBottom();
+        // setTimeout(() => {
+        //     scrollTopToBottom();
+        // }, 10);
     }, [conversation]);
+
+    // const scrollTopToBottom = () => {
+    //     if (chatContainerRef.current) {
+    //         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    //     }
+    // }
+
+    const scrollTopToBottom = () => {
+        if (chatContainerRef.current) {
+            const chatContainer = chatContainerRef.current;
+            const lastChild = chatContainer.lastElementChild;
+
+            if (lastChild) {
+                lastChild.scrollIntoView({ behavior: 'auto', block: 'end' });
+            }
+        }
+    };
+
 
     useEffect(() => {
 
