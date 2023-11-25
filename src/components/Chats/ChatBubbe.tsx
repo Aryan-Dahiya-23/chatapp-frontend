@@ -1,5 +1,5 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, lazyload, responsive, placeholder } from "@cloudinary/react";
+import { AdvancedImage, placeholder, responsive } from "@cloudinary/react";
 
 interface ChatBubbleProps {
     position: string;
@@ -63,8 +63,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
-                            plugins={[lazyload(), responsive(), placeholder()]}
+                            plugins={[responsive()]}
                         />
+                        // <img src={message} alt="" className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" />
                     }
                     {isLastMessage && messageSeen &&
                         <div className="chat-footer opacity-90">
@@ -92,8 +93,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
-                            plugins={[lazyload(), responsive(), placeholder()]}
+                            plugins={[responsive(), placeholder()]}
                         />
+                        // <img src={message} alt="" className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" />
+
                     }
                 </div>
             )}
