@@ -127,6 +127,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <AdvancedVideo
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldVid={myVideo}
+                            cldPoster="auto"
+                            plugins={[lazyload()]}
+                            preload="none"
+                            sources={sources}
                             controls
                         />
                         // <video src={message} autoPlay controls className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" />
