@@ -97,7 +97,16 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         {sender}
                         <time className="text-xs opacity-80 ml-1">{formattedTime}</time>
                     </div>
-                    <div className="chat-bubble text-black bg-gray-100 font-semibold">{message}</div>
+                    {messageType === 'text' ?
+                        <div className="chat-bubble text-white bg-sky-500 font-semibold">{message}</div>
+                        :
+                        <AdvancedImage
+                            className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
+                            cldImg={myImage}
+                            plugins={[responsive(), placeholder()]}
+                        />
+                    }
+                    {/* <div className="chat-bubble text-black bg-gray-100 font-semibold">{message}</div> */}
                 </div>
             )}
 
