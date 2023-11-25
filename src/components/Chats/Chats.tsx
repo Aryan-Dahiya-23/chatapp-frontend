@@ -53,17 +53,11 @@ const Chats = () => {
             }
         }
 
-        setTimeout(() => {
-            scrollTopToBottom();
-        }, 100);
-        // scrollTopToBottom()
-    }, [conversation]);
-
-    const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-    }
+       
+    }, [conversation]);
 
     useEffect(() => {
 

@@ -87,11 +87,11 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldVid={myVideo}
                             cldPoster="auto"
-                            plugins={[lazyload()]}
-                            preload="none"
                             sources={sources}
                             controls
+                            preload="auto"
                         />
+
                     )
                     }
 
@@ -128,12 +128,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldVid={myVideo}
                             cldPoster="auto"
-                            plugins={[lazyload()]}
-                            preload="none"
                             sources={sources}
                             controls
+                            preload="auto"
                         />
-                        // <video src={message} autoPlay controls className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" />
                     )
                     }
                 </div>
@@ -144,3 +142,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 };
 
 export default ChatBubble;
+
+
+// plugins={[lazyload()]}
+// preload="none"
