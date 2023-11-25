@@ -53,32 +53,17 @@ const Chats = () => {
             }
         }
 
-        // if (chatContainerRef.current) {
-        //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        // }
-
-        setTimeout(() => {
-            scrollTopToBottom();
-        }, 10);
+        // setTimeout(() => {
+        //     scrollTopToBottom();
+        // }, 10);
+        scrollTopToBottom()
     }, [conversation]);
-
-    // const scrollTopToBottom = () => {
-    //     if (chatContainerRef.current) {
-    //         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    //     }
-    // }
 
     const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
-            const chatContainer = chatContainerRef.current;
-            const lastChild = chatContainer.lastElementChild;
-
-            if (lastChild) {
-                lastChild.scrollIntoView({ behavior: 'auto', block: 'end' });
-            }
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-    };
-
+    }
 
     useEffect(() => {
 
@@ -98,12 +83,6 @@ const Chats = () => {
         }
 
     }, [user, conversation, connectedUsers]);
-
-    // useEffect(() => {
-    //     if (chatContainerRef.current) {
-    //         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    //     }
-    // }, [conversation]);
 
     return (
 
