@@ -46,7 +46,7 @@ const Login = () => {
 
                 <div className="flex flex-col w-5/6 pt-4">
                     <GoogleLoginButton onClick={googleAuth}>
-                        <span>Continue with Facebook</span>
+                        <span>Continue with Google</span>
                     </GoogleLoginButton>
 
                     <FacebookLoginButton onClick={facebookAuth}>

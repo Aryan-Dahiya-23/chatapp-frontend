@@ -1,5 +1,7 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, responsive } from "@cloudinary/react";
+import { AdvancedImage, AdvancedVideo, responsive, lazyload } from "@cloudinary/react"
+import { videoCodec } from "@cloudinary/url-gen/actions/transcode";
+import { auto, vp9 } from '@cloudinary/url-gen/qualifiers/videoCodec';
 
 interface ChatBubbleProps {
     position: string;
@@ -35,10 +37,25 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
         }
     });
 
-    let myImage;
+    const sources = [
+        {
+            type: 'mp4',
+            codecs: ['avc1.4d002a'],
+            transcode: videoCodec(auto())
+        },
+        {
+            type: 'webm',
+            codecs: ['vp8', 'vorbis'],
+            transcode: videoCodec(vp9())
+        }];
 
-    if (messageType === 'media') {
-        myImage = cld.image(message).setDeliveryType('fetch');
+    let myImage;
+    let myVideo;
+
+    if (messageType === 'image') {
+        myImage = cld.image(message);
+    } else if (messageType === 'video') {
+        myVideo = cld.video(message);
     }
 
     return (
@@ -57,15 +74,27 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         {sender}
                         <time className="text-xs opacity-80 ml-1">{formattedTime}</time>
                     </div>
-                    {messageType === 'text' ?
+                    {messageType === 'text' ? (
                         <div className="chat-bubble text-white bg-sky-500 font-semibold">{message}</div>
-                        :
+                    ) : messageType === 'image' ? (
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
                             plugins={[responsive()]}
                         />
+                    ) : (
+                        <AdvancedVideo
+                            className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
+                            cldVid={myVideo}
+                            cldPoster="auto"
+                            plugins={[lazyload()]}
+                            preload="none"
+                            sources={sources}
+                            controls
+                        />
+                    )
                     }
+
                     {isLastMessage && messageSeen &&
                         <div className="chat-footer opacity-90">
                             {"Seen by " + footerName.split(" ")[0]}
@@ -86,14 +115,22 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         {sender}
                         <time className="text-xs opacity-80 ml-1">{formattedTime}</time>
                     </div>
-                    {messageType === 'text' ?
+                    {messageType === 'text' ? (
                         <div className="chat-bubble text-white bg-sky-500 font-semibold">{message}</div>
-                        :
+                    ) : messageType === 'image' ? (
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
                             plugins={[responsive()]}
                         />
+                    ) : (
+                        <AdvancedVideo
+                            className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
+                            cldVid={myVideo}
+                            controls
+                        />
+                        // <video src={message} autoPlay controls className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" />
+                    )
                     }
                 </div>
             )}

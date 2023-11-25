@@ -15,6 +15,7 @@ const CloudinaryScriptContext = createContext<CloudinaryScriptContextProps>({ lo
 
 const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfig }) => {
     const { setMessageUrl } = useContext(AuthContext);
+    const { setMessageType } = useContext(AuthContext);
     const [loaded, setLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -44,7 +45,13 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
                 (error: any, result: any) => {
                     setLoading(false);
                     if (!error && result && result.event === "success") {
-                        setMessageUrl(result.info.url);
+                        console.log(result);
+                        if (result.info.video) {
+                            setMessageType('video');
+                        } else {
+                            setMessageType('image');
+                        }
+                        setMessageUrl(result.info.public_id);
                     }
                 }
             );

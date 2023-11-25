@@ -32,6 +32,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const [message, setMessage] = useState<object>({});
     const { receiverId, setReceiverId } = useContext(AuthContext);
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
+    const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
 
     const [cloudName] = useState("dq3iqffnu");
@@ -110,10 +111,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     const handleMessageSend = (content: string, type: string) => {
 
-        if (content === '') return
+        if (content === '' || type === '') return
 
         setText('');
         setMessageUrl('');
+        setMessageType('');
 
         const newMessage = {
             senderId: user._id,
@@ -138,10 +140,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     }
 
     useEffect(() => {
-        if (messageUrl !== '') {
-            handleMessageSend(messageUrl, 'media');
+        if (messageUrl !== '' && messageType !== '' ) {
+            handleMessageSend(messageUrl, messageType);
         }
-    }, [messageUrl]);
+    }, [messageUrl, messageType]);
 
     return (
         <div
