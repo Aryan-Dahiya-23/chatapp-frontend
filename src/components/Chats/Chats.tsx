@@ -54,29 +54,29 @@ const Chats = () => {
         }
 
         scrollTopToBottom();
-        
+
         setTimeout(() => {
-            scrollTopToBottom();
+            scrollSmooth();
         }, 100);
     }, [conversation]);
 
-    // const scrollTopToBottom = () => {
-    //     if (chatContainerRef.current) {
-    //         const chatContainer = chatContainerRef.current;
-    //         const lastChild = chatContainer.lastElementChild;
-    
-    //         if (lastChild) {
-    //             lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    //         }
-    //     }
-    // };
-
-    const scrollTopToBottom = () => {
+     const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }
 
+    const scrollSmooth = () => {
+        if (chatContainerRef.current) {
+            const chatContainer = chatContainerRef.current;
+            const lastChild = chatContainer.lastElementChild;
+    
+            if (lastChild) {
+                lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }
+    };
+   
     useEffect(() => {
 
         if (user) {
