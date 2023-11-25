@@ -57,10 +57,9 @@ const Chats = () => {
         //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         // }
 
-        scrollTopToBottom();
-        // setTimeout(() => {
-        //     scrollTopToBottom();
-        // }, 10);
+        setTimeout(() => {
+            scrollTopToBottom();
+        }, 10);
     }, [conversation]);
 
     // const scrollTopToBottom = () => {
