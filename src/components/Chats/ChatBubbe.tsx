@@ -1,10 +1,6 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
+import { AdvancedImage, lazyload, responsive, placeholder, accessibility } from "@cloudinary/react";
 
-import { thumbnail } from "@cloudinary/url-gen/actions/resize";
-import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
-import { focusOn } from "@cloudinary/url-gen/qualifiers/gravity";
-import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
 
 interface ChatBubbleProps {
     position: string;
@@ -33,10 +29,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 }) => {
 
     const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
-    // const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour12: false });
 
-    // const [cloudName] = useState("dq3iqffnu");
-    // const [uploadPreset] = useState("odksp3xk");
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dq3iqffnu'
@@ -47,9 +40,6 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 
     if (messageType === 'media') {
         myImage = cld.image(message).setDeliveryType('fetch');
-        // myImage
-        //     .resize(thumbnail().width(300).height(300).gravity(focusOn(FocusOn.face())))
-        //     .roundCorners(byRadius(20));
     }
 
     return (
@@ -74,7 +64,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
-                            plugins={[responsive(), placeholder()]}
+                            plugins={[lazyload(), responsive(), placeholder()]}
                         />
                     }
                     {isLastMessage && messageSeen &&
@@ -103,10 +93,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
                             cldImg={myImage}
-                            plugins={[responsive(), placeholder()]}
+                            plugins={[lazyload(), responsive(), placeholder()]}
                         />
                     }
-                    {/* <div className="chat-bubble text-black bg-gray-100 font-semibold">{message}</div> */}
                 </div>
             )}
 

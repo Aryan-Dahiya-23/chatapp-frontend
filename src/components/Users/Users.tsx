@@ -32,9 +32,20 @@ const Users = () => {
                                 avatarSrc={conversation.conversation.participants[0].picture}
                                 lastMessage={conversation.conversation.lastMessage
                                     ?
-                                    conversation.conversation.lastMessage.content
+                                    conversation.conversation.lastMessage.type === 'text' ?
+                                        conversation.conversation.lastMessage.content
+                                        :
+                                        'Sent an Image'
                                     :
-                                    "Started a conversation"}
+                                    "Started a conversation"
+                                }
+                                // lastMessage={conversation.conversation.lastMessage
+                                //     ?
+                                //     conversation.conversation.lastMessage.content
+                                //     :
+                                //     "Started a conversation"
+                                // }
+
                                 lastMessageTime={conversation.conversation.lastMessage &&
                                     new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
                                 messageSeen={true}
