@@ -29,7 +29,7 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
         onSuccess: async (data) => {
             const chatId = data?.data.chat._id;
             // navigate(`/chats/${chatId}`);
-            queryClient.invalidateQueries({ queryKey: ['user'] });
+            await queryClient.invalidateQueries({ queryKey: ['user'] });
             navigate(`/chats/${chatId}`);
         },
         onError: (error) => {
