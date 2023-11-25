@@ -134,13 +134,10 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
         <CloudinaryScriptContext.Provider value={{ loaded }}>
             <button onClick={initializeCloudinaryWidget}>
                 {loading ? (
-                    <span className="loading loading-infinity text-sky-500"></span>
+                    <span className="loading loading-spinner text-info"></span>
                 ) : (
                     <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
                 )}
-                {/* <span className="loading loading-spinner text-info"></span> */}
-                {/* <span className="loading loading-dots  text-sky-500"></span> */}
-
             </button>
         </CloudinaryScriptContext.Provider>
     );
