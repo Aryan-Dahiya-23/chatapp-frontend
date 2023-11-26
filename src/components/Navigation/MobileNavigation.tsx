@@ -4,8 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { MdPeopleAlt } from "react-icons/md"
 import { IoLogOutOutline } from "react-icons/io5"
-import { AuthContext } from "../../contexts/AuthContext";
 import RingAvatar from "../Avatar/RingAvatar";
+import { AuthContext } from "../../contexts/AuthContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { queryClient } from "../../api/auth";
 import { logout } from "../../api/auth";
 import { fetchPeople } from "../../api/user";
@@ -14,14 +15,19 @@ const MobileNavigation = () => {
 
     const navigate = useNavigate()
     const { user, setUser } = useContext(AuthContext);
+    const { setLogoutLoading } = useContext(ThemeContext);
 
     const { mutate } = useMutation({
         mutationFn: logout,
+        onMutate: () => {
+            setLogoutLoading(true);
+        },
         onSuccess: async () => {
             queryClient.invalidateQueries();
             setUser({});
         },
         onSettled: async () => {
+            setLogoutLoading(false);
             navigate("/login");
         },
     })

@@ -6,6 +6,10 @@ interface ThemeContextProps {
     setTheme: Dispatch<SetStateAction<string>>;
     chatHeight: boolean;
     setChatHeight: Dispatch<SetStateAction<boolean>>;
+    groupChatWidget: boolean;
+    setGroupChatWidget: Dispatch<SetStateAction<boolean>>;
+    logoutLoading: boolean;
+    setLogoutLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -13,6 +17,10 @@ const defaultThemeContext: ThemeContextProps = {
     setTheme: () => { },
     chatHeight: false,
     setChatHeight: () => { },
+    groupChatWidget: false,
+    setGroupChatWidget: () => { },
+    logoutLoading: false,
+    setLogoutLoading: () => { }
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -23,7 +31,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const savedTheme = localStorage.getItem("theme");
         return savedTheme !== null ? savedTheme : "light";
     });
-    const [ chatHeight, setChatHeight ] = useState<boolean>(false);
+    const [chatHeight, setChatHeight] = useState<boolean>(false);
+    const [groupChatWidget, setGroupChatWidget] = useState<boolean>(false)
+    const [logoutLoading, setLogoutLoading] = useState<boolean>(false)
 
     useEffect(() => {
         try {
@@ -43,7 +53,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     return (
         <ThemeContext.Provider
-            value={{ theme, setTheme, chatHeight, setChatHeight }}
+            value={{ theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading }}
         >
             {children}
         </ThemeContext.Provider>

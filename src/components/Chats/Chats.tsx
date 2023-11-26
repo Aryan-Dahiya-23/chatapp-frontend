@@ -36,6 +36,10 @@ const Chats = () => {
         enabled: !!userId
     });
 
+    if(isSuccess){
+        console.log(conversation);
+    }
+    
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
         onSuccess: () => {
