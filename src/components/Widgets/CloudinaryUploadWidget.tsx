@@ -84,11 +84,11 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
 
     };
 
-    if (!temp && loaded) {
-        setTemp(true);
-        setTimeout(mouseOver, 500);
-    }
-    
+    // if (!temp && loaded) {
+    //     setTemp(true);
+    //     setTimeout(mouseOver, 500);
+    // }
+
     return (
         <CloudinaryScriptContext.Provider value={{ loaded }}>
             <button onClick={initializeCloudinaryWidget}>
