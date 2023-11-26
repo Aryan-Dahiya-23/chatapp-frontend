@@ -88,7 +88,7 @@ const GroupChatWidget = () => {
                                 onChange={handleGroupNameChange}
                                 value={groupName}
                                 placeholder="Group name"
-                                className="input input-bordered input-md w-full"
+                                className="input input-bordered input-md w-full text-base"
                             />
 
                             <label className="label mt-4">
@@ -109,7 +109,7 @@ const GroupChatWidget = () => {
                                     })
                                 }}
                                 classNames={{
-                                    control: () => "text-sm"
+                                    control: () => "text-base"
                                 }}
                             />
 
