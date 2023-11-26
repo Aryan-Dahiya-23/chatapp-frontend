@@ -6,13 +6,17 @@ interface ThemeContextProps {
     setTheme: Dispatch<SetStateAction<string>>;
     chatHeight: boolean;
     setChatHeight: Dispatch<SetStateAction<boolean>>;
+    cloudinaryWidgetLoading: boolean;
+    setCloudinaryWidgetLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
     theme: "",
     setTheme: () => { },
     chatHeight: false,
-    setChatHeight: () => { }
+    setChatHeight: () => { },
+    cloudinaryWidgetLoading: false,
+    setCloudinaryWidgetLoading: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -24,6 +28,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return savedTheme !== null ? savedTheme : "light";
     });
     const [ chatHeight, setChatHeight ] = useState<boolean>(false);
+    const [ cloudinaryWidgetLoading, setCloudinaryWidgetLoading ] = useState(false);
 
     useEffect(() => {
         try {
@@ -43,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     return (
         <ThemeContext.Provider
-            value={{ theme, setTheme, chatHeight, setChatHeight }}
+            value={{ theme, setTheme, chatHeight, setChatHeight, cloudinaryWidgetLoading, setCloudinaryWidgetLoading }}
         >
             {children}
         </ThemeContext.Provider>

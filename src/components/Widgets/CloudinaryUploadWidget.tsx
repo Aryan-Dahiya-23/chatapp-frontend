@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { HiPhoto } from "react-icons/hi2";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 interface CloudinaryUploadWidgetProps {
     uwConfig: any;
@@ -16,9 +17,10 @@ const CloudinaryScriptContext = createContext<CloudinaryScriptContextProps>({ lo
 const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfig }) => {
     const { setMessageUrl } = useContext(AuthContext);
     const { setMessageType } = useContext(AuthContext);
+    const { setCloudinaryWidgetLoading } = useContext(ThemeContext);
     const [loaded, setLoaded] = useState(false);
-    const [loading, setLoading] = useState(false);
 
+    const [temp, setTemp] = useState(false);
     useEffect(() => {
         if (!loaded) {
             const uwScript = document.getElementById("uw");
@@ -39,11 +41,12 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
 
     const initializeCloudinaryWidget = () => {
         if (loaded) {
-            setLoading(true);
+            setCloudinaryWidgetLoading(true);
             const myWidget = (window as any).cloudinary.createUploadWidget(
                 uwConfig,
                 (error: any, result: any) => {
-                    setLoading(false);
+                    // setLoading(false);
+                    setCloudinaryWidgetLoading(false);
                     if (!error && result && result.event === "success") {
                         console.log(result);
                         if (result.info.video) {
@@ -60,14 +63,36 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
         }
     };
 
+    const mouseOver = () => {
+        if (loaded) {
+            const myWidget = (window as any).cloudinary.createUploadWidget(
+                uwConfig,
+                (error: any, result: any) => {
+                    if (!error && result && result.event === "success") {
+                        console.log(result);
+                        if (result.info.video) {
+                            setMessageType('video');
+                        } else {
+                            setMessageType('image');
+                        }
+                        setMessageUrl(result.info.public_id);
+                    }
+                }
+            );
+
+        }
+
+    };
+
+    if (!temp && loaded) {
+        setTemp(true);
+        setTimeout(mouseOver, 500);
+    }
+    
     return (
         <CloudinaryScriptContext.Provider value={{ loaded }}>
             <button onClick={initializeCloudinaryWidget}>
-                {loading ? (
-                    <span className="loading loading-spinner text-info"></span>
-                ) : (
-                    <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
-                )}
+                <HiPhoto className="chat-icons text-sky-500 hover:text-sky-600" />
             </button>
         </CloudinaryScriptContext.Provider>
     );
