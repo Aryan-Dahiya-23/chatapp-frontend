@@ -38,29 +38,6 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
         }
     }, [loaded]);
 
-    // const initializeCloudinaryWidget = () => {
-    //     if (loaded) {
-    //         setLoading(true);
-    //         const myWidget = (window as any).cloudinary.createUploadWidget(
-    //             uwConfig,
-    //             (error: any, result: any) => {
-    //                 setLoading(false);
-    //                 if (!error && result && result.event === "success") {
-    //                     console.log(result);
-    //                     if (result.info.video) {
-    //                         setMessageType('video');
-    //                     } else {
-    //                         setMessageType('image');
-    //                     }
-    //                     setMessageUrl(result.info.public_id);
-    //                 }
-    //             }
-    //         );
-
-    //         myWidget.open();
-    //     }
-    // };
-
     const initializeCloudinaryWidget = (type: string) => {
         if (loaded) {
             if (type === 'click') setLoading(true);
@@ -85,31 +62,8 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
         }
     };
 
-    // const prefetchWidget = () => {
-    //     if (loaded) {
-    //         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //         const myWidget = (window as any).cloudinary.createUploadWidget(
-    //             uwConfig,
-    //             (error: any, result: any) => {
-    //                 if (!error && result && result.event === "success") {
-    //                     console.log(result);
-    //                     if (result.info.video) {
-    //                         setMessageType('video');
-    //                     } else {
-    //                         setMessageType('image');
-    //                     }
-    //                     setMessageUrl(result.info.public_id);
-    //                 }
-    //             }
-    //         );
-
-    //     }
-
-    // };
-
     if (!prefetch && loaded) {
         setPrefetch(true);
-        // setTimeout(prefetchWidget, 400);
         setTimeout(() => {
             initializeCloudinaryWidget('prefetch');
         }, 250);
