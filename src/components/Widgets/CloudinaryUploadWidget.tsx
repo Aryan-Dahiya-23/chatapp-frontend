@@ -112,7 +112,7 @@ const CloudinaryUploadWidget: React.FC<CloudinaryUploadWidgetProps> = ({ uwConfi
         // setTimeout(prefetchWidget, 400);
         setTimeout(() => {
             initializeCloudinaryWidget('prefetch');
-        }, 400);
+        }, 250);
     }
 
     return (
