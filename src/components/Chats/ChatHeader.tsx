@@ -44,10 +44,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conver
                     :
                     <div className="flex flex-col-reverse justify-end items-center">
                         <div className="flex flex-row mt-1 space-x-1">
-                            <OfflineAvatar height="7" width="7" imgSrc={avatarSrc[0]} />
-                            <OfflineAvatar height="7" width="7" imgSrc={avatarSrc[1]} />
+                            <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[0]} />
+                            <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[1]} />
                         </div>
-                        <OfflineAvatar height="7" width="7" imgSrc={avatarSrc[2]} />
+                        <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[2]} />
                     </div>
                 }
 
