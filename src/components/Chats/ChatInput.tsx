@@ -33,7 +33,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
-    const [ receiverIds, setReceiverIds ] = useState<string[]>([]);
+    const [receiverIds, setReceiverIds] = useState<string[]>([]);
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
@@ -47,7 +47,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     useEffect(() => {
         if (user && data) {
-            console.log(data);
+            alert('triggered');
+            console.log(data.participants);
             setReceiverIds(data.participants.map((participant) => participant._id));
         }
     }, [user, data, id]);
@@ -144,7 +145,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     }
 
     useEffect(() => {
-        if (messageUrl !== '' && messageType !== '' ) {
+        if (messageUrl !== '' && messageType !== '') {
             handleMessageSend(messageUrl, messageType);
         }
     }, [messageUrl, messageType]);
