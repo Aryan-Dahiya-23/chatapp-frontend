@@ -47,7 +47,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     useEffect(() => {
         if (user && data) {
-            alert('triggered');
             console.log(data.participants);
             setReceiverIds(data.participants.map((participant) => participant._id));
         }
