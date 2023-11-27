@@ -21,35 +21,42 @@ const Users = () => {
 
             <Header message="Messages" />
 
+            {isLoading && <UserItemsLoading />}
+
             <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 {user &&
                     user.conversations.map((conversation) => {
+
+                        const username = conversation.conversation.type === 'group' ? conversation.conversation.name : conversation.conversation.participants[0].fullName;
+                        const avatarSrc = [...conversation.conversation.participants.map((participant) => participant.picture), user.picture];
+                        const lastMessage = conversation.conversation.lastMessage ?
+                            conversation.conversation.lastMessage.type === 'text'
+                                ? conversation.conversation.lastMessage.content
+                                : conversation.conversation.lastMessage.type === 'image'
+                                    ? 'Sent an Image'
+                                    : 'Sent a video'
+                            : 'Started a conversation'
+
+                        const lastMessageTime = conversation.conversation.lastMessage &&
+                            new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+
+                        const online = conversation.conversation.type === 'personal' && connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)
+                     
                         return (
                             <UsersItems
-                                key={conversation.conversation.participants[0]._id}
-                                username={conversation.conversation.participants[0].fullName}
+                                key={conversation.conversation._id}
+                                username={username}
                                 conversationId={conversation.conversation._id}
-                                avatarSrc={conversation.conversation.participants[0].picture}
-                                lastMessage={conversation.conversation.lastMessage
-                                    ? conversation.conversation.lastMessage.type === 'text'
-                                        ? conversation.conversation.lastMessage.content
-                                        : conversation.conversation.lastMessage.type === 'image'
-                                            ? 'Sent an Image'
-                                            : 'Sent a video'
-                                    : 'Started a conversation'
-                                }
-                                lastMessageTime={conversation.conversation.lastMessage &&
-                                    new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                                messageSeen={true}
-                                online={connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)}
+                                avatarSrc={avatarSrc}
+                                type={conversation.conversation.type}
+                                lastMessage={lastMessage}
+                                lastMessageTime={lastMessageTime}
+                                online={online}
                             />
                         )
                     })
                 }
             </div>
-
-            {isLoading && <UserItemsLoading />}
-
 
         </div>
     )

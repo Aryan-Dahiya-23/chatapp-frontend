@@ -1,20 +1,19 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-// import OfflineAvatar from "../Avatar/OfflineAvatar";
+import OfflineAvatar from "../Avatar/OfflineAvatar";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import { AuthContext } from "../../contexts/AuthContext";
 import { queryClient } from "../../api/auth";
 import { getConversation } from "../../api/conversation";
-import OfflineAvatar from "../Avatar/OfflineAvatar";
 
 interface UsersItemsProps {
     username: string;
-    avatarSrc: string;
+    avatarSrc: string[];
     conversationId: string;
     lastMessage: string;
     lastMessageTime: string;
     online: boolean;
-    messageSeen: boolean;
+    type: string;
 }
 
 const UsersItems: React.FC<UsersItemsProps> = ({
@@ -24,6 +23,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
     lastMessage,
     lastMessageTime,
     online,
+    type,
 }) => {
     const navigate = useNavigate();
 
@@ -49,13 +49,26 @@ const UsersItems: React.FC<UsersItemsProps> = ({
             onTouchMove={prefetch}
             onFocus={prefetch}
         >
-            <div className="flex h-12 w-12">
-                {online ?
-                    <OnlineAvatar height="12" width="12" imgSrc={avatarSrc} />
-                    :
-                    <OfflineAvatar height="12" width="12" imgSrc={avatarSrc} />
-                }
-            </div>
+            {type === 'personal' ?
+                <div className="flex h-12 w-12">
+                    {online ?
+                        <OnlineAvatar height="12" width="12" imgSrc={avatarSrc[0]} />
+                        :
+                        <OfflineAvatar height="12" width="12" imgSrc={avatarSrc[0]} />
+                    }
+                </div>
+                :
+                <div className="flex flex-col-reverse justify-end items-center">
+
+                    <div className="flex flex-row mt-1 space-x-1">
+                        <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[0]} />
+                        <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[1]} />
+                    </div>
+
+                    {avatarSrc.length > 2 && <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[2]} />}
+
+                </div>
+            }
 
             <div className="flex flex-col w-5/6 h-16 border-b-2 border-gray-200">
                 <div className="flex flex-row w-full justify-between">

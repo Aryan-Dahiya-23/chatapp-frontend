@@ -4,6 +4,7 @@ import { videoCodec } from "@cloudinary/url-gen/actions/transcode";
 import { auto, vp9 } from '@cloudinary/url-gen/qualifiers/videoCodec';
 
 interface ChatBubbleProps {
+    conversationType: string;
     position: string;
     sender: string;
     message: string;
@@ -17,6 +18,7 @@ interface ChatBubbleProps {
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({
+    conversationType,
     position,
     sender,
     message,
@@ -97,7 +99,11 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 
                     {isLastMessage && messageSeen &&
                         <div className="chat-footer opacity-90">
-                            {"Seen by " + footerName.split(" ")[0]}
+                            {conversationType === 'group' ?
+                                "Seen by all"
+                                :
+                                "Seen by " + footerName.split(" ")[0]
+                            }
                         </div>
                     }
                 </div>

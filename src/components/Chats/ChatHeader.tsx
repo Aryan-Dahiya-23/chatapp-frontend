@@ -1,17 +1,16 @@
-// import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io"
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
-// import { AuthContext } from "../../contexts/AuthContext"
 
 interface ChatHeaderProps {
     name: string;
-    avatarSrc: string
-    online: boolean
+    avatarSrc: string[];
+    online: boolean;
+    conversationType: string;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conversationType }) => {
 
     const navigate = useNavigate();
 
@@ -26,27 +25,43 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online }) => {
                 <IoIosArrowBack className="h-8 w-8" />
             </div>
 
+
             <div className="flex flex-row justify-center space-x-2.5 cursor-pointer">
 
-                {online ?
-                    <OnlineAvatar
-                        height="12"
-                        width="12"
-                        imgSrc={avatarSrc}
-                    />
+                {conversationType === 'personal' ?
+                    online ?
+                        <OnlineAvatar
+                            height="12"
+                            width="12"
+                            imgSrc={avatarSrc[0]}
+                        />
+                        :
+                        <OfflineAvatar
+                            height="12"
+                            width="12"
+                            imgSrc={avatarSrc[0]}
+                        />
                     :
-                    <OfflineAvatar
-                        height="12"
-                        width="12"
-                        imgSrc={avatarSrc}
-                    />
+                    <div className="flex flex-col-reverse justify-end items-center">
+                        <div className="flex flex-row mt-1 space-x-1">
+                            <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[0]} />
+                            <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[1]} />
+                        </div>
+                        <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[2]} />
+                    </div>
                 }
 
                 <div className="flex flex-col">
-                    <p className="font-semibold">
+                    <p className="font-semibold text-lg">
                         {name}
                     </p>
-                    <p className="text-gray-500 text-sm">{online ? "Online" : "Offline"}</p>
+                    <p className="text-gray-500 text-sm">
+                        {conversationType === 'personal' ?
+                            online ? "Online" : "Offline"
+                            :
+                            avatarSrc.length + " Members"
+                        }
+                    </p>
                 </div>
             </div>
 
@@ -60,3 +75,30 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online }) => {
 }
 
 export default ChatHeader;
+
+
+
+// {conversationType === 'personal' ?
+// online ?
+//     <OnlineAvatar
+//         height="12"
+//         width="12"
+//         imgSrc={avatarSrc[0]}
+//     />
+//     :
+//     <OfflineAvatar
+//         height="12"
+//         width="12"
+//         imgSrc={avatarSrc[0]}
+//     />
+// :
+// <div className="flex flex-col-reverse justify-end items-center">
+//     <div className="flex flex-row mt-1 space-x-1">
+//         <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[0]} />
+//         <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[1]} />
+//     </div>
+//     <OfflineAvatar height="6" width="6" imgSrc={avatarSrc[2]} />
+// </div>
+// }
+
+

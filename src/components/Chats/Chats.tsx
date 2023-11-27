@@ -16,8 +16,9 @@ const Chats = () => {
     const { id } = useParams();
     const [receiverId, setReceiverId] = useState<string>("");
     const [receiverName, setreceiverName] = useState<string>("");
-    const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string>("");
+    const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string[]>([]);
     const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
+    const [conversationType, setConversationType] = useState<string>("");
     const { connectedUsers } = useContext(AuthContext)
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -36,10 +37,6 @@ const Chats = () => {
         enabled: !!userId
     });
 
-    if(isSuccess){
-        console.log(conversation);
-    }
-    
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
         onSuccess: () => {
@@ -51,20 +48,19 @@ const Chats = () => {
         if (isSuccess && conversation.lastMessage) {
             const lastMessage = conversation.lastMessage;
 
-            if (lastMessage.senderId !== userId && lastMessage.seenBy.length < 1) {
-                console.log(lastMessage);
+            if (lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
                 mutate();
             }
         }
 
         scrollTopToBottom();
-
-        setTimeout(() => {
-            scrollSmooth();
-        }, 100);
     }, [conversation]);
 
-     const scrollTopToBottom = () => {
+    useEffect(() => {
+        setTimeout(scrollSmooth, 100);
+    }, []);
+
+    const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
@@ -74,21 +70,31 @@ const Chats = () => {
         if (chatContainerRef.current) {
             const chatContainer = chatContainerRef.current;
             const lastChild = chatContainer.lastElementChild;
-    
+
             if (lastChild) {
                 lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }
         }
     };
-   
+
     useEffect(() => {
 
         if (user) {
             user.conversations.map((conversation) => {
                 if (conversation.conversation._id === id) {
-                    setReceiverId(conversation.conversation.participants[0]._id);
-                    setreceiverName(conversation.conversation.participants[0].fullName);
-                    setReceiverAvatarSrc(conversation.conversation.participants[0].picture);
+                    if (conversation.conversation.type === 'personal') {
+                        setReceiverId(conversation.conversation.participants[0]._id);
+                        setreceiverName(conversation.conversation.participants[0].fullName);
+                        setReceiverAvatarSrc([conversation.conversation.participants[0].picture]);
+                        setConversationType('personal');
+                    }
+                    else {
+                        setReceiverId(conversation.conversation.participants[0]._id);
+                        setreceiverName(conversation.conversation.name);
+                        setReceiverAvatarSrc([...conversation.conversation.participants.map((participant) => participant.picture), user.picture]);
+                        setConversationType('group');
+                    }
+
                     if (connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)) {
                         setReceiverOnline(true);
                     } else {
@@ -110,6 +116,7 @@ const Chats = () => {
                         name={receiverName}
                         avatarSrc={receiverAvatarSrc}
                         online={receiverOnline}
+                        conversationType={conversationType}
                     />
 
                     {isLoading && (
@@ -123,10 +130,12 @@ const Chats = () => {
                         {isSuccess && conversation.messages.map((message, index: number) => {
 
                             const isLastMessage = index === conversation.messages.length - 1;
+                            const messageSeen = message.seenBy && message.seenBy.includes(receiverId);
 
                             return (
                                 <ChatBubble
                                     key={message?._id}
+                                    conversationType={conversation.type}
                                     position={userId === message.senderId._id ? "right" : "left"}
                                     sender={message.senderId.fullName}
                                     message={message.content}
@@ -136,7 +145,7 @@ const Chats = () => {
                                     isLastMessage={isLastMessage}
                                     online={receiverOnline}
                                     messageType={message.type}
-                                    messageSeen={message.seenBy && message.seenBy.length > 0 && message.seenBy.includes(receiverId)}
+                                    messageSeen={messageSeen}
                                 />
                             );
                         })}

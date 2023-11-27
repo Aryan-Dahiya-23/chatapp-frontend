@@ -2,6 +2,10 @@ import axios from "axios"
 
 const url = import.meta.env.VITE_URL;
 
+interface Participant {
+    id: string;
+}
+
 export const getConversation = async (userId: string, conversationId: string | undefined) => {
     try {
 
@@ -20,6 +24,19 @@ export const createConversation = async (senderId: string, receiverId: string) =
         return response;
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const createGroupConversation = async (participants: Participant[], name: string, userId: string) => {
+    try {
+        const updatedParticipants = [...participants.map(participant => participant.id), userId];
+        const response = await axios.post(`${url}/conversation/create-group-conversation`, {
+            participants: updatedParticipants,
+            name: name
+        });
+        return response;
+    } catch (error) {
+        console.log("Error");
     }
 }
 

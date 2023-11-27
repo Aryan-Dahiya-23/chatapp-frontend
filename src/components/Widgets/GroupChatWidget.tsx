@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import ReactSelect from "react-select";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { fetchPeople } from "../../api/user";
+import { createGroupConversation } from "../../api/conversation";
 
 const CustomOption = ({ label, data, innerProps }) => (
     <div {...innerProps} className="flex flex-row items-center space-x-3 my-2.5 ml-2 cursor-pointer">
@@ -23,6 +24,13 @@ const GroupChatWidget = () => {
     const { data: people, isSuccess } = useQuery({
         queryKey: ['people'],
         queryFn: () => fetchPeople(user._id),
+    });
+
+    const { mutate } = useMutation({
+        mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
+        onSuccess: () => {
+            alert("Success");
+        }
     });
 
     useEffect(() => {
@@ -48,12 +56,13 @@ const GroupChatWidget = () => {
             return;
         }
 
+        mutate();
+
         console.log(groupName);
         console.log(selectedOptions);
     }
     const handleGroupNameChange = (event) => {
-        const newGroupName = event.target.value;
-        setGroupName(newGroupName);
+        setGroupName(event.target.value);
     };
 
     const handleSelectChange = (selectedOptions) => {
