@@ -148,12 +148,11 @@ const Chats = () => {
                         })}
                     </div>
 
-                    {isSuccess &&
-                        <ChatInput
-                            data={conversation}
-                            conversationId={id}
-                        />
-                    }
+
+                    <ChatInput
+                        data={conversation}
+                        conversationId={id}
+                    />
                 </>
             )}
 
