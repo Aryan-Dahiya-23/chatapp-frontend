@@ -33,14 +33,8 @@ const GroupChatWidget = () => {
                 image: person.picture,
                 id: person._id,
             }));
-
-            console.log(filterOptions);
             setOptions(filterOptions);
         }
-
-        console.log(people)
-
-
     }, [isSuccess, people]);
 
     const handleSubmit = (event) => {
@@ -63,7 +57,17 @@ const GroupChatWidget = () => {
     };
 
     const handleSelectChange = (selectedOptions) => {
-        setSelectedOptions(selectedOptions);
+        const updatedOptions = selectedOptions.map(option => {
+            const labelParts = option.label ? option.label.split(' ') : [];
+            const firstName = labelParts.length > 0 ? labelParts[0] : null;
+
+            return {
+                ...option,
+                label: firstName || "DefaultFirstName"
+            };
+        });
+
+        setSelectedOptions(updatedOptions);
     };
 
     const handleClose = async () => {
@@ -73,7 +77,7 @@ const GroupChatWidget = () => {
     return (
         <>
             <dialog id="my_modal_4" className="modal" open>
-                <div className="modal-box w-11/12 h-3/5 md:w-3/5 md:h-3/5 lg:w-1/3 lg:h-3/5 max-w-5xl">
+                <div className="modal-box w-11/12 h-2/3 md:w-3/5 md:h-3/5 lg:w-1/3 lg:h-3/5 max-w-5xl">
                     <h3 className="font-bold text-lg">Create a group chat</h3>
                     <p className="pt-2">Create a chat with more than 2 people.</p>
 
