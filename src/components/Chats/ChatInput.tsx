@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, ChangeEvent, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
 import { HiPaperAirplane } from "react-icons/hi2";
@@ -25,6 +26,8 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 
 const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
+    const { id } = useParams();
+
     const user: any = queryClient.getQueryData(['user']);
 
     const [text, setText] = useState<string>('');
@@ -46,7 +49,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         if (user && data) {
             setReceiverIds(data.participants.map((participant) => participant._id));
         }
-    }, [user, data]);
+    }, [user, data, id]);
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = event.target;
@@ -91,11 +94,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                 messages: [...data.messages, newMessage],
             };
 
-            console.log("new conversation: ",newData);
             queryClient.setQueryData(['chats', conversationId], newData);
-
             socket.emit('chat message', receiverIds, newMessage, conversationId);
-
             return { previousData: data };
         },
         onSuccess: () => {

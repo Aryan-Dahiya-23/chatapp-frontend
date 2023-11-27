@@ -52,7 +52,7 @@ const Chats = () => {
             }
         }
         scrollTopToBottom();
-    }, [conversation]);
+    }, [conversation, id]);
 
     useEffect(() => {
         setTimeout(scrollSmooth, 150);
@@ -101,7 +101,7 @@ const Chats = () => {
             })
         }
 
-    }, [user, conversation, connectedUsers]);
+    }, [user, conversation, connectedUsers, id]);
 
     return (
 
