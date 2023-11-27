@@ -47,7 +47,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     useEffect(() => {
         if (user && data) {
-            console.log(data.participants);
             setReceiverIds(data.participants.map((participant) => participant._id));
         }
     }, [user, data, id]);
