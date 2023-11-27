@@ -40,24 +40,22 @@ const Chats = () => {
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
         onSuccess: () => {
-            socket.emit('seen message', id);
+            socket.emit('seen message', conversation.lastMessage.senderId, id);
         }
     });
 
     useEffect(() => {
         if (isSuccess && conversation.lastMessage) {
             const lastMessage = conversation.lastMessage;
-
             if (lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
                 mutate();
             }
         }
-
         scrollTopToBottom();
     }, [conversation]);
 
     useEffect(() => {
-        setTimeout(scrollSmooth, 100);
+        setTimeout(scrollSmooth, 150);
     }, []);
 
     const scrollTopToBottom = () => {
@@ -87,18 +85,17 @@ const Chats = () => {
                         setreceiverName(conversation.conversation.participants[0].fullName);
                         setReceiverAvatarSrc([conversation.conversation.participants[0].picture]);
                         setConversationType('personal');
+                        if (connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)) {
+                            setReceiverOnline(true);
+                        } else {
+                            setReceiverOnline(false);
+                        }
                     }
                     else {
-                        setReceiverId(conversation.conversation.participants[0]._id);
+                        setReceiverId(conversation.conversation._id);
                         setreceiverName(conversation.conversation.name);
                         setReceiverAvatarSrc([...conversation.conversation.participants.map((participant) => participant.picture), user.picture]);
                         setConversationType('group');
-                    }
-
-                    if (connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)) {
-                        setReceiverOnline(true);
-                    } else {
-                        setReceiverOnline(false);
                     }
                 }
             })
@@ -143,7 +140,7 @@ const Chats = () => {
                                     avatarSrc={message.senderId.picture}
                                     footerName={receiverName}
                                     isLastMessage={isLastMessage}
-                                    online={receiverOnline}
+                                    online={connectedUsers.length > 0 && connectedUsers.includes(message.senderId._id)}
                                     messageType={message.type}
                                     messageSeen={messageSeen}
                                 />

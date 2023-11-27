@@ -30,7 +30,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
-    const { receiverId, setReceiverId } = useContext(AuthContext);
+    const [ receiverIds, setReceiverIds ] = useState<string[]>([]);
+    // const { receiverId, setReceiverId } = useContext(AuthContext);
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
@@ -44,7 +45,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     useEffect(() => {
         if (user && data) {
-            setReceiverId(data.participants[0]._id);
+            setReceiverIds(data.participants.map((participant) => participant._id));
         }
     }, [user, data]);
 
@@ -93,12 +94,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
             queryClient.setQueryData(['chats', conversationId], newData);
 
-            socket.emit('chat message', receiverId, newMessage, conversationId);
+            socket.emit('chat message', receiverIds, newMessage, conversationId);
 
             return { previousData: data };
         },
         onSuccess: () => {
-            socket.emit('chat message', receiverId);
+            socket.emit('chat message', receiverIds);
             queryClient.invalidateQueries({ queryKey: ['user'] }); 9
             queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
             setMessage({});
@@ -150,8 +151,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             className={`flex flex-row justify-between w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
             <CloudinaryUploadWidget uwConfig={uwConfig} />
-
-            {/* <HiPhoto id="upload_widget" className="cloudinary-button chat-icons text-sky-500 hover:text-sky-600" /> */}
 
             <textarea
                 placeholder="Write a message"

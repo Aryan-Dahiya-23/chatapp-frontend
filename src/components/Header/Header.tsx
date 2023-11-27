@@ -59,27 +59,25 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             setUserConnected(true);
         }
 
-        socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
-            if (userId === user._id) {
+        socket.on('chat message', (newMessage: object, conversationId: string) => {
+            if (newMessage && conversationId) {
+                const conversation: any = queryClient.getQueryData(['chats', conversationId]);
 
-                if (newMessage && conversationId) {
-                    const conversation: any = queryClient.getQueryData(['chats', conversationId]);
+                queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
 
-                    queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+                const newConversation = {
+                    ...conversation,
+                    messages: [...conversation.messages, newMessage],
+                };
 
-                    const newConversation = {
-                        ...conversation,
-                        messages: [...conversation.messages, newMessage],
-                    };
-
-                    queryClient.setQueryData(['chats', conversationId], newConversation);
-                } else {
-                    queryClient.invalidateQueries();
-                }
+                queryClient.setQueryData(['chats', conversationId], newConversation);
+            } else {
+                queryClient.invalidateQueries();
             }
         });
 
         socket.on('seen message', (conversationId) => {
+            alert("Message Seen")
             if (id && id === conversationId) {
                 queryClient.invalidateQueries({ queryKey: ['chats', id] });
             }
