@@ -96,10 +96,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
             queryClient.setQueryData(['chats', conversationId], newData);
 
-            setReceiverIds(data.participants.map((participant) => participant._id));
-            socket.emit('chat message', receiverIds, newMessage, conversationId);
+            const updatedReceiverIds = data.participants.map((participant) => participant._id);
+            setReceiverIds(updatedReceiverIds);
+            socket.emit('chat message', updatedReceiverIds, newMessage, conversationId);
 
-            console.log(receiverIds);
+            console.log(updatedReceiverIds);
             return { previousData: data };
         },
         onSuccess: () => {
