@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         });
 
         socket.on('seen message', (conversationId) => {
-            alert("Message Seen")
+            // alert("Message Seen")
             if (id && id === conversationId) {
                 queryClient.invalidateQueries({ queryKey: ['chats', id] });
             }

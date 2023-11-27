@@ -48,6 +48,7 @@ const Chats = () => {
         if (isSuccess && conversation.lastMessage) {
             const lastMessage = conversation.lastMessage;
             if (lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
+                console.log('executing mutate');
                 mutate();
             }
         }
