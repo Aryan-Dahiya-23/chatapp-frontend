@@ -45,11 +45,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         uploadPreset
     });
 
-    useEffect(() => {
-        if (user && data) {
-            setReceiverIds(data.participants.map((participant) => participant._id));
-        }
-    }, [user, data, id]);
+    // useEffect(() => {
+    //     if (user && data) {
+    //         setReceiverIds(data.participants.map((participant) => participant._id));
+    //     }
+    // }, [user, data, id]);
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = event.target;
@@ -95,6 +95,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             };
 
             queryClient.setQueryData(['chats', conversationId], newData);
+
+            setReceiverIds(data.participants.map((participant) => participant._id));
             socket.emit('chat message', receiverIds, newMessage, conversationId);
 
             console.log(receiverIds);
@@ -102,7 +104,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         },
         onSuccess: () => {
             socket.emit('chat message', receiverIds);
-            queryClient.invalidateQueries({ queryKey: ['user'] }); 9
+            queryClient.invalidateQueries({ queryKey: ['user'] });
             queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
             setMessage({});
         },
