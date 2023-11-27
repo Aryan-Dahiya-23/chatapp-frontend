@@ -60,19 +60,24 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         }
 
         socket.on('chat message', (newMessage: object, conversationId: string) => {
-            if (newMessage && conversationId) {
-                const conversation: any = queryClient.getQueryData(['chats', conversationId]);
 
-                queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+            const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
+            // alert(isConversationExists);
+            if (isConversationExists) {
+                if (newMessage && conversationId) {
+                    const conversation: any = queryClient.getQueryData(['chats', conversationId]);
 
-                const newConversation = {
-                    ...conversation,
-                    messages: [...conversation.messages, newMessage],
-                };
+                    queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
 
-                queryClient.setQueryData(['chats', conversationId], newConversation);
-            } else {
-                queryClient.invalidateQueries();
+                    const newConversation = {
+                        ...conversation,
+                        messages: [...conversation.messages, newMessage],
+                    };
+
+                    queryClient.setQueryData(['chats', conversationId], newConversation);
+                } else {
+                    queryClient.invalidateQueries();
+                }
             }
         });
 
