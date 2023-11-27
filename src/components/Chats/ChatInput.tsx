@@ -31,7 +31,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
     const [ receiverIds, setReceiverIds ] = useState<string[]>([]);
-    // const { receiverId, setReceiverId } = useContext(AuthContext);
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
@@ -92,6 +91,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                 messages: [...data.messages, newMessage],
             };
 
+            console.log("new conversation: ",newData);
             queryClient.setQueryData(['chats', conversationId], newData);
 
             socket.emit('chat message', receiverIds, newMessage, conversationId);

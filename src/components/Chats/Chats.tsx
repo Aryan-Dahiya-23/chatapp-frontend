@@ -45,7 +45,7 @@ const Chats = () => {
     });
 
     useEffect(() => {
-        if (isSuccess && conversation.lastMessage) {
+        if (isSuccess && conversation.lastMessage && conversation.messages[conversation.messages.length - 1]._id) {
             const lastMessage = conversation.lastMessage;
             if (lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
                 alert('executing mutate');
