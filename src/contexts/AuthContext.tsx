@@ -20,7 +20,9 @@ interface AuthContextProps {
     messageUrl: string;
     setMessageUrl: Dispatch<SetStateAction<string>>;
     messageType: string;
-    setMessageType: Dispatch<SetStateAction<string>>;    
+    setMessageType: Dispatch<SetStateAction<string>>;
+    messageSeenStatus: string;
+    setMessageSeenStatus: Dispatch<SetStateAction<string>>;
 }
 
 const defaultAuthContext: AuthContextProps = {
@@ -37,30 +39,36 @@ const defaultAuthContext: AuthContextProps = {
     connectedUsers: [],
     setConnectedUsers: () => { },
     userConnected: false,
-    setUserConnected: ( ) => { },
+    setUserConnected: () => { },
     messageUrl: "",
-    setMessageUrl: ( ) => { },
+    setMessageUrl: () => { },
     messageType: "",
-    setMessageType: ( ) => { },
+    setMessageType: () => { },
+    messageSeenStatus: "idle",
+    setMessageSeenStatus: () => { },
 };
 
-export const AuthContext = createContext < AuthContextProps > (defaultAuthContext);
+export const AuthContext = createContext<AuthContextProps>(defaultAuthContext);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [loggedIn, setLoggedIn] = useState < boolean > (false);
-    const [user, setUser] = useState < any > (undefined);
-    const [userEmail, setUserEmail] = useState < string > ("");
-    const [userId, setUserId] = useState < number | null > (null);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [user, setUser] = useState<any>(undefined);
+    const [userEmail, setUserEmail] = useState<string>("");
+    const [userId, setUserId] = useState<number | null>(null);
     const [receiverId, setReceiverId] = useState<string>("");
-    const [ connectedUsers, setConnectedUsers ] = useState<string[]>([]);
-    const [ userConnected, setUserConnected ] = useState<boolean>(false);
+    const [connectedUsers, setConnectedUsers] = useState<string[]>([]);
+    const [userConnected, setUserConnected] = useState<boolean>(false);
     const [messageUrl, setMessageUrl] = useState<string>("");
     const [messageType, setMessageType] = useState<string>("");
+    const [messageSeenStatus, setMessageSeenStatus] = useState<string>("idle");
 
     return (
         <AuthContext.Provider
-            value={{ loggedIn, setLoggedIn, user, setUser, userEmail, setUserEmail, userId, setUserId, receiverId, setReceiverId, 
-                connectedUsers, setConnectedUsers, userConnected, setUserConnected, messageUrl, setMessageUrl, messageType, setMessageType }}
+            value={{
+                loggedIn, setLoggedIn, user, setUser, userEmail, setUserEmail, userId, setUserId, receiverId, setReceiverId,
+                connectedUsers, setConnectedUsers, userConnected, setUserConnected, messageUrl, setMessageUrl, messageType, setMessageType,
+                messageSeenStatus, setMessageSeenStatus
+            }}
         >
             {children}
         </AuthContext.Provider>

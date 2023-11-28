@@ -14,7 +14,7 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 const Chats = () => {
 
     const { id } = useParams();
-    const [receiverId, setReceiverId] = useState<string>("");
+    const { messageSeenStatus, setMessageSeenStatus } = useContext(AuthContext);
     const [receiverName, setreceiverName] = useState<string>("");
     const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string[]>([]);
     const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
@@ -39,21 +39,27 @@ const Chats = () => {
 
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
+        onMutate: () => {
+            setMessageSeenStatus('pending');
+        },
         onSuccess: () => {
-            socket.emit('seen message', conversation.lastMessage.senderId, id);
+            socket.emit('seen message', id);
+            setMessageSeenStatus('idle');
         }
     });
 
     useEffect(() => {
         if (isSuccess && conversation.lastMessage && conversation.messages[conversation.messages.length - 1]._id) {
             const lastMessage = conversation.lastMessage;
-            if (lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
+            if (messageSeenStatus === 'idle' && lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
+                console.log('mutating');
+                setMessageSeenStatus('pending');
                 mutate();
             }
         }
         scrollTopToBottom();
 
-        if(conversation) console.log(conversation);
+        if (conversation) console.log(conversation);
     }, [conversation, id]);
 
     useEffect(() => {
@@ -83,7 +89,7 @@ const Chats = () => {
             user.conversations.map((conversation) => {
                 if (conversation.conversation._id === id) {
                     if (conversation.conversation.type === 'personal') {
-                        setReceiverId(conversation.conversation.participants[0]._id);
+                        // setReceiverId(conversation.conversation.participants[0]._id);
                         setreceiverName(conversation.conversation.participants[0].fullName);
                         setReceiverAvatarSrc([conversation.conversation.participants[0].picture]);
                         setConversationType('personal');
@@ -94,7 +100,7 @@ const Chats = () => {
                         }
                     }
                     else {
-                        setReceiverId(conversation.conversation._id);
+                        // setReceiverId(conversation.conversation._id);
                         setreceiverName(conversation.conversation.name);
                         setReceiverAvatarSrc([...conversation.conversation.participants.map((participant) => participant.picture), user.picture]);
                         setConversationType('group');
@@ -129,7 +135,9 @@ const Chats = () => {
                         {isSuccess && conversation.messages.map((message, index: number) => {
 
                             const isLastMessage = index === conversation.messages.length - 1;
-                            const messageSeen = message.seenBy && message.seenBy.includes(receiverId);
+                            // const messageSeen = message.seenBy && message.seenBy.includes(receiverId);
+                            const messageSeen = message.seenBy && message.seenBy.length >= conversation.participants.length;
+                            // if(isLastMessage) console.log(messageSeen);
 
                             return (
                                 <ChatBubble

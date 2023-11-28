@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { fetchPeople } from "../../api/user";
 import { createGroupConversation } from "../../api/conversation";
+import { queryClient } from "../../api/auth";
 
 const CustomOption = ({ label, data, innerProps }) => (
     <div {...innerProps} className="flex flex-row items-center space-x-3 my-2.5 ml-2 cursor-pointer">
@@ -30,6 +31,7 @@ const GroupChatWidget = () => {
         mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
         onSuccess: () => {
             setGroupChatWidget(false);
+            queryClient.invalidateQueries({queryKey: ['user']});
         }
     });
 
@@ -57,9 +59,6 @@ const GroupChatWidget = () => {
         }
 
         mutate();
-
-        console.log(groupName);
-        console.log(selectedOptions);
     }
     const handleGroupNameChange = (event) => {
         setGroupName(event.target.value);

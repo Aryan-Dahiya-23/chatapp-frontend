@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
@@ -7,7 +6,6 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { verify } from "../../api/auth";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-// import { queryClient } from "../../api/auth";
 import { handleChatMessage, handleMessageSent, handleSeenMessage } from "../../utils/scoketHandlers";
 
 interface HeaderProps {
