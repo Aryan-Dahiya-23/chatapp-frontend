@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, ChangeEvent, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
 import { HiPaperAirplane } from "react-icons/hi2";
@@ -26,14 +25,11 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 
 const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
-    const { id } = useParams();
-
     const user: any = queryClient.getQueryData(['user']);
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
-    const [receiverIds, setReceiverIds] = useState<string[]>([]);
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
@@ -44,12 +40,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         cloudName,
         uploadPreset
     });
-
-    useEffect(() => {
-        if (user && data) {
-            setReceiverIds(data.participants.map((participant) => participant._id));
-        }
-    }, [user, data, id]);
 
     const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = event.target;
@@ -95,11 +85,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             };
 
             queryClient.setQueryData(['chats', conversationId], newData);
-            socket.emit('chat message', receiverIds, newMessage, conversationId);
+            socket.emit('chat message', user._id, newMessage, conversationId);
             return { previousData: data };
         },
         onSuccess: () => {
-            socket.emit('chat message', receiverIds);
+            socket.emit('message sent', user._id, conversationId);
             queryClient.invalidateQueries({ queryKey: ['user'] });
             queryClient.invalidateQueries({ queryKey: ['chats', conversationId] });
             setMessage({});

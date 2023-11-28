@@ -52,6 +52,8 @@ const Chats = () => {
             }
         }
         scrollTopToBottom();
+
+        if(conversation) console.log(conversation);
     }, [conversation, id]);
 
     useEffect(() => {

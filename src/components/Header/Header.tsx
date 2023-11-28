@@ -7,7 +7,8 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { verify } from "../../api/auth";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { queryClient } from "../../api/auth";
+// import { queryClient } from "../../api/auth";
+import { handleChatMessage, handleMessageSent, handleSeenMessage } from "../../utils/scoketHandlers";
 
 interface HeaderProps {
     message: string,
@@ -59,39 +60,23 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             setUserConnected(true);
         }
 
-        socket.on('chat message', (newMessage: object, conversationId: string) => {
+        socket.on('chat message', (userId, newMessage, conversationId) => {
+            handleChatMessage(user, userId, newMessage, conversationId);
+        });
 
-            // const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
-            // alert(isConversationExists);
-            // if (isConversationExists) {
-            if (newMessage && conversationId) {
-                const conversation: any = queryClient.getQueryData(['chats', conversationId]);
-
-                queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
-
-                const newConversation = {
-                    ...conversation,
-                    messages: [...conversation.messages, newMessage],
-                };
-
-                queryClient.setQueryData(['chats', conversationId], newConversation);
-            } else {
-                queryClient.invalidateQueries();
-            }
-            // }
+        socket.on('message sent', (userId, conversationId) => {
+            handleMessageSent(user, userId, conversationId);
         });
 
         socket.on('seen message', (conversationId) => {
-            // alert("Message Seen")
-            if (id && id === conversationId) {
-                queryClient.invalidateQueries({ queryKey: ['chats', id] });
-            }
-        })
+            handleSeenMessage(id, conversationId);
+        });
 
         return () => {
             socket.off('connected users');
-            socket.off('seen message');
             socket.off('chat message');
+            socket.off('message sent');
+            socket.off('seen message');
         };
     }, [user, isSuccess]);
 
@@ -155,3 +140,62 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 }
 
 export default Header;
+
+
+
+
+// useEffect(() => {
+
+// socket.on("connect", () => {
+//     console.log("Connected to the Socket.IO server");
+// });
+
+// socket.on('connected users', (connectedUserIds) => {
+//     setConnectedUsers(connectedUserIds);
+// });
+
+// if (!userConnected && user && user._id) {
+//     const userId: string = user._id;
+//     socket.emit('user connected', userId);
+//     setUserConnected(true);
+// }
+
+//     socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
+
+//         const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
+
+//         if (isConversationExists && userId !== user._id) {
+//             const conversation: any = queryClient.getQueryData(['chats', conversationId]);
+
+//             queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+
+//             const newConversation = {
+//                 ...conversation,
+//                 messages: [...conversation.messages, newMessage],
+//             };
+
+//             queryClient.setQueryData(['chats', conversationId], newConversation);
+//         }
+//     })
+
+//     socket.on('message sent', (userId, conversationId) => {
+//         const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
+//         if (isConversationExists && userId !== user._id) {
+//             queryClient.invalidateQueries();
+
+//         }
+//     });
+
+//     socket.on('seen message', (conversationId) => {
+//         if (id && id === conversationId) {
+//             queryClient.invalidateQueries({ queryKey: ['chats', id] });
+//         }
+//     })
+
+//     return () => {
+//         socket.off('connected users');
+//         socket.off('chat message');
+//         socket.off('message sent')
+//         socket.off('seen message');
+//     };
+// }, [user, isSuccess]);
