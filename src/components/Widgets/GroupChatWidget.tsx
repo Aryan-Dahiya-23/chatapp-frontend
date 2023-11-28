@@ -29,7 +29,7 @@ const GroupChatWidget = () => {
     const { mutate } = useMutation({
         mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
         onSuccess: () => {
-            alert("Success");
+            setGroupChatWidget(false);
         }
     });
 
