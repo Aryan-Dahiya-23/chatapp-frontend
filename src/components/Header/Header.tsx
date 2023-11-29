@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { verify } from "../../api/auth";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
-import { handleChatMessage, handleMessageSent, handleSeenMessage } from "../../utils/scoketHandlers";
+import { verify } from "../../api/auth";
+import { handleChatMessage, handleMessageSent, handleSeenMessage, handleNewConversation } from "../../utils/scoketHandlers";
 
 interface HeaderProps {
     message: string,
@@ -70,11 +70,16 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             handleSeenMessage(id, conversationId);
         });
 
+        socket.on('new conversation', (userId) =>{
+            handleNewConversation(userId, user._id);
+        });
+
         return () => {
             socket.off('connected users');
             socket.off('chat message');
             socket.off('message sent');
             socket.off('seen message');
+            socket.off('new conversation');
         };
     }, [user, isSuccess]);
 

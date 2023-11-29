@@ -24,6 +24,17 @@ export const verify = async () => {
     }
 };
 
+export const fetchPeople = async (userId: string) => {
+    try {
+        const response = await axios.get(`${url}/auth/people`, {
+            params: { userId },
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const logout = async () => {
     try {
         const response = await axios.post(`${url}/auth/logout`, {}, {

@@ -38,3 +38,8 @@ export const handleSeenMessage = (id: string | undefined, conversationId: string
     }
 };
 
+export const handleNewConversation = (userId: string, currentUserId: string) => {
+    if(userId === currentUserId){
+        queryClient.invalidateQueries({queryKey: ['user']});
+    }
+}

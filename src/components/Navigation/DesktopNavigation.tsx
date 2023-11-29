@@ -8,8 +8,7 @@ import RingAvatar from "../Avatar/RingAvatar";
 import { queryClient } from "../../api/auth";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { logout } from "../../api/auth";
-import { fetchPeople } from "../../api/user";
+import { logout, fetchPeople } from "../../api/auth";
 
 const DesktopNavigation = () => {
 

@@ -2,8 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header"
 import PeopleItems from "./PeopleItems";
 import PeopleItemsLoading from "../UI/PeopleItemsLoading";
-import { verify } from "../../api/auth";
-import { fetchPeople } from "../../api/user";
+import { verify, fetchPeople } from "../../api/auth";
 
 const People = () => {
 

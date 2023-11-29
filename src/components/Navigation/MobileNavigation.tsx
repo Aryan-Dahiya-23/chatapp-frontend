@@ -9,7 +9,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { queryClient } from "../../api/auth";
 import { logout } from "../../api/auth";
-import { fetchPeople } from "../../api/user";
+import { fetchPeople } from "../../api/auth";
 
 const MobileNavigation = () => {
 

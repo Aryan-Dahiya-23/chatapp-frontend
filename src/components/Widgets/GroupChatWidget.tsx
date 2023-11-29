@@ -3,7 +3,7 @@ import ReactSelect from "react-select";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { fetchPeople } from "../../api/user";
+import { fetchPeople } from "../../api/auth";
 import { createGroupConversation } from "../../api/conversation";
 import { queryClient } from "../../api/auth";
 
@@ -27,11 +27,11 @@ const GroupChatWidget = () => {
         queryFn: () => fetchPeople(user._id),
     });
 
-    const { mutate } = useMutation({
+    const { mutate, status } = useMutation({
         mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
         onSuccess: () => {
             setGroupChatWidget(false);
-            queryClient.invalidateQueries({queryKey: ['user']});
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         }
     });
 
@@ -49,6 +49,8 @@ const GroupChatWidget = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        if (status === 'pending') return
 
         if (groupName.trim().length === 0) {
             alert("Enter a group name");
@@ -125,9 +127,17 @@ const GroupChatWidget = () => {
                                 }}
                             />
 
-                            <button type="submit" className="btn btn-info text-white absolute right-2 bottom-4">Create</button>
+                            <button type="submit" className="btn btn-info text-white absolute right-2 bottom-4">
+                                {status === 'pending' ?
+                                    <span className="loading loading-spinner"></span>
+                                    :
+                                    "Create"
+                                }
+                            </button>
                             <button className="btn btn-ghost absolute right-24 bottom-4" onClick={handleClose}>Cancel</button>
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={handleClose}>✕</button>
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={handleClose}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
                         </form>
                     </div>
                 </div>
