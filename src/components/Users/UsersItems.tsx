@@ -81,7 +81,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
                 </div>
 
                 <div className="w-full">
-                    <p className={`text-gray-500 w-[100%] whitespace-nowrap text-ellipsis overflow-hidden ${messageUnseen && "text-black font-extrabold"}`}>
+                    <p className={`w-[100%] whitespace-nowrap text-ellipsis overflow-hidden ${ messageUnseen ? "text-black font-extrabold": "text-gray-500" }`}>
                         {lastMessage}
                     </p>
                 </div>
