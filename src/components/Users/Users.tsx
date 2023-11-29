@@ -26,9 +26,7 @@ const Users = () => {
             <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 {user && isSuccess &&
                     user.conversations.map((conversation) => {
-
-                        console.log(conversation.conversation.lastMessage?.content);
-
+                        
                         const username = conversation.conversation.type === 'group' ? conversation.conversation.name : conversation.conversation.participants[0].fullName;
                         const avatarSrc = [...conversation.conversation.participants.map((participant) => participant.picture), user.picture];
                         const lastMessage = conversation.conversation.lastMessage ?

@@ -53,14 +53,12 @@ const Chats = () => {
         if (isSuccess && conversation.lastMessage && conversation.messages[conversation.messages.length - 1]._id) {
             const lastMessage = conversation.lastMessage;
             if (messageSeenStatus === 'idle' && lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
-                console.log('mutating');
                 setMessageSeenStatus('pending');
                 mutate();
             }
         }
         scrollTopToBottom();
 
-        if (conversation) console.log(conversation);
     }, [conversation, id]);
 
     useEffect(() => {
@@ -136,9 +134,7 @@ const Chats = () => {
                         {isSuccess && conversation.messages.map((message, index: number) => {
 
                             const isLastMessage = index === conversation.messages.length - 1;
-                            // const messageSeen = message.seenBy && message.seenBy.includes(receiverId);
                             const messageSeen = message.seenBy && message.seenBy.length >= conversation.participants.length;
-                            // if(isLastMessage) console.log(messageSeen);
 
                             return (
                                 <ChatBubble

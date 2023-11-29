@@ -34,8 +34,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const { messageType, setMessageType } = useContext(AuthContext);
     const { setChatHeight } = useContext(ThemeContext);
 
-    const [cloudName] = useState("dq3iqffnu");
-    const [uploadPreset] = useState("odksp3xk");
+    const [cloudName] = useState(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+    const [uploadPreset] = useState(import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     const [uwConfig] = useState({
         cloudName,
         uploadPreset

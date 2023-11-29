@@ -35,7 +35,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
 
     const cld = new Cloudinary({
         cloud: {
-            cloudName: 'dq3iqffnu'
+            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
         }
     });
 
