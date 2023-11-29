@@ -14,7 +14,6 @@ export const verify = async () => {
         });
 
         if (response.data.error === false) {
-            console.log("Successfully Logged In", response.data.user);
             return response.data.user;
         } else {
             console.error("Not Authorized", response.data.reason);

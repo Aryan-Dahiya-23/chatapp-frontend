@@ -10,7 +10,7 @@ const Users = () => {
 
     const { connectedUsers } = useContext(AuthContext);
 
-    const { data: user, isLoading } = useQuery({
+    const { data: user, isLoading, isSuccess } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
         staleTime: 10000000,
@@ -24,8 +24,10 @@ const Users = () => {
             {isLoading && <UserItemsLoading />}
 
             <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
-                {user &&
+                {user && isSuccess &&
                     user.conversations.map((conversation) => {
+
+                        console.log(conversation.conversation.lastMessage?.content);
 
                         const username = conversation.conversation.type === 'group' ? conversation.conversation.name : conversation.conversation.participants[0].fullName;
                         const avatarSrc = [...conversation.conversation.participants.map((participant) => participant.picture), user.picture];
@@ -40,8 +42,9 @@ const Users = () => {
                         const lastMessageTime = conversation.conversation.lastMessage &&
                             new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
-                        const online = conversation.conversation.type === 'personal' && connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id)
-                     
+                        const online = conversation.conversation.type === 'personal' && connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id);
+                        const messageUnseen = conversation.conversation.lastMessage?.senderId !== user._id && !conversation.conversation.lastMessage?.seenBy.includes(user._id);   
+                       
                         return (
                             <UsersItems
                                 key={conversation.conversation._id}
@@ -52,6 +55,7 @@ const Users = () => {
                                 lastMessage={lastMessage}
                                 lastMessageTime={lastMessageTime}
                                 online={online}
+                                messageUnseen={messageUnseen}
                             />
                         )
                     })

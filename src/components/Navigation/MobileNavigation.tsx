@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { toast }from "react-toastify"
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { MdPeopleAlt } from "react-icons/md"
 import { IoLogOutOutline } from "react-icons/io5"
@@ -25,6 +26,7 @@ const MobileNavigation = () => {
         onSuccess: async () => {
             queryClient.invalidateQueries();
             setUser({});
+            toast.success("You've been successfully logged out.");
         },
         onSettled: async () => {
             setLogoutLoading(false);

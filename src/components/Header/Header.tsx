@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
+import { toast } from "react-toastify";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -16,11 +17,12 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Header: React.FC<HeaderProps> = ({ message }) => {
 
+    const location = useLocation();
     const navigate = useNavigate();
-
     const { id } = useParams();
 
     const { theme, setTheme } = useContext(ThemeContext);
+    const { loginToast, setLoginToast } = useContext(ThemeContext);
     const { setGroupChatWidget } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
     const { userConnected, setUserConnected } = useContext(AuthContext);
@@ -39,13 +41,18 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     }, [isError, error]);
 
     useEffect(() => {
-        if (isSuccess && data) setUser(data);
+        if (isSuccess && data) {
+            setUser(data)
+            if (!loginToast) {
+                setLoginToast(true);
+                toast.success("Welcome back!");
+            }
+        }
     }, [data, isSuccess]);
 
     useEffect(() => {
 
         socket.on("connect", () => {
-            console.log("Connected to the Socket.IO server");
         });
 
         socket.on('connected users', (connectedUserIds) => {
@@ -59,7 +66,8 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
         }
 
         socket.on('chat message', (userId, newMessage, conversationId) => {
-            handleChatMessage(user, userId, newMessage, conversationId);
+            const allowedRoutes = ['/', '/people'];
+            handleChatMessage(user, userId, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
         });
 
         socket.on('message sent', (userId, conversationId) => {
@@ -70,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             handleSeenMessage(id, conversationId);
         });
 
-        socket.on('new conversation', (userId) =>{
+        socket.on('new conversation', (userId) => {
             handleNewConversation(userId, user._id);
         });
 
@@ -143,62 +151,3 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 }
 
 export default Header;
-
-
-
-
-// useEffect(() => {
-
-// socket.on("connect", () => {
-//     console.log("Connected to the Socket.IO server");
-// });
-
-// socket.on('connected users', (connectedUserIds) => {
-//     setConnectedUsers(connectedUserIds);
-// });
-
-// if (!userConnected && user && user._id) {
-//     const userId: string = user._id;
-//     socket.emit('user connected', userId);
-//     setUserConnected(true);
-// }
-
-//     socket.on('chat message', (userId: string, newMessage: object, conversationId: string) => {
-
-//         const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
-
-//         if (isConversationExists && userId !== user._id) {
-//             const conversation: any = queryClient.getQueryData(['chats', conversationId]);
-
-//             queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
-
-//             const newConversation = {
-//                 ...conversation,
-//                 messages: [...conversation.messages, newMessage],
-//             };
-
-//             queryClient.setQueryData(['chats', conversationId], newConversation);
-//         }
-//     })
-
-//     socket.on('message sent', (userId, conversationId) => {
-//         const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
-//         if (isConversationExists && userId !== user._id) {
-//             queryClient.invalidateQueries();
-
-//         }
-//     });
-
-//     socket.on('seen message', (conversationId) => {
-//         if (id && id === conversationId) {
-//             queryClient.invalidateQueries({ queryKey: ['chats', id] });
-//         }
-//     })
-
-//     return () => {
-//         socket.off('connected users');
-//         socket.off('chat message');
-//         socket.off('message sent')
-//         socket.off('seen message');
-//     };
-// }, [user, isSuccess]);

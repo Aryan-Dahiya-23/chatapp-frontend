@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { fetchPeople } from "../../api/auth";
@@ -31,6 +32,7 @@ const GroupChatWidget = () => {
         mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
         onSuccess: () => {
             setGroupChatWidget(false);
+            toast.success("New Group created");
             queryClient.invalidateQueries({ queryKey: ['user'] });
         }
     });
@@ -53,15 +55,16 @@ const GroupChatWidget = () => {
         if (status === 'pending') return
 
         if (groupName.trim().length === 0) {
-            alert("Enter a group name");
+            toast.error('Enter a group name');
             return;
         } else if (selectedOptions.length < 2) {
-            alert("Add atleast 2 Members");
+            toast.error('Add at least 2 Members');
             return;
         }
 
         mutate();
     }
+
     const handleGroupNameChange = (event) => {
         setGroupName(event.target.value);
     };

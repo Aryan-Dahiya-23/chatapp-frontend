@@ -1,3 +1,5 @@
+// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { queryClient } from "../api/auth";
 
 type Conversation = {
@@ -8,10 +10,12 @@ type Conversation = {
     _id: string,
 }
 
-export const handleChatMessage = (user, userId, newMessage, conversationId) => {
+export const handleChatMessage = (user, userId, newMessage, conversationId, toastNotification) => {
     const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
 
     if (isConversationExists && userId !== user._id) {
+        if (toastNotification) toast.success(`New Message received from ${newMessage.senderId.fullName}`);
+
         const conversation: Conversation | undefined = queryClient.getQueryData(['chats', conversationId]);
 
         queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
@@ -39,7 +43,7 @@ export const handleSeenMessage = (id: string | undefined, conversationId: string
 };
 
 export const handleNewConversation = (userId: string, currentUserId: string) => {
-    if(userId === currentUserId){
-        queryClient.invalidateQueries({queryKey: ['user']});
+    if (userId === currentUserId) {
+        queryClient.invalidateQueries({ queryKey: ['user'] });
     }
 }

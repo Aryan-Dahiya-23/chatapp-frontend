@@ -6,7 +6,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ChatBubble from "./ChatBubbe";
-import { verify } from "../../api/auth";
+import { queryClient, verify } from "../../api/auth";
 import { getConversation, readMessage } from "../../api/conversation";
 
 const socket: Socket = io(import.meta.env.VITE_URL);
@@ -44,6 +44,7 @@ const Chats = () => {
         },
         onSuccess: () => {
             socket.emit('seen message', id);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
             setMessageSeenStatus('idle');
         }
     });

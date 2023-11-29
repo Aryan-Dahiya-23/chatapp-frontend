@@ -14,6 +14,7 @@ interface UsersItemsProps {
     lastMessageTime: string;
     online: boolean;
     type: string;
+    messageUnseen: boolean;
 }
 
 const UsersItems: React.FC<UsersItemsProps> = ({
@@ -24,6 +25,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
     lastMessageTime,
     online,
     type,
+    messageUnseen,
 }) => {
     const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
                 </div>
 
                 <div className="w-full">
-                    <p className={`text-gray-500 w-[100%] whitespace-nowrap text-ellipsis overflow-hidden`}>
+                    <p className={`text-gray-500 w-[100%] whitespace-nowrap text-ellipsis overflow-hidden ${messageUnseen && "text-black font-extrabold"}`}>
                         {lastMessage}
                     </p>
                 </div>

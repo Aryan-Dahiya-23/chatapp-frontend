@@ -10,6 +10,8 @@ interface ThemeContextProps {
     setGroupChatWidget: Dispatch<SetStateAction<boolean>>;
     logoutLoading: boolean;
     setLogoutLoading: Dispatch<SetStateAction<boolean>>;
+    loginToast: boolean,
+    setLoginToast: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -20,7 +22,9 @@ const defaultThemeContext: ThemeContextProps = {
     groupChatWidget: false,
     setGroupChatWidget: () => { },
     logoutLoading: false,
-    setLogoutLoading: () => { }
+    setLogoutLoading: () => { },
+    loginToast: false,
+    setLoginToast: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -34,6 +38,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [chatHeight, setChatHeight] = useState<boolean>(false);
     const [groupChatWidget, setGroupChatWidget] = useState<boolean>(false)
     const [logoutLoading, setLogoutLoading] = useState<boolean>(false)
+    const [ loginToast, setLoginToast ] = useState<boolean>(false);
 
     useEffect(() => {
         try {
@@ -53,7 +58,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     return (
         <ThemeContext.Provider
-            value={{ theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading }}
+            value={{ theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading, loginToast, setLoginToast }}
         >
             {children}
         </ThemeContext.Provider>

@@ -53,7 +53,7 @@ export const createMessage = async (conversationId: string | undefined, message:
 
 export const readMessage = async (userId: string, conversationId: string | undefined) => {
     try {
-        const response = await axios.post(`${url}/conversation/read-conversation/${conversationId}`, {
+        const response = await axios.put(`${url}/conversation/read-conversation/${conversationId}`, {
             userId
         });
         return response.data;
