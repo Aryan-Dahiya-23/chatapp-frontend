@@ -7,7 +7,7 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { verify } from "../../api/auth";
-import { handleChatMessage, handleMessageSent, handleSeenMessage, handleNewConversation } from "../../utils/scoketHandlers";
+import { handleChatMessage, handleMessageSent, handleSeenMessage, handleNewConversation } from "../../utils/socketHandlers";
 
 interface HeaderProps {
     message: string,
@@ -89,7 +89,8 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
                 newUser.conversations[conversationIndex].conversation.lastMessage = message;
                 setUser(newUser);
             }
-        });
+        }
+        );
 
         socket.on('message sent', (userId, conversationId) => {
             handleMessageSent(user, userId, conversationId);

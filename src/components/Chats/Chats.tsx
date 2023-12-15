@@ -25,7 +25,7 @@ const Chats = () => {
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000,
+        staleTime: 20000,
     });
 
     const userId = user?._id;
@@ -88,7 +88,6 @@ const Chats = () => {
             user.conversations.map((conversation) => {
                 if (conversation.conversation._id === id) {
                     if (conversation.conversation.type === 'personal') {
-                        // setReceiverId(conversation.conversation.participants[0]._id);
                         setreceiverName(conversation.conversation.participants[0].fullName);
                         setReceiverAvatarSrc([conversation.conversation.participants[0].picture]);
                         setConversationType('personal');
@@ -99,7 +98,6 @@ const Chats = () => {
                         }
                     }
                     else {
-                        // setReceiverId(conversation.conversation._id);
                         setreceiverName(conversation.conversation.name);
                         setReceiverAvatarSrc([...conversation.conversation.participants.map((participant) => participant.picture), user.picture]);
                         setConversationType('group');
