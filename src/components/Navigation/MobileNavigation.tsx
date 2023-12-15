@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { toast }from "react-toastify"
+import { toast } from "react-toastify"
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { MdPeopleAlt } from "react-icons/md"
 import { IoLogOutOutline } from "react-icons/io5"
@@ -15,7 +15,7 @@ import { fetchPeople } from "../../api/auth";
 const MobileNavigation = () => {
 
     const navigate = useNavigate()
-    const { user, setUser } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const { setLogoutLoading } = useContext(ThemeContext);
 
     const { mutate } = useMutation({
@@ -25,12 +25,11 @@ const MobileNavigation = () => {
         },
         onSuccess: async () => {
             queryClient.invalidateQueries();
-            setUser({});
+            navigate("/login");
             toast.success("You've been successfully logged out.");
         },
         onSettled: async () => {
             setLogoutLoading(false);
-            navigate("/login");
         },
     })
 

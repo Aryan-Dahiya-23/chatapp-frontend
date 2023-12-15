@@ -37,7 +37,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
     const [chatHeight, setChatHeight] = useState<boolean>(false);
     const [groupChatWidget, setGroupChatWidget] = useState<boolean>(false)
-    const [logoutLoading, setLogoutLoading] = useState<boolean>(false)
+    const [logoutLoading, setLogoutLoading] = useState<boolean>(true)
     const [ loginToast, setLoginToast ] = useState<boolean>(false);
 
     useEffect(() => {

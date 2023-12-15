@@ -14,7 +14,7 @@ import { logout, fetchPeople } from "../../api/auth";
 const DesktopNavigation = () => {
 
     const navigate = useNavigate()
-    const { user, setUser } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const { setLogoutLoading } = useContext(ThemeContext);
 
     const { mutate } = useMutation({
@@ -24,7 +24,6 @@ const DesktopNavigation = () => {
         },
         onSuccess: async () => {
             queryClient.invalidateQueries();
-            setUser({});
             toast.success("You've been successfully logged out.");
         },
         onSettled: async () => {
