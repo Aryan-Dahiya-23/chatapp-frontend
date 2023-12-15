@@ -61,10 +61,6 @@ const Chats = () => {
 
     }, [conversation, id]);
 
-    useEffect(() => {
-        setTimeout(scrollSmooth, 150);
-    }, []);
-
     const scrollTopToBottom = () => {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -81,6 +77,10 @@ const Chats = () => {
             }
         }
     };
+
+    useEffect(() => {
+        setTimeout(scrollSmooth, 150);
+    }, []);
 
     useEffect(() => {
 

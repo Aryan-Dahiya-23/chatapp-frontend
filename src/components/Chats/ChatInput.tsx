@@ -8,6 +8,7 @@ import { queryClient } from "../../api/auth";
 import { createMessage } from "../../api/conversation";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import { useParams } from "react-router-dom";
 
 type ChatInputProps = {
     data: {
@@ -25,6 +26,7 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 
 const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
+    const { id } = useParams();
     const user: any = queryClient.getQueryData(['user']);
 
     const [text, setText] = useState<string>('');
@@ -67,8 +69,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             const response = await createMessage(conversationId, message);
             return response;
         },
-        onMutate: () => {
-            queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
 
             const newMessage = {
                 ...message,
@@ -83,6 +85,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                 ...data,
                 messages: [...data.messages, newMessage],
             };
+
+            await updateUser();
 
             queryClient.setQueryData(['chats', conversationId], newData);
             socket.emit('chat message', user._id, newMessage, conversationId);
@@ -99,6 +103,32 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             console.error('Error creating chat:', error);
         },
     });
+
+    const updateUser = async () => {
+        await queryClient.cancelQueries({ queryKey: ['user'] });
+
+        const conversationIndex = user.conversations.findIndex(conv => conv.conversation._id === id);
+
+        if (conversationIndex !== -1) {
+            const currentDate = new Date();
+            const newMessage = {
+                ...message,
+                createdAt: currentDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZoneName: "short"
+                })
+                // createdAt: user.conversations[conversationIndex].conversation.lastMessage.createdAt
+            }
+            user.conversations[conversationIndex].conversation.lastMessage = newMessage;
+        }
+
+        queryClient.setQueryData(['user'], user);
+    };
 
     const handleMessageSend = (content: string, type: string) => {
 

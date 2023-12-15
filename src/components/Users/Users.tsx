@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header";
 import UsersItems from "./UsersItems";
@@ -13,8 +13,14 @@ const Users = () => {
     const { data: user, isLoading, isSuccess } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000000,
+        staleTime: 10000,
     });
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log(user.conversations[0].conversation.lastMessage);
+        }
+    }, [user]);
 
     return (
         <div className="flex flex-col mb-16 md:mb-0 w-full md:w-[40%] lg:w-[25%] lg:pl-2 md:h-[100vh]">
@@ -29,7 +35,7 @@ const Users = () => {
 
                         const username = conversation.conversation.type === 'group' ? conversation.conversation.name : conversation.conversation.participants[0].fullName;
                         const avatarSrc = [...conversation.conversation.participants.map((participant) => participant.picture), user.picture];
-                      
+
                         const lastMessage = conversation.conversation.lastMessage ?
                             conversation.conversation.lastMessage.type === 'text'
                                 ? conversation.conversation.lastMessage.content
@@ -42,8 +48,8 @@ const Users = () => {
                             new Date(conversation.conversation.lastMessage.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
                         const online = conversation.conversation.type === 'personal' && connectedUsers.length > 0 && connectedUsers.includes(conversation.conversation.participants[0]._id);
-                        const messageUnseen = conversation.conversation.lastMessage?.senderId !== user._id && !conversation.conversation.lastMessage?.seenBy.includes(user._id);   
-                       
+                        const messageUnseen = conversation.conversation.lastMessage?.senderId !== user._id && !conversation.conversation.lastMessage?.seenBy.includes(user._id);
+
                         return (
                             <UsersItems
                                 key={conversation.conversation._id}
