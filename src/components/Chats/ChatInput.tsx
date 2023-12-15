@@ -27,7 +27,7 @@ const socket: Socket = io(import.meta.env.VITE_URL);
 const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     const { id } = useParams();
-    const user: any = queryClient.getQueryData(['user']);
+    const { user, setUser } = useContext(AuthContext);
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
@@ -105,9 +105,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     });
 
     const updateUser = async () => {
-        await queryClient.cancelQueries({ queryKey: ['user'] });
 
-        const conversationIndex = user.conversations.findIndex(conv => conv.conversation._id === id);
+        const newUser = { ...user }
+
+        const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === id);
 
         if (conversationIndex !== -1) {
             const currentDate = new Date();
@@ -122,12 +123,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                     second: "2-digit",
                     timeZoneName: "short"
                 })
-                // createdAt: user.conversations[conversationIndex].conversation.lastMessage.createdAt
             }
-            user.conversations[conversationIndex].conversation.lastMessage = newMessage;
+            newUser.conversations[conversationIndex].conversation.lastMessage = newMessage;
         }
 
-        queryClient.setQueryData(['user'], user);
+        setUser(newUser);
     };
 
     const handleMessageSend = (content: string, type: string) => {

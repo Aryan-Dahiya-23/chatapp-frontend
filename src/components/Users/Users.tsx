@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header";
 import UsersItems from "./UsersItems";
@@ -9,18 +9,13 @@ import { verify } from "../../api/auth";
 const Users = () => {
 
     const { connectedUsers } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    const { data: user, isLoading, isSuccess } = useQuery({
+    const { isLoading, isSuccess } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000,
+        staleTime: 20000,
     });
-
-    useEffect(() => {
-        if (isSuccess) {
-            console.log(user.conversations[0].conversation.lastMessage);
-        }
-    }, [user]);
 
     return (
         <div className="flex flex-col mb-16 md:mb-0 w-full md:w-[40%] lg:w-[25%] lg:pl-2 md:h-[100vh]">

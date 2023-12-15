@@ -65,9 +65,30 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             setUserConnected(true);
         }
 
-        socket.on('chat message', (userId, newMessage, conversationId) => {
+        socket.on('chat message', async (userId, newMessage, conversationId) => {
             const allowedRoutes = ['/', '/people'];
-            handleChatMessage(user, userId, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
+            await handleChatMessage(user, userId, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
+
+            const newUser = { ...user }
+            const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === conversationId);
+
+            if (conversationIndex !== -1) {
+                const currentDate = new Date();
+                const message = {
+                    ...newMessage,
+                    createdAt: currentDate.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        timeZoneName: "short"
+                    })
+                }
+                newUser.conversations[conversationIndex].conversation.lastMessage = message;
+                setUser(newUser);
+            }
         });
 
         socket.on('message sent', (userId, conversationId) => {
