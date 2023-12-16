@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import PeoplePage from "./pages/PeoplePage";
 import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
+import RoomPage from "./pages/RoomPage";
 
 const App = () => {
 
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/people" element={<PeoplePage />} />
             <Route path="/chats/:id" element={<ChatPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/room/:roomId" element={<RoomPage />} />
           </Routes>
         </BrowserRouter>
       </GlobalProvider>
