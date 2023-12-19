@@ -33,6 +33,7 @@ const Room = () => {
             onLeaveRoom: () => {
                 navigate('/');
                 const navigateToHome = () => {
+                    // window.location.href = "http://localhost:3000"
                     window.location.href = "https://nexus-aryan.vercel.app"
                 }
                 setTimeout(navigateToHome, 10);

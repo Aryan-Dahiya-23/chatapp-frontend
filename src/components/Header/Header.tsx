@@ -171,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
                         <MdOutlineGroupAdd className="icons" />
                     </div>
 
-                    <label className="swap swap-rotate hover:opacity-80">
+                    <label className="swap swap-rotate m-auto hover:opacity-80">
                         <input
                             type="checkbox"
                             className="theme-controller"
