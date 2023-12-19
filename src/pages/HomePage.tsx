@@ -4,8 +4,8 @@ import MobileNavigation from "../components/Navigation/MobileNavigation";
 import Users from "../components/Users/Users";
 import EmptyModal from "../components/UI/EmptyModal";
 import LoadingIndicator from "../components/UI/LoadingIndicator/LoadingIndicator";
-import { ThemeContext } from "../contexts/ThemeContext";
 import GroupChatWidget from "../components/Widgets/GroupChatWidget";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const HomePage = () => {
 

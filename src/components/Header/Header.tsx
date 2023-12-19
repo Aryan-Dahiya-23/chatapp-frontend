@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
@@ -8,6 +8,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { verify } from "../../api/auth";
 import { handleChatMessage, handleMessageSent, handleSeenMessage, handleNewConversation } from "../../utils/socketHandlers";
+import IncomingVideoCallWidget from "../Widgets/IncomingVideoCallWidget";
 
 interface HeaderProps {
     message: string,
@@ -24,9 +25,14 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { theme, setTheme } = useContext(ThemeContext);
     const { loginToast, setLoginToast } = useContext(ThemeContext);
     const { setGroupChatWidget } = useContext(ThemeContext);
+    // const { incomingVideoCall, setIncomingVideoCall } = useContext(ThemeContext);
+    const { incomingVideoCall } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
     const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
+
+    const [videoCallName, setVideoCallName] = useState<string>('');
+    const [videoCallAvatarSrc, setVideoCallAvatarSrc] = useState<string>('');
 
     const { data, isSuccess, isError, error } = useQuery({
         queryKey: ['user'],
@@ -104,12 +110,26 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             handleNewConversation(userId, user._id);
         });
 
+        socket.on('video call', (name, avatarSrc, userId, id) => {
+
+            const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === id);
+
+            if (isConversationExists && user._id !== userId) {
+                toast.success('Incoming video call from ' + name);
+                setVideoCallName(name);
+                setVideoCallAvatarSrc(avatarSrc);
+                // setIncomingVideoCall(true);
+                navigate(`/room/${id}`);
+            }
+        })
+
         return () => {
             socket.off('connected users');
             socket.off('chat message');
             socket.off('message sent');
             socket.off('seen message');
             socket.off('new conversation');
+            socket.off('video call');
         };
     }, [user, isSuccess]);
 
@@ -133,6 +153,12 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
     return (
         <>
+
+            {incomingVideoCall && <IncomingVideoCallWidget
+                name={videoCallName}
+                avatarSrc={videoCallAvatarSrc}
+                id={id ? id : "123"}
+            />}
 
             <div className="flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3">
                 <div className=" text-3xl font-bold">

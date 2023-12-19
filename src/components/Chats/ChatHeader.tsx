@@ -1,7 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 import { IoIosArrowBack } from "react-icons/io"
+import { FaVideo } from "react-icons/fa";
+import { IoIosVideocam } from "react-icons/io";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface ChatHeaderProps {
     name: string;
@@ -10,12 +15,22 @@ interface ChatHeaderProps {
     conversationType: string;
 }
 
+const socket: Socket = io(import.meta.env.VITE_URL);
+
 const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conversationType }) => {
 
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    const { user } = useContext(AuthContext);
 
     const handleClick = () => {
         navigate("/");
+    }
+
+    const handleVideoCall = () => {
+        socket.emit('video call', user.fullName, user.picture, user._id, id);
+        navigate(`/room/${id}`)
     }
 
     return (
@@ -65,10 +80,18 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conver
                 </div>
             </div>
 
-            <div className="flex flex-row space-x-1 md:p-1 cursor-pointer ml-auto hover:opacity-75">
-                <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
-                <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
-                <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full bg-sky-500"></div>
+            <div className="flex flex-row space-x-3 ml-auto">
+
+                <div className="flex flex-row">
+                    <IoIosVideocam className="chat-icons text-sky-500 hover:opacity-75" onClick={handleVideoCall}/>
+                </div>
+
+                <div className="flex flex-row space-x-1 md:p-1 cursor-pointer  hover:opacity-75">
+                    <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
+                    <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
+                    <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
+                </div>
+
             </div>
         </div>
     )
