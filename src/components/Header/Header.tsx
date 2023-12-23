@@ -117,12 +117,10 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === id);
 
             if (isConversationExists && user._id !== userId) {
-                // toast.success('Incoming video call from ' + name);
                 setVideoCallName(name);
                 setVideoCallAvatarSrc(avatarSrc);
                 setVideoCallId(id);
                 setIncomingVideoCall(true);
-                // navigate(`/room/${id}`);
             }
         })
 

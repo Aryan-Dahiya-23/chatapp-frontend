@@ -40,10 +40,10 @@ const Room = () => {
                 setTimeout(navigateToHome, 10);
             },
             onUserLeave: (users: ZegoUser[]) => {
-                toast.success(users.length)
+                // toast.success(users.length)
             },
             onUserJoin: (users: ZegoUser[]) => {
-                toast.success("length " + users.length)
+                // toast.success("length " + users.length)
             }
         });
     }
