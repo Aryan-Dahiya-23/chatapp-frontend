@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { IoIosArrowBack } from "react-icons/io"
-import { FaVideo } from "react-icons/fa";
 import { IoIosVideocam } from "react-icons/io";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
@@ -29,7 +28,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conver
     }
 
     const handleVideoCall = () => {
-        socket.emit('video call', user.fullName, user.picture, user._id, id);
+        socket.emit('video call', name, user.picture, user._id, id);
         navigate(`/room/${id}`)
     }
 

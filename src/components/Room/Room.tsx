@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { ZegoUIKitPrebuilt, ZegoUser } from '@zegocloud/zego-uikit-prebuilt';
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Room = () => {
 
@@ -25,7 +26,7 @@ const Room = () => {
         zc.joinRoom({
             container: element,
             scenario: {
-                mode: ZegoUIKitPrebuilt.OneONoneCall,
+                mode: ZegoUIKitPrebuilt.GroupCall,
             },
             videoResolutionDefault: ZegoUIKitPrebuilt.VideoResolution_720P,
             showPreJoinView: false,
@@ -38,9 +39,14 @@ const Room = () => {
                 }
                 setTimeout(navigateToHome, 10);
             },
+            onUserLeave: (users: ZegoUser[]) => {
+                toast.success(users.length)
+            },
+            onUserJoin: (users: ZegoUser[]) => {
+                toast.success("length " + users.length)
+            }
         });
-
-    };
+    }
 
     return (
         <div ref={myMeeting} style={{ width: '100vw', height: '100vh' }} />

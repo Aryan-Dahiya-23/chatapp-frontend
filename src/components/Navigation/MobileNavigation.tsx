@@ -71,6 +71,7 @@ const MobileNavigation = () => {
             <div className="flex p-2 h-full items-center ">
                 <RingAvatar
                     imgSrc={user && user.picture}
+                    type="navigation"
                 />
             </div>
         </div>

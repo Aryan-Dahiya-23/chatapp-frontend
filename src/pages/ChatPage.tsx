@@ -21,17 +21,17 @@ const ChatPage = () => {
 
             {logoutLoading &&
                 <div className="fixed top-[40%] left-[45%] md:top-[40%] md:left-[50%] z-50">
-                {/* <span className="loading loading-spinner loading-lg text-info"></span> */}
                     <LoadingIndicator />
                 </div>
             }
 
             {isMobileScreen() ? (
                 <>
-                    <div className="hidden">
+                    {/* <div className="hidden">
                         <Header message="Hii" />
-                    </div>
+                    </div> */}
 
+                    <Header message="Hii" />
                     <Chats />
                 </>
             ) : (

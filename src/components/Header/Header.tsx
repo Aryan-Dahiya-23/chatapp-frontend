@@ -22,11 +22,12 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    const pathname = window.location.pathname;
+
     const { theme, setTheme } = useContext(ThemeContext);
     const { loginToast, setLoginToast } = useContext(ThemeContext);
     const { setGroupChatWidget } = useContext(ThemeContext);
-    // const { incomingVideoCall, setIncomingVideoCall } = useContext(ThemeContext);
-    const { incomingVideoCall } = useContext(ThemeContext);
+    const { incomingVideoCall, setIncomingVideoCall } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
     const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
@@ -115,11 +116,11 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === id);
 
             if (isConversationExists && user._id !== userId) {
-                toast.success('Incoming video call from ' + name);
+                // toast.success('Incoming video call from ' + name);
                 setVideoCallName(name);
                 setVideoCallAvatarSrc(avatarSrc);
-                // setIncomingVideoCall(true);
-                navigate(`/room/${id}`);
+                setIncomingVideoCall(true);
+                // navigate(`/room/${id}`);
             }
         })
 
@@ -160,7 +161,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
                 id={id ? id : "123"}
             />}
 
-            <div className="flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3">
+            <div className={`flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3 ${pathname.substring(1, 6) === 'chats' && "hidden md:inline-flex"}`}>
                 <div className=" text-3xl font-bold">
                     <p className="">{message}</p>
                 </div>

@@ -14,7 +14,7 @@ const Users = () => {
     const { isLoading, isSuccess } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 20000,
+        staleTime: 10000,
     });
 
     return (

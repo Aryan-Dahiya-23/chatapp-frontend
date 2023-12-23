@@ -73,6 +73,7 @@ const DesktopNavigation = () => {
             <div className="cursor-pointer p-2">
                 <RingAvatar
                     imgSrc={user && user.picture}
+                    type="navigation"
                 />
             </div>
         </div>
