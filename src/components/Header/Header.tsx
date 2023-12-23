@@ -32,8 +32,9 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
 
-    const [videoCallName, setVideoCallName] = useState<string>('');
-    const [videoCallAvatarSrc, setVideoCallAvatarSrc] = useState<string>('');
+    const [ videoCallName, setVideoCallName ] = useState<string>('');
+    const [ videoCallAvatarSrc, setVideoCallAvatarSrc ] = useState<string>('');
+    const [ videoCallId, setVideoCallId ] = useState<string>('');
 
     const { data, isSuccess, isError, error } = useQuery({
         queryKey: ['user'],
@@ -119,6 +120,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
                 // toast.success('Incoming video call from ' + name);
                 setVideoCallName(name);
                 setVideoCallAvatarSrc(avatarSrc);
+                setVideoCallId(id);
                 setIncomingVideoCall(true);
                 // navigate(`/room/${id}`);
             }
@@ -158,7 +160,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             {incomingVideoCall && <IncomingVideoCallWidget
                 name={videoCallName}
                 avatarSrc={videoCallAvatarSrc}
-                id={id ? id : "123"}
+                id={videoCallId}
             />}
 
             <div className={`flex flex-row justify-between items-center px-2 py-4 lg:px-1 lg:pr-3 ${pathname.substring(1, 6) === 'chats' && "hidden md:inline-flex"}`}>
