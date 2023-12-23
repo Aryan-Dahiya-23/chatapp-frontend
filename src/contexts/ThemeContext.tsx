@@ -14,6 +14,12 @@ interface ThemeContextProps {
     setLoginToast: Dispatch<SetStateAction<boolean>>;
     incomingVideoCall: boolean,
     setIncomingVideoCall: Dispatch<SetStateAction<boolean>>;
+    videoCallName: string;
+    setVideoCallName: Dispatch<SetStateAction<string>>;
+    videoCallAvatarSrc: string;
+    setVideoCallAvatarSrc: Dispatch<SetStateAction<string>>;
+    videoCallId: string;
+    setVideoCallId: Dispatch<SetStateAction<string>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -29,6 +35,12 @@ const defaultThemeContext: ThemeContextProps = {
     setLoginToast: () => { },
     incomingVideoCall: false,
     setIncomingVideoCall: () => { },
+    videoCallName: "",
+    setVideoCallName: () => { },
+    videoCallAvatarSrc: "",
+    setVideoCallAvatarSrc: () => { },
+    videoCallId: "",
+    setVideoCallId: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -44,6 +56,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [logoutLoading, setLogoutLoading] = useState<boolean>(false)
     const [loginToast, setLoginToast] = useState<boolean>(false);
     const [incomingVideoCall, setIncomingVideoCall] = useState(false);
+    const [videoCallName, setVideoCallName] = useState<string>('');
+    const [videoCallAvatarSrc, setVideoCallAvatarSrc] = useState<string>('');
+    const [videoCallId, setVideoCallId] = useState<string>('');
 
     useEffect(() => {
         try {
@@ -65,7 +80,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         <ThemeContext.Provider
             value={{
                 theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading,
-                loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall
+                loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall, videoCallName, setVideoCallName, videoCallAvatarSrc, setVideoCallAvatarSrc,
+                videoCallId, setVideoCallId
             }}
         >
             {children}

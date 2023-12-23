@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
@@ -28,13 +28,12 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { loginToast, setLoginToast } = useContext(ThemeContext);
     const { setGroupChatWidget } = useContext(ThemeContext);
     const { incomingVideoCall, setIncomingVideoCall } = useContext(ThemeContext);
+    const { videoCallName, setVideoCallName } = useContext(ThemeContext);
+    const { videoCallAvatarSrc, setVideoCallAvatarSrc } = useContext(ThemeContext);
+    const { videoCallId, setVideoCallId } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
     const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
-
-    const [ videoCallName, setVideoCallName ] = useState<string>('');
-    const [ videoCallAvatarSrc, setVideoCallAvatarSrc ] = useState<string>('');
-    const [ videoCallId, setVideoCallId ] = useState<string>('');
 
     const { data, isSuccess, isError, error } = useQuery({
         queryKey: ['user'],
