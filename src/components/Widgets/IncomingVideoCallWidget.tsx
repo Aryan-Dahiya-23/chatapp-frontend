@@ -14,37 +14,46 @@ const IncomingVideoCallWidget: React.FC<IncomingVideoCallProps> = ({ name, avata
 
     const navigate = useNavigate();
 
-    const { setIncomingVideoCall } = useContext(ThemeContext);
+    const { incomingVideoCall, setIncomingVideoCall } = useContext(ThemeContext);
 
     const [audio] = useState(new Audio(incomingRingtone));
 
-    const notificationRef = useRef<Notification | null>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        const showNotification = () => {
-            if (Notification.permission === "granted") {
-                notificationRef.current = new Notification("Incoming Video Call", {
-                    body: "You have an incoming video call.",
-                });
-
-                audio.play();
-            } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then((permission) => {
-                    if (permission === "granted") {
-                        showNotification();
-                    }
-                });
-            }
+        audioRef.current = audio;
+    
+        const eventListener = () => {
+          if (audioRef.current) {
+            audioRef.current.play()
+              .then(() => console.log('Audio played successfully'))
+              .catch(error => console.error('Error playing audio:', error));
+          }
+    
+          window.removeEventListener('click', eventListener);
+          window.removeEventListener('mousemove', eventListener);
+          window.removeEventListener('scroll', eventListener);
         };
-
-        showNotification();
-
+    
+        window.addEventListener('click', eventListener);
+        window.addEventListener('mousemove', eventListener);
+        window.addEventListener('scroll', eventListener);
+    
         return () => {
-            if (notificationRef.current) {
-                notificationRef.current.close();
-            }
+          if (audioRef.current) {
+            audioRef.current.pause();
+          }
+          window.removeEventListener('click', eventListener);
+          window.removeEventListener('mousemove', eventListener);
+          window.removeEventListener('scroll', eventListener);
         };
-    }, []);
+      }, [audio]);
+    
+      useEffect(() => {
+        if (!incomingVideoCall && audioRef.current) {
+          audioRef.current.pause();
+        }
+      }, [incomingVideoCall]);
 
     const acceptCall = () => {
         audio.pause();
@@ -53,7 +62,7 @@ const IncomingVideoCallWidget: React.FC<IncomingVideoCallProps> = ({ name, avata
     }
 
     const rejectCall = () => {
-        audio.pause();
+        audio.play();
         setIncomingVideoCall(false);
     }
 
