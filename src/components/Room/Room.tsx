@@ -39,14 +39,14 @@ const Room = () => {
             //     }, 1000);
             // },
            
-            // onLeaveRoom: () => {
-            //     // navigate('/');
-            //     const navigateToHome = () => {
-            //         window.location.href = "http://localhost:3000"
-            //         // window.location.href = "https://nexus-aryan.vercel.app"
-            //     }
-            //     // setTimeout(navigateToHome, 10);
-            // },
+            onLeaveRoom: () => {
+                navigate('/');
+                const navigateToHome = () => {
+                    // window.location.href = "http://localhost:3000"
+                    window.location.href = "https://nexus-aryan.vercel.app"
+                }
+                setTimeout(navigateToHome, 10);
+            },
             // onUserLeave: (userList) => {
             //     // setTimeout(() => {
             //     //     console.log(users);
