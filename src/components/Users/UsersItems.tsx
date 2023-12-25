@@ -45,7 +45,7 @@ const UsersItems: React.FC<UsersItemsProps> = ({
 
     return (
         <div
-            className="flex flex-row  w-full px-3 lg:px-2 py-2 rounded-xl space-x-2 hover:bg-gray-100 cursor-pointer"
+            className="flex flex-row w-full px-3 lg:px-2 py-2 rounded-xl space-x-2 hover:bg-gray-100 cursor-pointer"
             onClick={navigateToChat}
             onMouseEnter={prefetch}
             onTouchMove={prefetch}

@@ -31,25 +31,50 @@ const Room = () => {
             videoResolutionDefault: ZegoUIKitPrebuilt.VideoResolution_720P,
             showPreJoinView: false,
             showRoomTimer: true,
-            onLeaveRoom: () => {
-                navigate('/');
-                const navigateToHome = () => {
-                    // window.location.href = "http://localhost:3000"
-                    window.location.href = "https://nexus-aryan.vercel.app"
-                }
-                setTimeout(navigateToHome, 10);
-            },
-            onUserLeave: (users: ZegoUser[]) => {
-                toast.success(users.length)
-            },
-            onUserJoin: (users: ZegoUser[]) => {
-                // toast.success("length " + users.length)
-            }
+            // onUserAvatarSetter: (userList) => {
+            //     setTimeout(() => {
+            //         userList.forEach(user => {
+            //             console.log(user);
+            //         })
+            //     }, 1000);
+            // },
+           
+            // onLeaveRoom: () => {
+            //     // navigate('/');
+            //     const navigateToHome = () => {
+            //         window.location.href = "http://localhost:3000"
+            //         // window.location.href = "https://nexus-aryan.vercel.app"
+            //     }
+            //     // setTimeout(navigateToHome, 10);
+            // },
+            // onUserLeave: (userList) => {
+            //     // setTimeout(() => {
+            //     //     console.log(users);
+            //     // }, 1000);
+
+            //     setTimeout(() => {
+            //         userList.forEach(user => {
+            //             console.log(user);
+            //         })
+            //     }, 1000);
+            // },
+            // onUserJoin: (userList) => {
+            //     // setTimeout(() => {
+            //     //     console.log(users);
+            //     // }, 1000);
+
+            //     setTimeout(() => {
+            //         userList.forEach(user => {
+            //             console.log(user);
+            //         })
+            //     }, 1000);
+            // }
         });
+
     }
 
     return (
-        <div ref={myMeeting} style={{ width: '100vw', height: '100vh' }} />
+        <div ref={myMeeting} style={{ width: '100vw', height: '100dvh' }} />
     )
 
 }

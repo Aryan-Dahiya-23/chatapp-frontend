@@ -17,7 +17,7 @@ const OutgoingCallWidget = ({name, imgSrc, onEndCall }) => {
     }, []);
 
     return (
-        <div className="h-[100dvh] w-full right-0  fixed flex flex-col py-20 md:py-24 lg:py-16 items-center space-y-24 md:space-y-32 lg:space-y-20 z-[999] bg-gray-800">
+        <div className="h-[100dvh] w-full right-0 fixed flex flex-col py-20 md:py-24 lg:py-16 items-center space-y-20 md:space-y-32 lg:space-y-20 z-[999] bg-gray-800">
 
             <div className="flex flex-col justify-center items-center space-y-2 text-white">
                 <span className="text-4xl md:text-5xl">{name}</span>
