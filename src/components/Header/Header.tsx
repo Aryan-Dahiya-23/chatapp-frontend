@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-toastify";
 import { MdOutlineGroupAdd } from "react-icons/md";
+import IncomingVideoCallWidget from "../Widgets/IncomingVideoCallWidget";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { verify } from "../../api/auth";
 import { handleChatMessage, handleMessageSent, handleSeenMessage, handleNewConversation } from "../../utils/socketHandlers";
-import IncomingVideoCallWidget from "../Widgets/IncomingVideoCallWidget";
 
 interface HeaderProps {
     message: string,
@@ -31,6 +31,8 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const { videoCallName, setVideoCallName } = useContext(ThemeContext);
     const { videoCallAvatarSrc, setVideoCallAvatarSrc } = useContext(ThemeContext);
     const { videoCallId, setVideoCallId } = useContext(ThemeContext);
+    const { videoCallUserId, setVideoCallUserId } = useContext(ThemeContext);
+    const { outgoingCall } = useContext(ThemeContext);
     const { user, setUser } = useContext(AuthContext);
     const { userConnected, setUserConnected } = useContext(AuthContext);
     const { setConnectedUsers } = useContext(AuthContext);
@@ -117,9 +119,17 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
             if (isConversationExists && user._id !== userId) {
                 setVideoCallName(name);
+                setVideoCallUserId(userId);
                 setVideoCallAvatarSrc(avatarSrc);
                 setVideoCallId(id);
                 setIncomingVideoCall(true);
+            }
+        })
+
+        socket.on('accept video call', (id) => {
+            const newPath = `/room/${id}`
+            if (location.pathname !== newPath && location.pathname === `/chats/${id}` && outgoingCall) {
+                navigate(newPath);
             }
         })
 
@@ -130,8 +140,9 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             socket.off('seen message');
             socket.off('new conversation');
             socket.off('video call');
+            socket.off('accept video call');
         };
-    }, [user, isSuccess]);
+    }, [user, isSuccess, outgoingCall]);
 
     const handleTheme = (e: { target: { checked: unknown; }; }) => {
         if (e.target.checked || localStorage.getItem("theme") === "light") {
@@ -156,6 +167,7 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
             {incomingVideoCall && <IncomingVideoCallWidget
                 name={videoCallName}
+                userId={videoCallUserId}
                 avatarSrc={videoCallAvatarSrc}
                 id={videoCallId}
             />}

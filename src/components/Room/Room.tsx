@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt, ZegoUser } from '@zegocloud/zego-uikit-prebuilt';
 import { AuthContext } from "../../contexts/AuthContext";
-import { toast } from "react-toastify";
 
 const Room = () => {
 
@@ -35,7 +34,8 @@ const Room = () => {
                 navigate('/');
                 const navigateToHome = () => {
                     // window.location.href = "http://localhost:3000"
-                    window.location.href = "https://nexus-aryan.vercel.app"
+                    // window.location.href = "https://nexus-aryan.vercel.app"
+                    window.location.href = import.meta.env.VITE_URL
                 }
                 setTimeout(navigateToHome, 10);
             },

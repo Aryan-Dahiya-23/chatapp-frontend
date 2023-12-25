@@ -16,10 +16,14 @@ interface ThemeContextProps {
     setIncomingVideoCall: Dispatch<SetStateAction<boolean>>;
     videoCallName: string;
     setVideoCallName: Dispatch<SetStateAction<string>>;
+    videoCallUserId: string;
+    setVideoCallUserId: Dispatch<SetStateAction<string>>;
     videoCallAvatarSrc: string;
     setVideoCallAvatarSrc: Dispatch<SetStateAction<string>>;
     videoCallId: string;
     setVideoCallId: Dispatch<SetStateAction<string>>;
+    outgoingCall: boolean;
+    setOutgoingCall: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -37,10 +41,14 @@ const defaultThemeContext: ThemeContextProps = {
     setIncomingVideoCall: () => { },
     videoCallName: "",
     setVideoCallName: () => { },
+    videoCallUserId: "",
+    setVideoCallUserId: () => { },
     videoCallAvatarSrc: "",
     setVideoCallAvatarSrc: () => { },
     videoCallId: "",
     setVideoCallId: () => { },
+    outgoingCall: false,
+    setOutgoingCall: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -57,8 +65,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [loginToast, setLoginToast] = useState<boolean>(false);
     const [incomingVideoCall, setIncomingVideoCall] = useState(false);
     const [videoCallName, setVideoCallName] = useState<string>('');
+    const [videoCallUserId, setVideoCallUserId] = useState<string>('');
     const [videoCallAvatarSrc, setVideoCallAvatarSrc] = useState<string>('');
     const [videoCallId, setVideoCallId] = useState<string>('');
+    const [outgoingCall, setOutgoingCall] = useState<boolean>(false);
 
     useEffect(() => {
         try {
@@ -80,8 +90,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         <ThemeContext.Provider
             value={{
                 theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading,
-                loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall, videoCallName, setVideoCallName, videoCallAvatarSrc, setVideoCallAvatarSrc,
-                videoCallId, setVideoCallId
+                loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall, videoCallName, setVideoCallName, videoCallUserId, setVideoCallUserId,
+                videoCallAvatarSrc, setVideoCallAvatarSrc, videoCallId, setVideoCallId, outgoingCall, setOutgoingCall
             }}
         >
             {children}
