@@ -30,10 +30,10 @@ const GroupChatWidget = () => {
 
     const { mutate, status } = useMutation({
         mutationFn: () => createGroupConversation(selectedOptions, groupName, user._id),
-        onSuccess: () => {
+        onSuccess: async() => {
+            await queryClient.invalidateQueries({ queryKey: ['user'] });
             setGroupChatWidget(false);
             toast.success("New Group created");
-            queryClient.invalidateQueries({ queryKey: ['user'] });
         }
     });
 
