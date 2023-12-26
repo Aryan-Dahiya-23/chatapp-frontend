@@ -19,9 +19,9 @@ const ChatDeleteModal = () => {
 
     const { mutate, status } = useMutation({
         mutationFn: () => deleteConversation(user._id, id),
-        onSettled: () => {
+        onSettled: async() => {
             toast.success("Conversation Successfully deleted");
-            queryClient.invalidateQueries({ queryKey: ['user'] });
+            await queryClient.invalidateQueries({ queryKey: ['user'] });
             handleDeleteModal();
             navigate("/");
         }
