@@ -11,6 +11,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { logout, fetchPeople } from "../../api/auth";
 
+
 const DesktopNavigation = () => {
 
     const navigate = useNavigate()
@@ -27,11 +28,12 @@ const DesktopNavigation = () => {
         },
         onSuccess: async () => {
             queryClient.invalidateQueries();
+            navigate("/login");
             toast.success("You've been successfully logged out.");
         },
         onSettled: async () => {
             setLogoutLoading(false);
-            navigate("/login");
+            document.body.classList.remove('unclickable');
         },
     })
 
@@ -45,6 +47,7 @@ const DesktopNavigation = () => {
 
     const handleLogout = () => {
         mutate();
+        document.body.classList.add('unclickable');
     };
 
     const prefetch = () => {

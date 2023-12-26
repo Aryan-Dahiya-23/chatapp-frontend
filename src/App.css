@@ -1,3 +1,7 @@
+.unclickable {
+    pointer-events: none;
+}
+
 .icons {
     color: grey;
     height: 28px;

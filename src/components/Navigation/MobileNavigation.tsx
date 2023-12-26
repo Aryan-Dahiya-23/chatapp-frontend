@@ -33,6 +33,7 @@ const MobileNavigation = () => {
         },
         onSettled: async () => {
             setLogoutLoading(false);
+            document.body.classList.remove('unclickable');
         },
     })
 
@@ -46,6 +47,7 @@ const MobileNavigation = () => {
 
     const handleLogout = () => {
         mutate();
+        document.body.classList.add('unclickable');
     };
 
     const prefetch = () => {
