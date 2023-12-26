@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { IoIosArrowBack } from "react-icons/io"
 import { IoIosVideocam } from "react-icons/io";
-import OutgoingCallWidget from "../Widgets/OutgoingCallWidget";
+import Drawer from "../Drawer/Drawer";
 import OnlineAvatar from "../Avatar/OnlineAvatar";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
+import OutgoingCallWidget from "../Widgets/OutgoingCallWidget";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
@@ -53,6 +54,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conver
 
     return (
         <>
+
             {outgoingCall && <OutgoingCallWidget name={name} imgSrc={avatarSrc[0]} onEndCall={handleEndCall} />}
 
             <div className="flex flex-row justify-between items-center min-h-[10%] lg:min-h-[12%] px-2 md:px-5 border-b-2 border-gray-200">
@@ -101,17 +103,22 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarSrc, online, conver
                     </div>
                 </div>
 
-                <div className="flex flex-row space-x-3 ml-auto">
+                <div className="flex flex-row justify-center items-center space-x-3 ml-auto">
 
                     <div className="flex flex-row">
                         <IoIosVideocam className="chat-icons text-sky-500 hover:opacity-75" onClick={handleVideoCall} />
                     </div>
 
-                    <div className="flex flex-row space-x-1 md:p-1 cursor-pointer  hover:opacity-75">
+                    <Drawer
+                        name={name}
+                        avatarSrc={avatarSrc}
+                    />
+
+                    {/* <div className="flex flex-row space-x-1 md:p-1 cursor-pointer  hover:opacity-75 drawer-button" onClick={handleDrawer}>
                         <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
                         <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
                         <div className="h-1 w-1 md:h-1.5 md:w-1.5 rounded-full m-auto bg-sky-500"></div>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { BsFillChatDotsFill } from "react-icons/bs";
@@ -14,12 +14,15 @@ import { logout, fetchPeople } from "../../api/auth";
 const DesktopNavigation = () => {
 
     const navigate = useNavigate()
+    const location = useLocation();
     const { user } = useContext(AuthContext);
     const { setLogoutLoading } = useContext(ThemeContext);
 
+    const [currentLocation, setCurrentLocation] = useState<string>('home');
+
     const { mutate } = useMutation({
         mutationFn: logout,
-        onMutate:() => {
+        onMutate: () => {
             setLogoutLoading(true);
         },
         onSuccess: async () => {
@@ -52,15 +55,27 @@ const DesktopNavigation = () => {
         })
     }
 
+    useEffect(() => {
+        const path = location.pathname;
+        
+        if (path === "/") {
+            setCurrentLocation('home')
+        } else if (path === "/people") {
+            setCurrentLocation("people")
+        } else {
+            setCurrentLocation("chats");
+        }
+    }, []);
+
     return (
         <div className="md:flex md:flex-col hidden justify-between items-center border-r-2 border-gray-200 md:w-[8%] lg:w-[5%] py-4">
 
             <div className="space-y-3 cursor-pointer">
-                <div className="hover:bg-gray-200 rounded-md p-2.5" onClick={navigateHome}>
+                <div className={`hover:bg-gray-200 rounded-md p-2.5 ${(currentLocation === 'home' || currentLocation === 'chats') && 'bg-gray-200'}`} onClick={navigateHome}>
                     <BsFillChatDotsFill className="icons" />
                 </div>
 
-                <div className="hover:bg-gray-200 rounded-md p-2.5" onClick={navigatePeople} onMouseEnter={prefetch} onTouchMove={prefetch} onFocus={prefetch} >
+                <div className={`hover:bg-gray-200 rounded-md p-2.5 ${currentLocation === 'people' && 'bg-gray-200'}`} onClick={navigatePeople} onMouseEnter={prefetch} onTouchMove={prefetch} onFocus={prefetch} >
                     <MdPeopleAlt className="icons" />
                 </div>
 

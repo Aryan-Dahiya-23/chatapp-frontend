@@ -24,6 +24,8 @@ interface ThemeContextProps {
     setVideoCallId: Dispatch<SetStateAction<string>>;
     outgoingCall: boolean;
     setOutgoingCall: Dispatch<SetStateAction<boolean>>;
+    deleteModal: boolean;
+    setDeleteModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -49,6 +51,8 @@ const defaultThemeContext: ThemeContextProps = {
     setVideoCallId: () => { },
     outgoingCall: false,
     setOutgoingCall: () => { },
+    deleteModal: false,
+    setDeleteModal: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -69,6 +73,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [videoCallAvatarSrc, setVideoCallAvatarSrc] = useState<string>('');
     const [videoCallId, setVideoCallId] = useState<string>('');
     const [outgoingCall, setOutgoingCall] = useState<boolean>(false);
+    const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
 
     useEffect(() => {
         try {
@@ -91,7 +96,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             value={{
                 theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading,
                 loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall, videoCallName, setVideoCallName, videoCallUserId, setVideoCallUserId,
-                videoCallAvatarSrc, setVideoCallAvatarSrc, videoCallId, setVideoCallId, outgoingCall, setOutgoingCall
+                videoCallAvatarSrc, setVideoCallAvatarSrc, videoCallId, setVideoCallId, outgoingCall, setOutgoingCall, deleteModal, setDeleteModal
             }}
         >
             {children}

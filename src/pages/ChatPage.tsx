@@ -7,6 +7,7 @@ import Header from "../components/Header/Header";
 import LoadingIndicator from "../components/UI/LoadingIndicator/LoadingIndicator";
 import GroupChatWidget from "../components/Widgets/GroupChatWidget";
 import { ThemeContext } from "../contexts/ThemeContext";
+import ChatDeleteModal from "../components/UI/ChatDeleteModal";
 
 const ChatPage = () => {
 
@@ -14,10 +15,13 @@ const ChatPage = () => {
 
     const { groupChatWidget } = useContext(ThemeContext);
     const { logoutLoading } = useContext(ThemeContext);
+    const { deleteModal } = useContext(ThemeContext);
 
     return (
         <>
             {groupChatWidget && <GroupChatWidget />}
+
+            {deleteModal && <ChatDeleteModal />}
 
             {logoutLoading &&
                 <div className="fixed top-[40%] left-[45%] md:top-[40%] md:left-[50%] z-50">
@@ -27,15 +31,11 @@ const ChatPage = () => {
 
             {isMobileScreen() ? (
                 <>
-                    {/* <div className="hidden">
-                        <Header message="Hii" />
-                    </div> */}
-
                     <Header message="Hii" />
                     <Chats />
                 </>
             ) : (
-                <div className={`md:flex md:flex-row ${(groupChatWidget || logoutLoading) && "opacity-70"}`}>
+                <div className={`md:flex md:flex-row ${(groupChatWidget || logoutLoading || deleteModal) && "opacity-70"}`}>
                     <DesktopNavigation />
                     <MobileNavigation />
                     <Users />

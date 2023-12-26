@@ -61,3 +61,12 @@ export const readMessage = async (userId: string, conversationId: string | undef
         console.log(error);
     }
 }
+
+export const deleteConversation = async (userId: string, conversationId: string | undefined) => {
+    try {
+        const response = await axios.put(`${url}/conversation/user/${userId}/removeConversation/${conversationId}`)
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
