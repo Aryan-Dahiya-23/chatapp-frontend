@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
 import OfflineAvatar from "../Avatar/OfflineAvatar";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { queryClient } from "../../api/auth";
 import { createConversation } from "../../api/conversation";
 
@@ -23,6 +24,7 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
     const navigate = useNavigate();
 
     const { user } = useContext(AuthContext);
+    const { setLogoutLoading } = useContext(ThemeContext)
     const [clicked, setClicked] = useState(false);
 
     const { mutate } = useMutation({
@@ -30,11 +32,17 @@ const PeopleItems: React.FC<PeopleItemsProps> = ({
             const response = await createConversation(user._id, userId);
             return response;
         },
+        onMutate: () => {
+            document.body.classList.add('unclickable');
+            setLogoutLoading(true);
+        },
         onSuccess: async (data) => {
             socket.emit('new conversation', userId);
             await queryClient.invalidateQueries({ queryKey: ['user'] });
             const chatId = data?.data.chat._id;
+            setLogoutLoading(false);
             navigate(`/chats/${chatId}`);
+            document.body.classList.remove('unclickable');
         },
         onError: (error) => {
             console.error("Error creating chat:", error);
