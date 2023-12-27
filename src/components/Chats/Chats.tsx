@@ -9,6 +9,8 @@ import ChatBubble from "./ChatBubbe";
 import { queryClient, verify } from "../../api/auth";
 import { getConversation, readMessage } from "../../api/conversation";
 
+import { FaArrowDownLong } from "react-icons/fa6";
+
 const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Chats = () => {
@@ -22,6 +24,8 @@ const Chats = () => {
     const [conversationType, setConversationType] = useState<string>("");
     const { connectedUsers } = useContext(AuthContext)
     const chatContainerRef = useRef<HTMLDivElement>(null);
+
+    const [isAtBottom, setIsAtBottom] = useState(true);
 
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
@@ -76,18 +80,36 @@ const Chats = () => {
 
     const scrollSmooth = () => {
         if (chatContainerRef.current) {
-            const chatContainer = chatContainerRef.current;
-            const lastChild = chatContainer.lastElementChild;
-
-            if (lastChild) {
-                lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }
+            const { scrollHeight } = chatContainerRef.current;
+            chatContainerRef.current.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth',
+            });
         }
     };
 
     useEffect(() => {
         setTimeout(scrollSmooth, 100);
     }, [id]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (chatContainerRef.current) {
+                const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+                console.log(scrollHeight - (scrollTop + clientHeight))
+                const isBottom = Math.abs(scrollHeight - (scrollTop + clientHeight)) < 100;
+
+                // const isBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 5;
+                setIsAtBottom(isBottom);
+            }
+        };
+
+        chatContainerRef.current?.addEventListener('scroll', handleScroll);
+
+        return () => {
+            chatContainerRef.current?.removeEventListener('scroll', handleScroll);
+        };
+    }, [chatContainerRef, id, conversation]);
 
     useEffect(() => {
 
@@ -136,28 +158,38 @@ const Chats = () => {
 
                     <div className="`flex flex-col px-1 md:px-2 lg:px-4 lg:py-1.5 overflow-y-auto custom-scrollbar" ref={chatContainerRef}>
 
-                        {isSuccess && conversation.messages.map((message, index: number) => {
+                        {isSuccess &&
+                            conversation.messages.map((message, index: number) => {
 
-                            const isLastMessage = index === conversation.messages.length - 1;
-                            const messageSeen = message.seenBy && message.seenBy.length >= conversation.participants.length;
+                                const isLastMessage = index === conversation.messages.length - 1;
+                                const messageSeen = message.seenBy && message.seenBy.length >= conversation.participants.length;
 
-                            return (
-                                <ChatBubble
-                                    key={message?._id}
-                                    conversationType={conversation.type}
-                                    position={userId === message.senderId._id ? "right" : "left"}
-                                    sender={message.senderId.fullName}
-                                    message={message.content}
-                                    createdAt={message.createdAt ? message.createdAt : Date.now()}
-                                    avatarSrc={message.senderId.picture}
-                                    footerName={receiverName}
-                                    isLastMessage={isLastMessage}
-                                    online={connectedUsers.length > 0 && connectedUsers.includes(message.senderId._id)}
-                                    messageType={message.type}
-                                    messageSeen={messageSeen}
-                                />
-                            );
-                        })}
+                                return (
+                                    <ChatBubble
+                                        key={message?._id}
+                                        conversationType={conversation.type}
+                                        position={userId === message.senderId._id ? "right" : "left"}
+                                        sender={message.senderId.fullName}
+                                        message={message.content}
+                                        createdAt={message.createdAt ? message.createdAt : Date.now()}
+                                        avatarSrc={message.senderId.picture}
+                                        footerName={receiverName}
+                                        isLastMessage={isLastMessage}
+                                        online={connectedUsers.length > 0 && connectedUsers.includes(message.senderId._id)}
+                                        messageType={message.type}
+                                        messageSeen={messageSeen}
+                                    />
+                                );
+                            })
+                        }
+
+                        <button
+                            className={`h-9 w-9 ${isAtBottom ? 'hidden' : 'flex'} justify-center items-center absolute right-2 bottom-28 lg:right-6 z-[9999] bg-gray-700 hover:bg-gray-600 text-white rounded-md`}
+                            onClick={scrollSmooth}
+                        >
+                            <FaArrowDownLong className="h-5 w-5" />
+                        </button>
+
                     </div>
 
 
@@ -166,7 +198,8 @@ const Chats = () => {
                         conversationId={id}
                     />
                 </>
-            )}
+            )
+            }
 
         </div >
     )
