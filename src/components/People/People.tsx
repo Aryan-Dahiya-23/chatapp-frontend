@@ -9,7 +9,7 @@ const People = () => {
     const { data: user, } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 100000000,
+        staleTime: 10000,
     });
 
     const userId = user?._id;
@@ -26,6 +26,8 @@ const People = () => {
 
             <Header message="People" />
 
+            {isLoading && <PeopleItemsLoading />}
+
             <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
                 {data &&
                     data.map((user: { _id: string; fullName: string; picture: string; }) => (
@@ -36,10 +38,8 @@ const People = () => {
                             avatarSrc={user.picture}
                         />
                     ))}
-
             </div>
 
-            {isLoading && <PeopleItemsLoading />}
         </div>)
 }
 

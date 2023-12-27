@@ -86,7 +86,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                 messages: [...data.messages, newMessage],
             };
 
-            await updateUser();
+            updateUser();
 
             queryClient.setQueryData(['chats', conversationId], newData);
             socket.emit('chat message', user._id, newMessage, conversationId);
@@ -104,7 +104,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         },
     });
 
-    const updateUser = async () => {
+    const updateUser = () => {
 
         const newUser = { ...user }
 

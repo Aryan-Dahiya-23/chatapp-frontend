@@ -15,6 +15,7 @@ const Chats = () => {
 
     const { id } = useParams();
     const { messageSeenStatus, setMessageSeenStatus } = useContext(AuthContext);
+    const { user: contextUser, setUser: setContextUser } = useContext(AuthContext);
     const [receiverName, setreceiverName] = useState<string>("");
     const [receiverAvatarSrc, setReceiverAvatarSrc] = useState<string[]>([]);
     const [receiverOnline, setReceiverOnline] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const Chats = () => {
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 20000,
+        staleTime: 10000,
     });
 
     const userId = user?._id;
@@ -41,6 +42,12 @@ const Chats = () => {
         mutationFn: () => readMessage(userId, id),
         onMutate: () => {
             setMessageSeenStatus('pending');
+            const newUser = { ...contextUser }
+            const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === id);
+            if(conversationIndex !== -1){
+                newUser.conversations[conversationIndex].conversation.lastMessage.seenBy.push(contextUser._id);
+                setContextUser(newUser);
+            }
         },
         onSuccess: () => {
             socket.emit('seen message', id);

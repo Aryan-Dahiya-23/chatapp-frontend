@@ -78,28 +78,36 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             const allowedRoutes = ['/', '/people'];
             await handleChatMessage(user, userId, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
 
-            const newUser = { ...user }
-            const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === conversationId);
+            if (userId !== user._id) {
+                const newUser = { ...user }
+                const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === conversationId);
 
-            if (conversationIndex !== -1) {
-                const currentDate = new Date();
-                const message = {
-                    ...newMessage,
-                    createdAt: currentDate.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        timeZoneName: "short"
-                    })
+                if (conversationIndex !== -1) {
+                    const currentDate = new Date();
+                    const message = {
+                        ...newMessage,
+                        createdAt: currentDate.toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            timeZoneName: "short"
+                        })
+                    }
+                    // newUser.conversations[conversationIndex].conversation.lastMessage = message;
+
+                    const conversationToMove = newUser.conversations[conversationIndex];
+                    newUser.conversations.splice(conversationIndex, 1);
+                    newUser.conversations.unshift(conversationToMove);
+                    newUser.conversations[0].conversation.lastMessage = message;
+
+                    setUser(newUser);
                 }
-                newUser.conversations[conversationIndex].conversation.lastMessage = message;
-                setUser(newUser);
             }
-        }
-        );
+
+        });
 
         socket.on('message sent', (userId, conversationId) => {
             handleMessageSent(user, userId, conversationId);
