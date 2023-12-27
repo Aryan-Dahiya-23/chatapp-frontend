@@ -130,7 +130,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         const conversationToMove = newUser.conversations[conversationIndex];
         newUser.conversations.splice(conversationIndex, 1);
         newUser.conversations.unshift(conversationToMove);
-        
+
         setUser(newUser);
     };
 
@@ -169,6 +169,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
             handleMessageSend(messageUrl, messageType);
         }
     }, [messageUrl, messageType]);
+
+    useEffect(() => {
+        setText('');
+    }, [id]);
 
     return (
         <div

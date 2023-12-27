@@ -66,7 +66,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
     }
 
     const handleImageWidget = () => {
-        setImgSrc(myImage);
+        setImgSrc(message);
         setImageWidget(true)
     }
 

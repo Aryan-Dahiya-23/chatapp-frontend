@@ -86,8 +86,8 @@ const Chats = () => {
     };
 
     useEffect(() => {
-        setTimeout(scrollSmooth, 150);
-    }, []);
+        setTimeout(scrollSmooth, 100);
+    }, [id]);
 
     useEffect(() => {
 

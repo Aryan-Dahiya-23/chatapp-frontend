@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt, ZegoUser } from '@zegocloud/zego-uikit-prebuilt';
 import { AuthContext } from "../../contexts/AuthContext";
-import { toast } from "react-toastify";
 
 const Room = () => {
 
@@ -13,7 +12,7 @@ const Room = () => {
 
     const myMeeting = async (element) => {
         const appID = 667370382;
-        const serverSecret = "a4ca40baccffce58fef41747feddbf60";
+        const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SERVER_SECRET;
         const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
             appID,
             serverSecret,

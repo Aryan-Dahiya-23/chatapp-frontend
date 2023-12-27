@@ -28,8 +28,8 @@ interface ThemeContextProps {
     setDeleteModal: Dispatch<SetStateAction<boolean>>;
     imageWidget: boolean;
     setImageWidget: Dispatch<SetStateAction<boolean>>;
-    imgSrc: File | null;
-    setImgSrc: Dispatch<SetStateAction<File | null>>;
+    imgSrc: string;
+    setImgSrc: Dispatch<SetStateAction<string>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -59,7 +59,7 @@ const defaultThemeContext: ThemeContextProps = {
     setDeleteModal: () => { },
     imageWidget: false,
     setImageWidget: () => { },
-    imgSrc: null,
+    imgSrc: "",
     setImgSrc: () => { },
 };
 
@@ -83,7 +83,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [outgoingCall, setOutgoingCall] = useState<boolean>(false);
     const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
     const [ imageWidget, setImageWidget ] = useState<boolean>(false);
-    const [ imgSrc, setImgSrc ] = useState<File | null>(null);
+    const [ imgSrc, setImgSrc ] = useState<string>("");
 
     useEffect(() => {
         try {
