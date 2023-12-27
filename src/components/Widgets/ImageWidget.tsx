@@ -1,20 +1,11 @@
 import { useContext } from "react";
-import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react"
 import { ThemeContext } from "../../contexts/ThemeContext";
 
 const ImageWidget = () => {
 
-    const cld = new Cloudinary({
-        cloud: {
-            cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-        }
-    });
-
     const { setImageWidget } = useContext(ThemeContext);
     const { imgSrc } = useContext(ThemeContext);
-
-    const myImg = cld.image(imgSrc);
 
     const handleClose = () => {
         setImageWidget(false);
@@ -29,7 +20,7 @@ const ImageWidget = () => {
 
             <AdvancedImage
                 className="max-h-[95%] object-contain lg:rounded-lg"
-                cldImg={myImg}
+                cldImg={imgSrc}
             />
 
         </div>
