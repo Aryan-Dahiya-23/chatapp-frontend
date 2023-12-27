@@ -64,7 +64,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         }
     };
 
-    const { mutate } = useMutation({
+    const { mutate, status } = useMutation({
         mutationFn: async () => {
             const response = await createMessage(conversationId, message);
             return response;
@@ -132,7 +132,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     const handleMessageSend = (content: string, type: string) => {
 
-        if (content === '' || type === '') return
+        if (content === '' || type === '' || status === 'pending') return
 
         setText('');
         setMessageUrl('');
