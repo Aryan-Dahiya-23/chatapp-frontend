@@ -9,15 +9,15 @@ type Conversation = {
     _id: string,
 }
 
-export const handleChatMessage = async (user, userId, newMessage, conversationId, toastNotification) => {
+export const handleChatMessage =  (user, newMessage, conversationId, toastNotification) => {
     const isConversationExists = user.conversations.some(conversation => conversation.conversation._id === conversationId);
 
-    if (isConversationExists && userId !== user._id) {
+    if (isConversationExists) {
         if (toastNotification) toast.success(`New Message received from ${newMessage.senderId.fullName}`);
 
         const conversation: Conversation | undefined = queryClient.getQueryData(['chats', conversationId]);
 
-        await queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
+        queryClient.cancelQueries({ queryKey: ['chats', conversationId] });
 
         const newConversation = {
             ...conversation,

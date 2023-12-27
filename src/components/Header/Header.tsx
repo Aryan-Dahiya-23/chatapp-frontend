@@ -74,11 +74,10 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
             setUserConnected(true);
         }
 
-        socket.on('chat message', async (userId, newMessage, conversationId) => {
-            const allowedRoutes = ['/', '/people'];
-            await handleChatMessage(user, userId, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
+        socket.on('chat message', (userId, newMessage, conversationId) => {
 
             if (userId !== user._id) {
+
                 const newUser = { ...user }
                 const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === conversationId);
 
@@ -105,6 +104,9 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
 
                     setUser(newUser);
                 }
+
+                const allowedRoutes = ['/', '/people'];
+                handleChatMessage(user, newMessage, conversationId, allowedRoutes.includes(location.pathname) ? true : false);
             }
 
         });

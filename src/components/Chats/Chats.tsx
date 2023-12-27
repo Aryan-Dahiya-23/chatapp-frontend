@@ -26,7 +26,7 @@ const Chats = () => {
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
-        staleTime: 10000,
+        staleTime: 15000,
     });
 
     const userId = user?._id;
@@ -34,7 +34,7 @@ const Chats = () => {
     const { data: conversation, isSuccess, isLoading } = useQuery({
         queryKey: ['chats', id],
         queryFn: () => getConversation(userId, id),
-        staleTime: 10000,
+        staleTime: 15000,
         enabled: !!userId
     });
 
@@ -44,7 +44,7 @@ const Chats = () => {
             setMessageSeenStatus('pending');
             const newUser = { ...contextUser }
             const conversationIndex = newUser.conversations.findIndex(conv => conv.conversation._id === id);
-            if(conversationIndex !== -1){
+            if (conversationIndex !== -1) {
                 newUser.conversations[conversationIndex].conversation.lastMessage.seenBy.push(contextUser._id);
                 setContextUser(newUser);
             }
@@ -57,7 +57,7 @@ const Chats = () => {
     });
 
     useEffect(() => {
-        if (isSuccess && conversation.lastMessage && conversation.messages[conversation.messages.length - 1]._id) {
+        if (conversation) {
             const lastMessage = conversation.lastMessage;
             if (messageSeenStatus === 'idle' && lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
                 setMessageSeenStatus('pending');
