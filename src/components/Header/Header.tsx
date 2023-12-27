@@ -50,6 +50,12 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     }, [isError, error]);
 
     useEffect(() => {
+        if (isSuccess && data.conversations.length < 1) {
+            navigate('/people');
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
         if (isSuccess && data) {
             setUser(data)
             if (!loginToast) {
@@ -165,12 +171,6 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
     const handleGroupChatWidget = () => {
         setGroupChatWidget(true);
     }
-
-    useEffect(() => {
-        if (isSuccess && data.conversations.length < 1) {
-            navigate('/people');
-        }
-    }, [isSuccess]);
 
     return (
         <>

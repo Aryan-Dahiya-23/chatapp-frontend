@@ -9,6 +9,7 @@ import PeoplePage from "./pages/PeoplePage";
 import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
 import RoomPage from "./pages/RoomPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/chats/:id" element={<ChatPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/room/:roomId" element={<RoomPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </GlobalProvider>
