@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
 import EmojiPicker from 'emoji-picker-react';
-import { Theme } from "emoji-picker-react";
 import { HiPaperAirplane } from "react-icons/hi2";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import CloudinaryUploadWidget from "../Widgets/CloudinaryUploadWidget";
@@ -12,7 +10,6 @@ import { queryClient } from "../../api/auth";
 import { createMessage } from "../../api/conversation";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { toast } from "react-toastify";
 
 type ChatInputProps = {
     data: {
@@ -36,16 +33,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
 
     const { messageUrl, setMessageUrl } = useContext(AuthContext);
     const { messageType, setMessageType } = useContext(AuthContext);
-    const { theme } = useContext(ThemeContext);
     const { setChatHeight } = useContext(ThemeContext);
 
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
     const [showEmojis, setShowEmojis] = useState<boolean>(false);
-    // const [emojiTheme, setEmojiTheme] = useState<Theme | undefined>('dark');
-    // const [emojiTheme, setEmojiTheme] = useState<(() => Theme) | undefined>(() => theme);
-
+    
     const [cloudName] = useState(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
     const [uploadPreset] = useState(import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     const [uwConfig] = useState({
@@ -186,7 +180,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     }, [id]);
 
     const handleEmojiClick = (emoji) => {
-        toast.success(theme);
         setText((prevMessage) => prevMessage + emoji.emoji);
     };
 
@@ -224,7 +217,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
                     <EmojiPicker
                         onEmojiClick={handleEmojiClick}
                         lazyLoadEmojis
-                        theme={theme}
                     />
                 </div>
             }
