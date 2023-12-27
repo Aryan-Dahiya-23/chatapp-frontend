@@ -57,7 +57,7 @@ const Chats = () => {
     });
 
     useEffect(() => {
-        if (conversation) {
+        if (conversation && conversation.lastMessage && conversation.messages[conversation.messages.length - 1]._id) {
             const lastMessage = conversation.lastMessage;
             if (messageSeenStatus === 'idle' && lastMessage.senderId !== userId && !lastMessage.seenBy.includes(userId)) {
                 setMessageSeenStatus('pending');

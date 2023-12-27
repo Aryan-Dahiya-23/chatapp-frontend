@@ -26,6 +26,10 @@ interface ThemeContextProps {
     setOutgoingCall: Dispatch<SetStateAction<boolean>>;
     deleteModal: boolean;
     setDeleteModal: Dispatch<SetStateAction<boolean>>;
+    imageWidget: boolean;
+    setImageWidget: Dispatch<SetStateAction<boolean>>;
+    imgSrc: string;
+    setImgSrc: Dispatch<SetStateAction<string>>;
 }
 
 const defaultThemeContext: ThemeContextProps = {
@@ -53,6 +57,10 @@ const defaultThemeContext: ThemeContextProps = {
     setOutgoingCall: () => { },
     deleteModal: false,
     setDeleteModal: () => { },
+    imageWidget: false,
+    setImageWidget: () => { },
+    imgSrc: '',
+    setImgSrc: () => { },
 };
 
 export const ThemeContext = createContext<ThemeContextProps>(defaultThemeContext);
@@ -74,6 +82,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [videoCallId, setVideoCallId] = useState<string>('');
     const [outgoingCall, setOutgoingCall] = useState<boolean>(false);
     const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
+    const [ imageWidget, setImageWidget ] = useState<boolean>(false);
+    const [ imgSrc, setImgSrc ] = useState<string>('');
 
     useEffect(() => {
         try {
@@ -96,7 +106,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             value={{
                 theme, setTheme, chatHeight, setChatHeight, groupChatWidget, setGroupChatWidget, logoutLoading, setLogoutLoading,
                 loginToast, setLoginToast, incomingVideoCall, setIncomingVideoCall, videoCallName, setVideoCallName, videoCallUserId, setVideoCallUserId,
-                videoCallAvatarSrc, setVideoCallAvatarSrc, videoCallId, setVideoCallId, outgoingCall, setOutgoingCall, deleteModal, setDeleteModal
+                videoCallAvatarSrc, setVideoCallAvatarSrc, videoCallId, setVideoCallId, outgoingCall, setOutgoingCall, deleteModal, setDeleteModal,
+                imageWidget, setImageWidget, imgSrc, setImgSrc
             }}
         >
             {children}

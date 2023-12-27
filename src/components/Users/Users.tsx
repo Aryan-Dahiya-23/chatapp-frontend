@@ -1,21 +1,13 @@
 import { useContext } from "react";
-// import { useQuery } from "@tanstack/react-query";
 import Header from "../Header/Header";
 import UsersItems from "./UsersItems";
 import UserItemsLoading from "../UI/UserItemsLoading";
 import { AuthContext } from "../../contexts/AuthContext";
-// import { verify } from "../../api/auth";
 
 const Users = () => {
 
     const { connectedUsers } = useContext(AuthContext);
     const { user } = useContext(AuthContext);
-
-    // const { isLoading, isSuccess } = useQuery({
-    //     queryKey: ['user'],
-    //     queryFn: () => verify(),
-    //     staleTime: 10000,
-    // });
 
     return (
         <div className="flex flex-col mb-16 md:mb-0 w-full md:w-[40%] lg:w-[25%] lg:pl-2 md:h-[100vh]">

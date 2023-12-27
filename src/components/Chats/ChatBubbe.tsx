@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage, AdvancedVideo, responsive, lazyload } from "@cloudinary/react"
 import { videoCodec } from "@cloudinary/url-gen/actions/transcode";
 import { auto, vp9 } from '@cloudinary/url-gen/qualifiers/videoCodec';
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 interface ChatBubbleProps {
     conversationType: string;
@@ -30,6 +32,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
     messageSeen,
     messageType,
 }) => {
+
+    const { setImageWidget } = useContext(ThemeContext);
+    const { setImgSrc } = useContext(ThemeContext);
 
     const formattedTime = new Date(createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
@@ -60,9 +65,13 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
         myVideo = cld.video(message);
     }
 
+    const handleImageWidget = () => {
+        setImgSrc(message);
+        setImageWidget(true)
+    }
+
     return (
         <div>
-
             {position === "right" ? (
                 <div className="chat chat-end space-y-1">
 
@@ -80,7 +89,8 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                         <div className="chat-bubble text-white bg-sky-500 font-semibold">{message}</div>
                     ) : messageType === 'image' ? (
                         <AdvancedImage
-                            className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
+                            className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg" 
+                            onClick={handleImageWidget}
                             cldImg={myImage}
                             plugins={[responsive()]}
                         />
@@ -126,6 +136,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                     ) : messageType === 'image' ? (
                         <AdvancedImage
                             className="max-w-[60%] md:max-w-[50%] lg:max-w-[25%] rounded-lg"
+                            onClick={handleImageWidget}
                             cldImg={myImage}
                             plugins={[responsive()]}
                         />
