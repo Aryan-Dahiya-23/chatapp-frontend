@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, ChangeEvent, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useMutation } from "@tanstack/react-query";
+import EmojiPicker from 'emoji-picker-react';
+import { Theme } from "emoji-picker-react";
 import { HiPaperAirplane } from "react-icons/hi2";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 import CloudinaryUploadWidget from "../Widgets/CloudinaryUploadWidget";
 import { queryClient } from "../../api/auth";
 import { createMessage } from "../../api/conversation";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type ChatInputProps = {
     data: {
@@ -22,6 +26,7 @@ type ChatInputProps = {
     conversationId: string | undefined;
 };
 
+
 const socket: Socket = io(import.meta.env.VITE_URL);
 
 const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
@@ -29,12 +34,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
     const { id } = useParams();
     const { user, setUser } = useContext(AuthContext);
 
+    const { messageUrl, setMessageUrl } = useContext(AuthContext);
+    const { messageType, setMessageType } = useContext(AuthContext);
+    const { theme } = useContext(ThemeContext);
+    const { setChatHeight } = useContext(ThemeContext);
+
     const [text, setText] = useState<string>('');
     const [textareaHeight, setTextareaHeight] = useState<boolean>(false);
     const [message, setMessage] = useState<object>({});
-    const { messageUrl, setMessageUrl } = useContext(AuthContext);
-    const { messageType, setMessageType } = useContext(AuthContext);
-    const { setChatHeight } = useContext(ThemeContext);
+    const [showEmojis, setShowEmojis] = useState<boolean>(false);
+    // const [emojiTheme, setEmojiTheme] = useState<Theme | undefined>('dark');
+    // const [emojiTheme, setEmojiTheme] = useState<(() => Theme) | undefined>(() => theme);
 
     const [cloudName] = useState(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
     const [uploadPreset] = useState(import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -141,6 +151,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         setText('');
         setMessageUrl('');
         setMessageType('');
+        setShowEmojis(false);
 
         const newMessage = {
             senderId: user._id,
@@ -174,11 +185,49 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         setText('');
     }, [id]);
 
+    const handleEmojiClick = (emoji) => {
+        toast.success(theme);
+        setText((prevMessage) => prevMessage + emoji.emoji);
+    };
+
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            const emojisElement = document.getElementById('emojis');
+            const emojiIconElement = document.getElementById('emojiIcon');
+            const textElement = document.getElementById('text');
+
+            if (
+                (emojisElement && !emojisElement.contains(e.target as Node)) &&
+                (emojiIconElement && !emojiIconElement.contains(e.target as Node))
+            ) {
+                setShowEmojis(false)
+            }
+        };
+
+        window.addEventListener('click', handleClick);
+
+        return () => {
+            window.removeEventListener('click', handleClick);
+        };
+    }, []);
+
     return (
         <div
             className={`flex flex-row justify-between w-full space-x-4 p-3 mt-auto lg:p-4 border-t-2 border-gray-200 ${textareaHeight ? "items-end" : "items-center"}`}>
 
             <CloudinaryUploadWidget uwConfig={uwConfig} />
+
+            <MdOutlineEmojiEmotions className="hidden lg:inline chat-icons text-sky-500 hover:text-sky-600" id="emojiIcon" onClick={() => setShowEmojis(!showEmojis)} />
+
+            {showEmojis &&
+                <div className="fixed bottom-24 left-[30%]" id="emojis">
+                    <EmojiPicker
+                        onEmojiClick={handleEmojiClick}
+                        lazyLoadEmojis
+                        theme={theme}
+                    />
+                </div>
+            }
 
             <textarea
                 placeholder="Write a message"

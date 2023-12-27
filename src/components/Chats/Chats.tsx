@@ -96,7 +96,6 @@ const Chats = () => {
         const handleScroll = () => {
             if (chatContainerRef.current) {
                 const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-                console.log(scrollHeight - (scrollTop + clientHeight))
                 const isBottom = Math.abs(scrollHeight - (scrollTop + clientHeight)) < 100;
 
                 // const isBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 5;
