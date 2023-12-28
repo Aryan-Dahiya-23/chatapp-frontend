@@ -101,6 +101,11 @@ const Header: React.FC<HeaderProps> = ({ message }) => {
                             timeZoneName: "short"
                         })
                     }
+
+                    if (id === conversationId) {
+                        message.seenBy.push(user._id);
+                    }
+
                     // newUser.conversations[conversationIndex].conversation.lastMessage = message;
 
                     const conversationToMove = newUser.conversations[conversationIndex];
