@@ -28,7 +28,7 @@ const ImageWidget = () => {
             </button>
 
             <AdvancedImage
-                className="max-h-[95%] object-contain lg:rounded-lg"
+                className="max-h-[95%] object-contain rounded-md lg:rounded-lg"
                 cldImg={myImg}
             />
 

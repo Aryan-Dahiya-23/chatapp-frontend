@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { MdCallEnd } from "react-icons/md";
 import RingAvatar from "../Avatar/RingAvatar";
 
-const OutgoingCallWidget = ({name, imgSrc, onEndCall }) => {
+const OutgoingCallWidget = ({ name, imgSrc, onEndCall }) => {
 
     const endCall = () => {
         onEndCall();
@@ -24,15 +24,23 @@ const OutgoingCallWidget = ({name, imgSrc, onEndCall }) => {
                 <span>Calling</span>
             </div>
 
-            <div>
-                <RingAvatar imgSrc={imgSrc} type="outgoingVideoCall" />
-            </div>
+            {imgSrc.length > 1 ?
+                <div className="flex flex-col-reverse justify-end items-center">
+                    <div className="flex flex-row mt-2 space-x-5">
+                        <RingAvatar imgSrc={imgSrc[0]} type="outgoingGroupVideoCall" />
+                        <RingAvatar imgSrc={imgSrc[1]} type="outgoingGroupVideoCall" />
+                    </div>
+                    <RingAvatar imgSrc={imgSrc[2]} type="outgoingGroupVideoCall" />
+                </div>
+                :
+                <RingAvatar
+                    imgSrc={imgSrc[0]} type="outgoingVideoCall" />
+            }
 
             <div>
                 <button className="rounded-full p-3 text-white bg-red-500 hover:opacity-80" onClick={endCall}>
                     <MdCallEnd className="h-8 w-8" />
                 </button>
-
             </div>
         </div>
     )

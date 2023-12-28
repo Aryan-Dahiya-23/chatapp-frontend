@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
@@ -145,7 +146,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         setText('');
         setMessageUrl('');
         setMessageType('');
-        setShowEmojis(false);
 
         const newMessage = {
             senderId: user._id,
@@ -187,7 +187,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ data, conversationId }) => {
         const handleClick = (e: MouseEvent) => {
             const emojisElement = document.getElementById('emojis');
             const emojiIconElement = document.getElementById('emojiIcon');
-            const textElement = document.getElementById('text');
 
             if (
                 (emojisElement && !emojisElement.contains(e.target as Node)) &&

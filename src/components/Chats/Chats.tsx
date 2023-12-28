@@ -1,21 +1,22 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
-import { AuthContext } from "../../contexts/AuthContext";
+import { FaArrowDownLong } from "react-icons/fa6";
 import ChatHeader from "./ChatHeader";
-import ChatInput from "./ChatInput";
 import ChatBubble from "./ChatBubbe";
+import ChatInput from "./ChatInput";
+import { AuthContext } from "../../contexts/AuthContext";
 import { queryClient, verify } from "../../api/auth";
 import { getConversation, readMessage } from "../../api/conversation";
-
-import { FaArrowDownLong } from "react-icons/fa6";
 
 const socket: Socket = io(import.meta.env.VITE_URL);
 
 const Chats = () => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const { messageSeenStatus, setMessageSeenStatus } = useContext(AuthContext);
     const { user: contextUser, setUser: setContextUser } = useContext(AuthContext);
     const [receiverName, setreceiverName] = useState<string>("");
@@ -25,8 +26,6 @@ const Chats = () => {
     const { connectedUsers } = useContext(AuthContext)
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
-    const [isAtBottom, setIsAtBottom] = useState(true);
-
     const { data: user, isSuccess: isDone } = useQuery({
         queryKey: ['user'],
         queryFn: () => verify(),
@@ -35,12 +34,18 @@ const Chats = () => {
 
     const userId = user?._id;
 
-    const { data: conversation, isSuccess, isLoading } = useQuery({
+    const { data: conversation, isSuccess, isLoading, isError } = useQuery({
         queryKey: ['chats', id],
         queryFn: () => getConversation(userId, id),
         staleTime: 15000,
         enabled: !!userId
     });
+
+    useEffect(() => {
+        if (isError) {
+            navigate("/");
+        }
+    }, [isError]);
 
     const { mutate } = useMutation({
         mutationFn: () => readMessage(userId, id),
@@ -98,8 +103,14 @@ const Chats = () => {
                 const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
                 const isBottom = Math.abs(scrollHeight - (scrollTop + clientHeight)) < 100;
 
-                // const isBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 5;
-                setIsAtBottom(isBottom);
+                const myElement = document.getElementById('chatScroll');
+
+                if (myElement && !isBottom) {
+                    myElement.style.display = 'flex';
+                } else if (myElement && isBottom) {
+                    myElement.style.display = 'none';
+                }
+
             }
         };
 
@@ -183,14 +194,14 @@ const Chats = () => {
                         }
 
                         <button
-                            className={`h-9 w-9 ${isAtBottom ? 'hidden' : 'flex'} justify-center items-center absolute right-2 bottom-28 lg:right-6 z-[9999] bg-gray-700 hover:bg-gray-600 text-white rounded-md`}
+                            id="chatScroll"
+                            className={`h-9 w-9 hidden justify-center items-center absolute right-2 bottom-28 lg:right-6 z-30 bg-gray-700 hover:bg-gray-600 text-white rounded-md`}
                             onClick={scrollSmooth}
                         >
                             <FaArrowDownLong className="h-5 w-5" />
                         </button>
 
                     </div>
-
 
                     <ChatInput
                         data={conversation}
