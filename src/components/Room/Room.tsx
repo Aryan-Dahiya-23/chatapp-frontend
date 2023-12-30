@@ -30,13 +30,6 @@ const Room = () => {
             videoResolutionDefault: ZegoUIKitPrebuilt.VideoResolution_720P,
             showPreJoinView: false,
             showRoomTimer: true,
-            // onUserAvatarSetter: (userList) => {
-            //     setTimeout(() => {
-            //         userList.forEach(user => {
-            //             console.log(user);
-            //         })
-            //     }, 1000);
-            // },
            
             onLeaveRoom: () => {
                 navigate('/');
@@ -46,6 +39,7 @@ const Room = () => {
                 }
                 setTimeout(navigateToHome, 10);
             },
+            
             // onUserLeave: (userList) => {
             //     // setTimeout(() => {
             //     //     console.log(users);
