@@ -34,11 +34,22 @@ const MobileNavigation = () => {
         },
     })
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }
+
     const navigateHome = () => {
+        if (window.location.pathname === '/')
+            scrollToTop();
         navigate("/");
     }
 
     const navigatePeople = () => {
+        if (window.location.pathname === '/people')
+            scrollToTop();
         navigate("/people");
     }
 

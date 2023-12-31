@@ -37,12 +37,22 @@ const DesktopNavigation = () => {
         },
     })
 
+    const scrollToTop = (divName: string) => {
+        const Div = document.getElementById(divName);
+        Div?.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }
+
     const navigateHome = () => {
         navigate("/");
+        scrollToTop('user');
     }
 
     const navigatePeople = () => {
         navigate("/people");
+        scrollToTop('people');
     }
 
     const handleLogout = () => {
@@ -60,7 +70,7 @@ const DesktopNavigation = () => {
 
     useEffect(() => {
         const path = location.pathname;
-        
+
         if (path === "/") {
             setCurrentLocation('home')
         } else if (path === "/people") {

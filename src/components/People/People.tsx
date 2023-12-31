@@ -28,7 +28,7 @@ const People = () => {
 
             {isLoading && <PeopleItemsLoading />}
 
-            <div className="flex flex-col space-y-1 py-2 custom-scrollbar">
+            <div className="flex flex-col space-y-1 py-2 custom-scrollbar" id="people">
                 {data &&
                     data.map((user: { _id: string; fullName: string; picture: string; }) => (
                         <PeopleItems
